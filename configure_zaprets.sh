@@ -14,7 +14,7 @@ https-dns-proxy_backup"
 
 for file in $config_files
 do
-  cp -f "$DIR_BACKUP/$file" "$DIR/$file" 
+  cp -f "$DIR/$file" "$DIR_BACKUP/$file"  
 done
 
 for file in $config_files
