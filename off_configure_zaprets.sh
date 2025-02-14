@@ -12,14 +12,8 @@ mkdir $DIR_BACKUP
 
 for file in $config_files
 do
-  cp -f "$DIR/$file" "$DIR_BACKUP/$file"  
+  cp -f "$DIR_BACKUP/$file" "$DIR/$file"   
 done
-
-for file in $config_files
-do
-  wget -O "$DIR/$file" "$URL/$file" 
-done
-
 
 service youtubeUnblock restart
 service https-dns-proxy restart
