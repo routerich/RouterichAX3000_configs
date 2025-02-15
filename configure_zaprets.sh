@@ -61,3 +61,5 @@ service youtubeUnblock restart
 service https-dns-proxy restart
 service dnsmasq restart
 service odhcpd restart
+
+echo "Configure complete..."
