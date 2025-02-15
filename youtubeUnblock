@@ -79,6 +79,7 @@ config section
 	list sni_domains 'rutor.info'
 	list sni_domains 'rutor.is'
 	list sni_domains 'nnmclub.to'
+	list sni_domains 'twitter.com'
 	list sni_domains 't.co'
 	list sni_domains 'twimg.com'
 	list sni_domains 'ads-twitter.com'
