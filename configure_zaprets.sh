@@ -53,6 +53,12 @@ uci add_list dhcp.cfg01411c.server='/*.clashroyale.com/127.0.0.1#5056'
 uci add_list dhcp.cfg01411c.server='/*.brawlstars.com/127.0.0.1#5056'
 uci add_list dhcp.cfg01411c.server='/*.clash.com/127.0.0.1#5056'
 uci add_list dhcp.cfg01411c.server='/*.clashofclans.com/127.0.0.1#5056'
+uci add dhcp domain # =cfg13f37d
+uci set dhcp.@domain[-1].name='chatgpt.com'
+uci set dhcp.@domain[-1].ip='94.131.119.85'
+uci add dhcp domain # =cfg14f37d
+uci set dhcp.@domain[-1].name='openai.com'
+uci set dhcp.@domain[-1].ip='94.131.119.85'
 uci commit dhcp
 
 echo "Restart service..."
