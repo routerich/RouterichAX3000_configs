@@ -7,7 +7,7 @@ config_files="dhcp
 youtubeUnblock
 https-dns-proxy"
 
-echo "Upgrade packeges..."
+echo "Upgrade packages..."
 
 opkg update
 opkg upgrade youtubeUnblock
@@ -66,6 +66,15 @@ uci add dhcp domain # =cfg14f37d
 uci set dhcp.@domain[-1].name='openai.com'
 uci set dhcp.@domain[-1].ip='94.131.119.85'
 uci commit dhcp
+
+echo "Crod task add restart service yotubeUnblock..."
+
+cronTask="0 4 \* \* \* service youtubeUnblock restart"
+str=$(grep -i "$cronTask" /etc/crontabs/root)
+if [ ! $str ]
+then
+  echo "$cronTask" >> /etc/crontabs/root
+fi
 
 echo "Restart service..."
 
