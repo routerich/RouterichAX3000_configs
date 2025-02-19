@@ -9,7 +9,7 @@ https-dns-proxy"
 
 opkg update
 opkg upgrade youtubeUnblock
-opkg install luci-app-youtubeUnblock
+opkg upgrade luci-app-youtubeUnblock
 
 echo "Backup files..."
 
