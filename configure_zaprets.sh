@@ -7,6 +7,12 @@ config_files="dhcp
 youtubeUnblock
 https-dns-proxy"
 
+echo "Upgrade packeges..."
+
+opkg update
+opkg upgrade youtubeUnblock
+opkg upgrade luci-app-youtubeUnblock
+
 echo "Backup files..."
 
 if [ ! -d "$DIR_BACKUP" ]
