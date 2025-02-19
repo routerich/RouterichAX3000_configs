@@ -10,8 +10,8 @@ https-dns-proxy"
 echo "Upgrade packages..."
 
 opkg update
-opkg upgrade youtubeunblock
-opkg upgrade luci-app-youtubeunblock
+opkg upgrade youtubeUnblock
+opkg upgrade luci-app-youtubeUnblock
 
 echo "Backup files..."
 
