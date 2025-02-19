@@ -69,9 +69,9 @@ uci commit dhcp
 
 echo "Crod task add restart service yotubeUnblock..."
 
-cronTask="0 4 \* \* \* service youtubeUnblock restart"
-str=$(grep -i "$cronTask" /etc/crontabs/root)
-if [ ! $str ]
+cronTask="0 4 * * * service youtubeUnblock restart"
+str=$(grep -i "0 4 \* \* \* service youtubeUnblock restart" /etc/crontabs/root)
+if [ -z "$str" ] 
 then
   echo "$cronTask" >> /etc/crontabs/root
 fi
