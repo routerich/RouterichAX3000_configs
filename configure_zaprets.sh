@@ -67,6 +67,15 @@ uci set dhcp.@domain[-1].name='openai.com'
 uci set dhcp.@domain[-1].ip='94.131.119.85'
 uci commit dhcp
 
+echo "Crod task add restart service yotubeUnblock..."
+
+cronTask="0 4 * * * service youtubeUnblock restart"
+str=$(grep -i "0 4 \* \* \* service youtubeUnblock restart" /etc/crontabs/root)
+if [ -z "$str" ] 
+then
+  echo "$cronTask" >> /etc/crontabs/root
+fi
+
 echo "Restart service..."
 
 service youtubeUnblock restart
