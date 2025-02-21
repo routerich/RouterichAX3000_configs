@@ -1,7 +1,6 @@
 #!/bin/sh
 
-URL_REPO="https://raw.githubusercontent.com/CodeRoK7/RouterichAX3000_configs"
-URL="$URL_REPO/refs/heads/main"
+URL="https://raw.githubusercontent.com/CodeRoK7/RouterichAX3000_configs/refs/heads/main"
 DIR="/etc/config"
 DIR_BACKUP="/root/backup"
 config_files="dhcp
@@ -108,8 +107,8 @@ then
   service firewall restart
 fi
 
-cronTask="0 4 * * * wget -O - $URL_REPO/refs/heads/main/configure_zaprets.sh | sh"
-str=$(grep -i "0 4 \* \* \* wget -O - $URL_REPO/refs/heads/main/configure_zaprets.sh | sh" /etc/crontabs/root)
+cronTask="0 4 * * * wget -O - $URL/configure_zaprets.sh | sh"
+str=$(grep -i "0 4 \* \* \* wget -O - $URL/configure_zaprets.sh | sh" /etc/crontabs/root)
 if [ -z "$str" ] 
 then
   echo "Add cron task auto run configure_zapret..."
