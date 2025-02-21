@@ -73,6 +73,12 @@ then
   uci add dhcp domain # =cfg14f37d
   uci set dhcp.@domain[-1].name='openai.com'
   uci set dhcp.@domain[-1].ip='94.131.119.85'
+  uci add dhcp domain # =cfg15f37d
+  uci set dhcp.@domain[-1].name='webrtc.chatgpt.com'
+  uci set dhcp.@domain[-1].ip='94.131.119.85'
+  uci add dhcp domain # =cfg16f37d
+  uci set dhcp.@domain[-1].name='ios.chat.openai.com'
+  uci set dhcp.@domain[-1].ip='94.131.119.85'
   uci commit dhcp
 fi
 
