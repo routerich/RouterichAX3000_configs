@@ -13,17 +13,15 @@ opkg update
 opkg upgrade youtubeUnblock
 opkg upgrade luci-app-youtubeUnblock
 
-echo "Backup files..."
-
 if [ ! -d "$DIR_BACKUP" ]
 then
+  echo "Backup files..."
   mkdir $DIR_BACKUP
+  for file in $config_files
+  do
+    cp -f "$DIR/$file" "$DIR_BACKUP/$file"  
+  done
 fi
-
-for file in $config_files
-do
-  cp -f "$DIR/$file" "$DIR_BACKUP/$file"  
-done
 
 echo "Replace configs..."
 
@@ -61,31 +59,46 @@ uci add_list dhcp.cfg01411c.server='/*.clash.com/127.0.0.1#5056'
 uci add_list dhcp.cfg01411c.server='/*.clashofclans.com/127.0.0.1#5056'
 uci add_list dhcp.cfg01411c.server='/*.x.ai/127.0.0.1#5056'
 uci add_list dhcp.cfg01411c.server='/*.grok.com/127.0.0.1#5056'
-uci add dhcp domain # =cfg13f37d
-uci set dhcp.@domain[-1].name='chatgpt.com'
-uci set dhcp.@domain[-1].ip='94.131.119.85'
-uci add dhcp domain # =cfg14f37d
-uci set dhcp.@domain[-1].name='openai.com'
-uci set dhcp.@domain[-1].ip='94.131.119.85'
 uci commit dhcp
 
-echo "Add block QUIC..."
+nameRule="option name 'chatgpt.com'"
+str=$(grep -i "$nameRule" /etc/config/dhcp)
+if [ -z "$str" ] 
+then
+  echo "Add unblock ChatGPT..."
 
-uci add firewall rule # =cfg2492bd
-uci set firewall.@rule[-1].name='Block_UDP_80'
-uci add_list firewall.@rule[-1].proto='udp'
-uci set firewall.@rule[-1].src='lan'
-uci set firewall.@rule[-1].dest='wan'
-uci set firewall.@rule[-1].dest_port='80'
-uci set firewall.@rule[-1].target='REJECT'
-uci add firewall rule # =cfg2592bd
-uci set firewall.@rule[-1].name='Block_UDP_443'
-uci add_list firewall.@rule[-1].proto='udp'
-uci set firewall.@rule[-1].src='lan'
-uci set firewall.@rule[-1].dest='wan'
-uci set firewall.@rule[-1].dest_port='443'
-uci set firewall.@rule[-1].target='REJECT'
-uci commit firewall
+  uci add dhcp domain # =cfg13f37d
+  uci set dhcp.@domain[-1].name='chatgpt.com'
+  uci set dhcp.@domain[-1].ip='94.131.119.85'
+  uci add dhcp domain # =cfg14f37d
+  uci set dhcp.@domain[-1].name='openai.com'
+  uci set dhcp.@domain[-1].ip='94.131.119.85'
+  uci commit dhcp
+fi
+
+nameRule="option name 'Block_UDP_443'"
+str=$(grep -i "$nameRule" /etc/config/firewall)
+if [ -z "$str" ] 
+then
+  echo "Add block QUIC..."
+
+  uci add firewall rule # =cfg2492bd
+  uci set firewall.@rule[-1].name='Block_UDP_80'
+  uci add_list firewall.@rule[-1].proto='udp'
+  uci set firewall.@rule[-1].src='lan'
+  uci set firewall.@rule[-1].dest='wan'
+  uci set firewall.@rule[-1].dest_port='80'
+  uci set firewall.@rule[-1].target='REJECT'
+  uci add firewall rule # =cfg2592bd
+  uci set firewall.@rule[-1].name='Block_UDP_443'
+  uci add_list firewall.@rule[-1].proto='udp'
+  uci set firewall.@rule[-1].src='lan'
+  uci set firewall.@rule[-1].dest='wan'
+  uci set firewall.@rule[-1].dest_port='443'
+  uci set firewall.@rule[-1].target='REJECT'
+  uci commit firewall
+  service firewall restart
+fi
 
 echo "Crod task add restart service yotubeUnblock..."
 
