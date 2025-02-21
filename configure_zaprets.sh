@@ -79,6 +79,9 @@ then
   uci add dhcp domain # =cfg16f37d
   uci set dhcp.@domain[-1].name='ios.chat.openai.com'
   uci set dhcp.@domain[-1].ip='94.131.119.85'
+  uci add dhcp domain # =cfg17f37d
+  uci set dhcp.@domain[-1].name='searchgpt.com'
+  uci set dhcp.@domain[-1].ip='94.131.119.85'
   uci commit dhcp
 fi
 
