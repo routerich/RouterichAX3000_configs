@@ -28,7 +28,7 @@ config https-dns-proxy
 
 config https-dns-proxy
 	option resolver_url 'https://router.comss.one/dns-query'
-	option bootstrap_dns '195.133.25.16, 212.109.195.93'
+	option bootstrap_dns '195.133.25.16,212.109.195.93'
 	option listen_addr '127.0.0.1'
 	option listen_port '5056'
 
