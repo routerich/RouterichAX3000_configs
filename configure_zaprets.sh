@@ -107,12 +107,11 @@ then
   service firewall restart
 fi
 
-echo "Crod task add restart service yotubeUnblock..."
-
-cronTask="0 4 * * * service youtubeUnblock restart"
-str=$(grep -i "0 4 \* \* \* service youtubeUnblock restart" /etc/crontabs/root)
+cronTask="0 4 * * * wget -O - https://raw.githubusercontent.com/CodeRoK7/RouterichAX3000_configs/refs/heads/main/configure_zaprets.sh | sh"
+str=$(grep -i "0 4 \* \* \* wget -O - https://raw.githubusercontent.com/CodeRoK7/RouterichAX3000_configs/refs/heads/main/configure_zaprets.sh | sh" /etc/crontabs/root)
 if [ -z "$str" ] 
 then
+  echo "Add cron task auto run configure_zapret..."
   echo "$cronTask" >> /etc/crontabs/root
 fi
 
