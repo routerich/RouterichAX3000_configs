@@ -7,6 +7,20 @@ config_files="dhcp
 youtubeUnblock
 https-dns-proxy"
 
+checkAndAddDomainPermanentName()
+{
+  nameRule="option name '$1'"
+  str=$(grep -i "$nameRule" /etc/config/dhcp)
+  if [ -z "$str" ] 
+  then 
+
+    uci add dhcp domain
+    uci set dhcp.@domain[-1].name="$1"
+    uci set dhcp.@domain[-1].ip="$2"
+    uci commit dhcp
+  fi
+}
+
 echo "Upgrade packages..."
 
 opkg update
@@ -61,29 +75,13 @@ uci add_list dhcp.cfg01411c.server='/*.x.ai/127.0.0.1#5056'
 uci add_list dhcp.cfg01411c.server='/*.grok.com/127.0.0.1#5056'
 uci commit dhcp
 
-nameRule="option name 'chatgpt.com'"
-str=$(grep -i "$nameRule" /etc/config/dhcp)
-if [ -z "$str" ] 
-then
-  echo "Add unblock ChatGPT..."
+echo "Add unblock ChatGPT..."
 
-  uci add dhcp domain # =cfg13f37d
-  uci set dhcp.@domain[-1].name='chatgpt.com'
-  uci set dhcp.@domain[-1].ip='94.131.119.85'
-  uci add dhcp domain # =cfg14f37d
-  uci set dhcp.@domain[-1].name='openai.com'
-  uci set dhcp.@domain[-1].ip='94.131.119.85'
-  uci add dhcp domain # =cfg15f37d
-  uci set dhcp.@domain[-1].name='webrtc.chatgpt.com'
-  uci set dhcp.@domain[-1].ip='94.131.119.85'
-  uci add dhcp domain # =cfg16f37d
-  uci set dhcp.@domain[-1].name='ios.chat.openai.com'
-  uci set dhcp.@domain[-1].ip='94.131.119.85'
-  uci add dhcp domain # =cfg17f37d
-  uci set dhcp.@domain[-1].name='searchgpt.com'
-  uci set dhcp.@domain[-1].ip='94.131.119.85'
-  uci commit dhcp
-fi
+checkAndAddDomainPermanentName "chatgpt.com" "94.131.119.85"
+checkAndAddDomainPermanentName "openai.com" "94.131.119.85"
+checkAndAddDomainPermanentName "webrtc.chatgpt.com" "94.131.119.85"
+checkAndAddDomainPermanentName "ios.chat.openai.com" "94.131.119.85"
+checkAndAddDomainPermanentName "searchgpt.com" "94.131.119.85"
 
 nameRule="option name 'Block_UDP_443'"
 str=$(grep -i "$nameRule" /etc/config/firewall)
