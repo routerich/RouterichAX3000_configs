@@ -1,6 +1,6 @@
 #!/bin/sh
 
-URL="https://raw.githubusercontent.com/routerich/RouterichAX3000_configs/refs/heads/main"
+URL="https://raw.githubusercontent.com/CodeRoK7/RouterichAX3000_configs/refs/heads/main"
 DIR="/etc/config"
 DIR_BACKUP="/root/backup"
 config_files="dhcp
@@ -51,7 +51,6 @@ echo "Configure dhcp..."
 
 uci set dhcp.cfg01411c.strictorder='1'
 uci set dhcp.cfg01411c.filter_aaaa='1'
-uci del dhcp.cfg01411c.server
 uci add_list dhcp.cfg01411c.server='127.0.0.1#5053'
 uci add_list dhcp.cfg01411c.server='127.0.0.1#5054'
 uci add_list dhcp.cfg01411c.server='127.0.0.1#5055'
@@ -73,6 +72,7 @@ uci add_list dhcp.cfg01411c.server='/*.clash.com/127.0.0.1#5056'
 uci add_list dhcp.cfg01411c.server='/*.clashofclans.com/127.0.0.1#5056'
 uci add_list dhcp.cfg01411c.server='/*.x.ai/127.0.0.1#5056'
 uci add_list dhcp.cfg01411c.server='/*.grok.com/127.0.0.1#5056'
+uci add_list dhcp.cfg01411c.server='/*.github.com/127.0.0.1#5056'
 uci commit dhcp
 
 echo "Add unblock ChatGPT..."
