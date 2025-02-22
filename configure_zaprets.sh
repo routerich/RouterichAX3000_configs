@@ -21,6 +21,18 @@ checkAndAddDomainPermanentName()
   fi
 }
 
+checkAndAddDomainDnsRedirection()
+{
+  nameRule="option name '$1'"
+  str=$(grep -i "$nameRule" /etc/config/dhcp)
+  if [ -z "$str" ] 
+  then 
+
+    uci add_list dhcp.cfg01411c.server="$1"
+    uci commit dhcp
+  fi
+}
+
 echo "Upgrade packages..."
 
 opkg update
@@ -51,29 +63,30 @@ echo "Configure dhcp..."
 
 uci set dhcp.cfg01411c.strictorder='1'
 uci set dhcp.cfg01411c.filter_aaaa='1'
-uci del dhcp.cfg01411c.server
-uci add_list dhcp.cfg01411c.server='127.0.0.1#5053'
-uci add_list dhcp.cfg01411c.server='127.0.0.1#5054'
-uci add_list dhcp.cfg01411c.server='127.0.0.1#5055'
-uci add_list dhcp.cfg01411c.server='127.0.0.1#5056'
-uci add_list dhcp.cfg01411c.server='/*.chatgpt.com/127.0.0.1#5056'
-uci add_list dhcp.cfg01411c.server='/*.oaistatic.com/127.0.0.1#5056'
-uci add_list dhcp.cfg01411c.server='/*.oaiusercontent.com/127.0.0.1#5056'
-uci add_list dhcp.cfg01411c.server='/*.openai.com/127.0.0.1#5056'
-uci add_list dhcp.cfg01411c.server='/*.microsoft.com/127.0.0.1#5056'
-uci add_list dhcp.cfg01411c.server='/*.windowsupdate.com/127.0.0.1#5056'
-uci add_list dhcp.cfg01411c.server='/*.bing.com/127.0.0.1#5056'
-uci add_list dhcp.cfg01411c.server='/*.supercell.com/127.0.0.1#5056'
-uci add_list dhcp.cfg01411c.server='/*.seeurlpcl.com/127.0.0.1#5056'
-uci add_list dhcp.cfg01411c.server='/*.supercellid.com/127.0.0.1#5056'
-uci add_list dhcp.cfg01411c.server='/*.supercellgames.com/127.0.0.1#5056'
-uci add_list dhcp.cfg01411c.server='/*.clashroyale.com/127.0.0.1#5056'
-uci add_list dhcp.cfg01411c.server='/*.brawlstars.com/127.0.0.1#5056'
-uci add_list dhcp.cfg01411c.server='/*.clash.com/127.0.0.1#5056'
-uci add_list dhcp.cfg01411c.server='/*.clashofclans.com/127.0.0.1#5056'
-uci add_list dhcp.cfg01411c.server='/*.x.ai/127.0.0.1#5056'
-uci add_list dhcp.cfg01411c.server='/*.grok.com/127.0.0.1#5056'
 uci commit dhcp
+
+checkAndAddDomainDnsRedirection "127.0.0.1#5053"
+checkAndAddDomainDnsRedirection "127.0.0.1#5054"
+checkAndAddDomainDnsRedirection "127.0.0.1#5055"
+checkAndAddDomainDnsRedirection "127.0.0.1#5056"
+checkAndAddDomainDnsRedirection "/*.chatgpt.com/127.0.0.1#5056"
+checkAndAddDomainDnsRedirection "/*.oaistatic.com/127.0.0.1#5056"
+checkAndAddDomainDnsRedirection "/*.oaiusercontent.com/127.0.0.1#5056"
+checkAndAddDomainDnsRedirection "/*.openai.com/127.0.0.1#5056"
+checkAndAddDomainDnsRedirection "/*.microsoft.com/127.0.0.1#5056"
+checkAndAddDomainDnsRedirection "/*.windowsupdate.com/127.0.0.1#5056"
+checkAndAddDomainDnsRedirection "/*.bing.com/127.0.0.1#5056"
+checkAndAddDomainDnsRedirection "/*.supercell.com/127.0.0.1#5056"
+checkAndAddDomainDnsRedirection "/*.seeurlpcl.com/127.0.0.1#5056"
+checkAndAddDomainDnsRedirection "/*.supercellid.com/127.0.0.1#5056"
+checkAndAddDomainDnsRedirection "/*.supercellgames.com/127.0.0.1#5056"
+checkAndAddDomainDnsRedirection "/*.clashroyale.com/127.0.0.1#5056"
+checkAndAddDomainDnsRedirection "/*.brawlstars.com/127.0.0.1#5056"
+checkAndAddDomainDnsRedirection "/*.clash.com/127.0.0.1#5056"
+checkAndAddDomainDnsRedirection "/*.clashofclans.com/127.0.0.1#5056"
+checkAndAddDomainDnsRedirection "/*.x.ai/127.0.0.1#5056"
+checkAndAddDomainDnsRedirection "/*.grok.com/127.0.0.1#5056"
+checkAndAddDomainDnsRedirection "/*.gitgub.com/127.0.0.1#5056"
 
 echo "Add unblock ChatGPT..."
 
