@@ -100,6 +100,11 @@ uci add_list dhcp.cfg01411c.server='/*.xboxplayanywhere.com/127.0.0.1#5056'
 uci add_list dhcp.cfg01411c.server='/*.xboxservices.com/127.0.0.1#5056'
 uci add_list dhcp.cfg01411c.server='/*.xboxstudios.com/127.0.0.1#5056'
 uci add_list dhcp.cfg01411c.server='/*.xbx.lv/127.0.0.1#5056'
+uci add_list dhcp.cfg01411c.server='/*.sentry.io/127.0.0.1#5056'
+uci add_list dhcp.cfg01411c.server='/*.usercentrics.eu/127.0.0.1#5056'
+uci add_list dhcp.cfg01411c.server='/*.recaptcha.net/127.0.0.1#5056'
+uci add_list dhcp.cfg01411c.server='/*.gstatic.com/127.0.0.1#5056'
+uci add_list dhcp.cfg01411c.server='/*.brawlstarsgame.com/127.0.0.1#5056'
 uci commit dhcp
 
 echo "Add unblock ChatGPT..."
