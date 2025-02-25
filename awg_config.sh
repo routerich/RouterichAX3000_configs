@@ -241,7 +241,7 @@ fi
 if [ -f "/etc/init.d/podkop" ]; then
     path_podkop_config="/etc/config/podkop"
 	path_podkop_config_backup="/root/podkop"
-	URL="https://raw.githubusercontent.com/CodeRoK7/RouterichAX3000_configs/refs/heads/main"
+	URL="https://raw.githubusercontent.com/routerich/RouterichAX3000_configs/refs/heads/main"
 	printf "Podkop installed. Reconfigured on AWG WARP? (y/n): \n"
 	read is_reconfig_podkop
 	if [ "$is_reconfig_podkop" = "y" ] || [ "$is_reconfig_podkop" = "Y" ]; then
