@@ -239,10 +239,11 @@ if ! uci show firewall | grep -q "@forwarding.*name='${ZONE_NAME}'"; then
 fi
 
 if [ -f "/etc/init.d/podkop" ]; then
-    path_podkop_config="/etc/config/podkop"
+    	path_podkop_config="/etc/config/podkop"
 	path_podkop_config_backup="/root/podkop"
 	URL="https://raw.githubusercontent.com/CodeRoK7/RouterichAX3000_configs/refs/heads/main"
 	printf "Podkop installed. Reconfigured on AWG WARP? (y/n): \n"
+	is_reconfig_podkop="y"
 	read is_reconfig_podkop
 	if [ "$is_reconfig_podkop" = "y" ] || [ "$is_reconfig_podkop" = "Y" ]; then
 		cp -f "$path_podkop_config" "$path_podkop_config_backup"
@@ -254,7 +255,7 @@ if [ -f "/etc/init.d/podkop" ]; then
 	fi
 else
 	printf "\033[32;1mInstall and configure PODKOP (a tool for point routing of traffic)?? (y/n): \033[0m\n"
-	read -r -t 1
+	is_install_podkop="y"
 	read is_install_podkop
 
 	if [ "$is_install_podkop" = "y" ] || [ "$is_install_podkop" = "Y" ]; then
