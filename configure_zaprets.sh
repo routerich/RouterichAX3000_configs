@@ -35,17 +35,17 @@ then
   do
     cp -f "$DIR/$file" "$DIR_BACKUP/$file"  
   done
+
+  echo "Replace configs..."
+
+  for file in $config_files
+  do
+    if [ "$file" != "dhcp" ] 
+    then 
+      wget -O "$DIR/$file" "$URL/$file" 
+    fi
+  done
 fi
-
-echo "Replace configs..."
-
-for file in $config_files
-do
-  if [ "$file" != "dhcp" ] 
-  then 
-    wget -O "$DIR/$file" "$URL/$file" 
-  fi
-done
 
 echo "Configure dhcp..."
 
