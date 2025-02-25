@@ -255,6 +255,7 @@ if [ -f "/etc/init.d/podkop" ]; then
 else
 	printf "\033[32;1mInstall and configure PODKOP (a tool for point routing of traffic)?? (y/n): \033[0m\n"
 	read is_install_podkop
+	read is_install_podkop
 
 	if [ "$is_install_podkop" = "y" ] || [ "$is_install_podkop" = "Y" ]; then
 		DOWNLOAD_DIR="/tmp/podkop"
