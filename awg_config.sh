@@ -68,26 +68,7 @@ AllowedIPs=$(echo "$AllowedIPs" | cut -d',' -f1)
 EndpointIP=$(echo "$Endpoint" | cut -d':' -f1)
 EndpointPort=$(echo "$Endpoint" | cut -d':' -f2)
 
-#выводим результат
-# echo "PrivateKey: $PrivateKey"
-# echo "S1: $S1"
-# echo "S2: $S2"
-# echo "Jc: $Jc"
-# echo "Jmin: $Jmin"
-# echo "Jmax: $Jmax"
-# echo "H1: $H1"
-# echo "H2: $H2"
-# echo "H3: $H3"
-# echo "H4: $H4"
-# echo "MTU: $MTU"
-# echo "Address: $Address"
-# echo "DNS: $DNS"
-# echo "PublicKey: $PublicKey"
-# echo "AllowedIPs: $AllowedIPs"
-# echo "Endpoint: $Endpoint"
-# echo "EndpointIP: $EndpointIP"
-# echo "EndpointPort: $EndpointPort"
-
+echo "Create and configure tunnel AmneziaWG WARP..."
 
 #задаём имя интерфейса
 INTERFACE_NAME="awg_route0"
@@ -113,7 +94,7 @@ uci set network.${INTERFACE_NAME}.mtu=$MTU
 
 if ! uci show network | grep -q ${CONFIG_NAME}; then
 	uci add network ${CONFIG_NAME}
-	echo "add awg0"
+	echo "add $INTERFACE_NAME"
 fi
 
 uci set network.@${CONFIG_NAME}[0]=$CONFIG_NAME
@@ -181,10 +162,10 @@ if [ "$is_install_podkop" = "y" ] || [ "$is_install_podkop" = "Y" ]; then
 fi
 
 
-echo "Stop and disabled service 'youtubeUnblock'..."
+printf  "\033[32;1mStop and disabled service 'youtubeUnblock'...\033[0m\n"
 service youtubeUnblock stop
 service youtubeUnblock disable
 
-echo "Configured completed...\nRestart network..."
+printf  "Configured completed...\n\033[32;1mRestart network...\033[0m\n"
 service firewall restart
 service network restart
