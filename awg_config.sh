@@ -253,9 +253,10 @@ for zone in $ZONES; do
   fi
 done
 
+path_podkop_config="/etc/config/podkop"
+path_podkop_config_backup="/root/podkop"
+
 if [ -f "/etc/init.d/podkop" ]; then
-    	path_podkop_config="/etc/config/podkop"
-	path_podkop_config_backup="/root/podkop"
 	URL="https://raw.githubusercontent.com/CodeRoK7/RouterichAX3000_configs/refs/heads/main"
 	printf "Podkop installed. Reconfigured on AWG WARP? (y/n): \n"
 	is_reconfig_podkop="y"
@@ -265,8 +266,6 @@ if [ -f "/etc/init.d/podkop" ]; then
 		wget -O "$path_podkop_config" "$URL/podkop" 
 		echo "Backup of your config in path '$path_podkop_config_backup'"
 		echo "Podkop reconfigured..."
-		echo "Service Podkop restart..."
-		service podkop restart
 	fi
 else
 	printf "\033[32;1mInstall and configure PODKOP (a tool for point routing of traffic)?? (y/n): \033[0m\n"
@@ -286,18 +285,8 @@ else
 		opkg install $DOWNLOAD_DIR/luci-app-podkop*.ipk
 		opkg install $DOWNLOAD_DIR/luci-i18n-podkop-ru*.ipk
 		rm -f $DOWNLOAD_DIR/podkop*.ipk $DOWNLOAD_DIR/luci-app-podkop*.ipk $DOWNLOAD_DIR/luci-i18n-podkop-ru*.ipk
-
-		uci set podkop.main.mode='vpn'
-		uci set podkop.main.interface="$INTERFACE_NAME"
-		uci set podkop.main.domain_list_enabled='1'
-		uci set podkop.main.domain_list='ru_inside'
-		uci set podkop.main.subnets_list_enabled='1'
-		uci add_list podkop.main.subnets='meta'
-		uci add_list podkop.main.subnets='twitter'
-		uci add_list podkop.main.subnets='discord'
-		uci commit podkop
-		echo "Service Podkop restart..."
-		service podkop restart
+		wget -O "$path_podkop_config" "$URL/podkop" 
+		echo "Podkop installed.."
 	fi
 fi
 
@@ -308,3 +297,6 @@ service youtubeUnblock disable
 printf  "Configured completed...\n\033[32;1mRestart network...\033[0m\n"
 service firewall restart
 service network restart
+
+echo "Service Podkop restart..."
+service podkop restart
