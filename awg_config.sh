@@ -255,9 +255,9 @@ done
 
 path_podkop_config="/etc/config/podkop"
 path_podkop_config_backup="/root/podkop"
+URL="https://raw.githubusercontent.com/CodeRoK7/RouterichAX3000_configs/refs/heads/main"
 
 if [ -f "/etc/init.d/podkop" ]; then
-	URL="https://raw.githubusercontent.com/CodeRoK7/RouterichAX3000_configs/refs/heads/main"
 	printf "Podkop installed. Reconfigured on AWG WARP? (y/n): \n"
 	is_reconfig_podkop="y"
 	read is_reconfig_podkop
