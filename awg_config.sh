@@ -177,8 +177,8 @@ EndpointPort=$(echo "$Endpoint" | cut -d':' -f2)
 echo "Create and configure tunnel AmneziaWG WARP..."
 
 #задаём имя интерфейса
-INTERFACE_NAME="awg_route0"
-CONFIG_NAME="amnezia_route0"
+INTERFACE_NAME="awg_route10"
+CONFIG_NAME="amnezia_route10"
 PROTO="amneziawg"
 ZONE_NAME="awg"
 
