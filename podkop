@@ -19,6 +19,7 @@ config main 'main'
 	list subnets 'twitter'
 	list subnets 'discord'
 	list custom_domains '2ip.ru'
+
 config second 'second'
 	option second_enable '0'
 	option domain_list_enabled '0'
