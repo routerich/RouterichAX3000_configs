@@ -275,11 +275,13 @@ else
 	if [ "$is_install_podkop" = "y" ] || [ "$is_install_podkop" = "Y" ]; then
 		DOWNLOAD_DIR="/tmp/podkop"
 		mkdir -p "$DOWNLOAD_DIR"
-		REPO="https://api.github.com/repos/itdoginfo/podkop/releases/tags/v0.2.5"
-		wget -qO- "$REPO" | grep -o 'https://[^"]*\.ipk' | while read -r url; do
-			filename=$(basename "$url")
-			echo "Download $filename..."
-			wget -q -O "$DOWNLOAD_DIR/$filename" "$url"
+		podkop_files="podkop_0.2.5-1_all.ipk
+			luci-app-podkop_0.2.5_all.ipk
+			luci-i18n-podkop-ru_0.2.5.ipk"
+		for file in $podkop_files
+		do
+			echo "Download $file..."
+			wget -q -O "$DOWNLOAD_DIR/$file" "$URL/$file"
 		done
 		opkg install $DOWNLOAD_DIR/podkop*.ipk
 		opkg install $DOWNLOAD_DIR/luci-app-podkop*.ipk
