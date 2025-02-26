@@ -291,7 +291,7 @@ else
 		uci set podkop.main.interface="$INTERFACE_NAME"
 		uci set podkop.main.domain_list_enabled='1'
 		uci set podkop.main.domain_list='ru_inside'
-		uci set podkop.main.delist_domains_enabled='0'
+		uci set podkop.main.subnets_list_enabled='1'
 		uci add_list podkop.main.subnets='meta'
 		uci add_list podkop.main.subnets='twitter'
 		uci add_list podkop.main.subnets='discord'
