@@ -174,7 +174,7 @@ AllowedIPs=$(echo "$AllowedIPs" | cut -d',' -f1)
 EndpointIP=$(echo "$Endpoint" | cut -d':' -f1)
 EndpointPort=$(echo "$Endpoint" | cut -d':' -f2)
 
-echo "Create and configure tunnel AmneziaWG WARP..."
+printf "\033[32;1mCreate and configure tunnel AmneziaWG WARP...\033[0m\n"
 
 #задаём имя интерфейса
 INTERFACE_NAME="awg_route10"
@@ -232,6 +232,26 @@ if ! uci show firewall | grep -q "@forwarding.*name='${ZONE_NAME}'"; then
 	uci set firewall.@forwarding[-1].family='ipv4'
 	uci commit firewall
 fi
+
+# Получаем список всех зон
+ZONES=$(uci show firewall | grep "zone$" | cut -d'=' -f1)
+#echo $ZONES
+# Циклически проходим по всем зонам
+for zone in $ZONES; do
+  # Получаем имя зоны
+  CURR_ZONE_NAME=$(uci get $zone.name)
+  #echo $CURR_ZONE_NAME
+  # Проверяем, является ли это зона с именем "$ZONE_NAME"
+  if [ "$CURR_ZONE_NAME" = "$ZONE_NAME" ]; then
+    # Проверяем, существует ли интерфейс в зоне
+    if ! uci get $zone.network | grep -q "$INTERFACE_NAME"; then
+      # Добавляем интерфейс в зону
+      uci add_list $zone.network="$INTERFACE_NAME"
+      uci commit firewall
+      #echo "Интерфейс '$INTERFACE_NAME' добавлен в зону '$ZONE_NAME'"
+    fi
+  fi
+done
 
 if [ -f "/etc/init.d/podkop" ]; then
     	path_podkop_config="/etc/config/podkop"
