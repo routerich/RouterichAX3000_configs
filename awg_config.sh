@@ -184,9 +184,12 @@ ZONE_NAME="awg"
 
 uci set network.${INTERFACE_NAME}=interface
 uci set network.${INTERFACE_NAME}.proto=$PROTO
+if ! uci show network | grep -q ${CONFIG_NAME}; then
+	uci add network ${CONFIG_NAME}
+fi
 uci set network.${INTERFACE_NAME}.private_key=$PrivateKey
-uci set network.${INTERFACE_NAME}.listen_port='51821'
-uci set network.${INTERFACE_NAME}.addresses=$Address
+uci add_list network.${INTERFACE_NAME}.addresses=$Address
+uci set network.${INTERFACE_NAME}.mtu=$MTU
 uci set network.${INTERFACE_NAME}.awg_jc=$Jc
 uci set network.${INTERFACE_NAME}.awg_jmin=$Jmin
 uci set network.${INTERFACE_NAME}.awg_jmax=$Jmax
@@ -196,21 +199,13 @@ uci set network.${INTERFACE_NAME}.awg_h1=$H1
 uci set network.${INTERFACE_NAME}.awg_h2=$H2
 uci set network.${INTERFACE_NAME}.awg_h3=$H3
 uci set network.${INTERFACE_NAME}.awg_h4=$H4
-uci set network.${INTERFACE_NAME}.mtu=$MTU
-
-if ! uci show network | grep -q ${CONFIG_NAME}; then
-	uci add network ${CONFIG_NAME}
-	echo "add $INTERFACE_NAME"
-fi
-
-uci set network.@${CONFIG_NAME}[0]=$CONFIG_NAME
-uci set network.@${CONFIG_NAME}[0].name="${INTERFACE_NAME}_client"
-uci set network.@${CONFIG_NAME}[0].public_key=$PublicKey
-uci set network.@${CONFIG_NAME}[0].route_allowed_ips='0'
-uci set network.@${CONFIG_NAME}[0].persistent_keepalive='25'
-uci set network.@${CONFIG_NAME}[0].endpoint_host=$EndpointIP
-uci set network.@${CONFIG_NAME}[0].allowed_ips='0.0.0.0/0'
-uci set network.@${CONFIG_NAME}[0].endpoint_port=$EndpointPort
+uci set network.@${CONFIG_NAME}[-1].description="${INTERFACE_NAME}_peer"
+uci set network.@${CONFIG_NAME}[-1].public_key=$PublicKey
+uci set network.@${CONFIG_NAME}[-1].endpoint_host=$EndpointIP
+uci set network.@${CONFIG_NAME}[-1].endpoint_port=$EndpointPort
+uci set network.@${CONFIG_NAME}[-1].persistent_keepalive='25'
+uci set network.@${CONFIG_NAME}[-1].allowed_ips='0.0.0.0/0'
+uci set network.@${CONFIG_NAME}[-1].route_allowed_ips='0'
 uci commit network
 
 if ! uci show firewall | grep -q "@zone.*name='${ZONE_NAME}'"; then
@@ -231,7 +226,7 @@ if ! uci show firewall | grep -q "@forwarding.*name='${ZONE_NAME}'"; then
 	printf "\033[32;1mConfigured forwarding\033[0m\n"
 	uci add firewall forwarding
 	uci set firewall.@forwarding[-1]=forwarding
-	uci set firewall.@forwarding[-1].name="${ZONE_NAME}-lan"
+	uci set firewall.@forwarding[-1].name="${ZONE_NAME}"
 	uci set firewall.@forwarding[-1].dest=${ZONE_NAME}
 	uci set firewall.@forwarding[-1].src='lan'
 	uci set firewall.@forwarding[-1].family='ipv4'
