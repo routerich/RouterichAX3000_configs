@@ -290,13 +290,15 @@ else
 	fi
 fi
 
-printf  "\033[32;1mStop and disabled service 'youtubeUnblock'...\033[0m"
+printf  "\033[32;1mStop and disabled service 'youtubeUnblock'...\033[0m\n"
 service youtubeUnblock stop
 service youtubeUnblock disable
 
-printf  "Configured completed...\n\033[32;1mRestart network...\033[0m\n"
+printf  "\033[32;1mRestart firewall and network...\033[0m\n"
 service firewall restart
 service network restart
 
-echo "Service Podkop restart..."
+echo "Service Podkop restart...\n"
 service podkop restart
+
+printf  "\033[32;1mConfigured completed...\033[0m"
