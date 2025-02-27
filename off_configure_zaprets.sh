@@ -7,14 +7,16 @@ config_files="dhcp
 youtubeUnblock
 https-dns-proxy"
 
-echo "Restore configs..."
+if [ -d "$DIR_BACKUP" ]
+then
+  echo "Restore configs..."
+  for file in $config_files
+  do
+    cp -f "$DIR_BACKUP/$file" "$DIR/$file"   
+  done
 
-for file in $config_files
-do
-  cp -f "$DIR_BACKUP/$file" "$DIR/$file"   
-done
-
-rm -rf "$DIR_BACKUP"
+  rm -rf "$DIR_BACKUP"
+fi
 
 echo "Restart service..."
 
@@ -29,4 +31,4 @@ grep -v "0 4 \* \* \* wget -O - $URL/configure_zaprets.sh | sh" /etc/crontabs/ro
 cp -f "/etc/crontabs/temp" "/etc/crontabs/root"
 rm -f "/etc/crontabs/temp"
 
-echo "Off configure complete..."
+printf  "\033[32;1mOff configured completed...\033[0m"

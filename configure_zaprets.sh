@@ -30,7 +30,7 @@ opkg upgrade luci-app-youtubeUnblock
 if [ ! -d "$DIR_BACKUP" ]
 then
   echo "Backup files..."
-  mkdir $DIR_BACKUP
+  mkdir -p $DIR_BACKUP
   for file in $config_files
   do
     cp -f "$DIR/$file" "$DIR_BACKUP/$file"  
@@ -42,7 +42,7 @@ then
   do
     if [ "$file" != "dhcp" ] 
     then 
-      wget -O "$DIR/$file" "$URL/$file" 
+      wget -O "$DIR/$file" "$URL/config_files/$file" 
     fi
   done
 fi
@@ -154,4 +154,4 @@ service https-dns-proxy restart
 service dnsmasq restart
 service odhcpd restart
 
-echo "Configure complete..."
+printf  "\033[32;1mConfigured completed...\033[0m"

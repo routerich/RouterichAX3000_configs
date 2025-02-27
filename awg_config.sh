@@ -88,6 +88,38 @@ install_awg_packages() {
     rm -rf "$AWG_DIR"
 }
 
+manage_package() {
+    local name="$1"
+    local autostart="$2"
+    local process="$3"
+
+    # Проверка, установлен ли пакет
+    if opkg list-installed | grep -q "^$name"; then
+        
+        # Проверка, включен ли автозапуск
+        if /etc/init.d/$name enabled; then
+            if [ "$autostart" = "disable" ]; then
+                /etc/init.d/$name disable
+            fi
+        else
+            if [ "$autostart" = "enable" ]; then
+                /etc/init.d/$name enable
+            fi
+        fi
+
+        # Проверка, запущен ли процесс
+        if pidof $name > /dev/null; then
+            if [ "$process" = "stop" ]; then
+                /etc/init.d/$name stop
+            fi
+        else
+            if [ "$process" = "start" ]; then
+                /etc/init.d/$name start
+            fi
+        fi
+    fi
+}
+
 echo "opkg update"
 opkg update
 
@@ -133,6 +165,20 @@ else
 	fi
 fi
 
+DIR="/etc/config"
+DIR_BACKUP="/root/backup2"
+config_files="network
+firewall"
+
+if [ ! -d "$DIR_BACKUP" ]
+then
+    echo "Backup files..."
+    mkdir -p $DIR_BACKUP
+    for file in $config_files
+    do
+        cp -f "$DIR/$file" "$DIR_BACKUP/$file"  
+    done
+fi
 
 #запрос конфигурации WARP
 result=$(curl 'https://warp.llimonix.pw/api/warp' \
@@ -174,19 +220,22 @@ AllowedIPs=$(echo "$AllowedIPs" | cut -d',' -f1)
 EndpointIP=$(echo "$Endpoint" | cut -d':' -f1)
 EndpointPort=$(echo "$Endpoint" | cut -d':' -f2)
 
-echo "Create and configure tunnel AmneziaWG WARP..."
+printf "\033[32;1mCreate and configure tunnel AmneziaWG WARP...\033[0m\n"
 
 #задаём имя интерфейса
-INTERFACE_NAME="awg_route0"
-CONFIG_NAME="amnezia_route0"
+INTERFACE_NAME="awg10"
+CONFIG_NAME="amneziawg_awg10"
 PROTO="amneziawg"
 ZONE_NAME="awg"
 
 uci set network.${INTERFACE_NAME}=interface
 uci set network.${INTERFACE_NAME}.proto=$PROTO
+if ! uci show network | grep -q ${CONFIG_NAME}; then
+	uci add network ${CONFIG_NAME}
+fi
 uci set network.${INTERFACE_NAME}.private_key=$PrivateKey
-uci set network.${INTERFACE_NAME}.listen_port='51821'
-uci set network.${INTERFACE_NAME}.addresses=$Address
+uci add_list network.${INTERFACE_NAME}.addresses=$Address
+uci set network.${INTERFACE_NAME}.mtu=$MTU
 uci set network.${INTERFACE_NAME}.awg_jc=$Jc
 uci set network.${INTERFACE_NAME}.awg_jmin=$Jmin
 uci set network.${INTERFACE_NAME}.awg_jmax=$Jmax
@@ -196,21 +245,13 @@ uci set network.${INTERFACE_NAME}.awg_h1=$H1
 uci set network.${INTERFACE_NAME}.awg_h2=$H2
 uci set network.${INTERFACE_NAME}.awg_h3=$H3
 uci set network.${INTERFACE_NAME}.awg_h4=$H4
-uci set network.${INTERFACE_NAME}.mtu=$MTU
-
-if ! uci show network | grep -q ${CONFIG_NAME}; then
-	uci add network ${CONFIG_NAME}
-	echo "add $INTERFACE_NAME"
-fi
-
-uci set network.@${CONFIG_NAME}[0]=$CONFIG_NAME
-uci set network.@${CONFIG_NAME}[0].name="${INTERFACE_NAME}_client"
-uci set network.@${CONFIG_NAME}[0].public_key=$PublicKey
-uci set network.@${CONFIG_NAME}[0].route_allowed_ips='0'
-uci set network.@${CONFIG_NAME}[0].persistent_keepalive='25'
-uci set network.@${CONFIG_NAME}[0].endpoint_host=$EndpointIP
-uci set network.@${CONFIG_NAME}[0].allowed_ips='0.0.0.0/0'
-uci set network.@${CONFIG_NAME}[0].endpoint_port=$EndpointPort
+uci set network.@${CONFIG_NAME}[-1].description="${INTERFACE_NAME}_peer"
+uci set network.@${CONFIG_NAME}[-1].public_key=$PublicKey
+uci set network.@${CONFIG_NAME}[-1].endpoint_host=$EndpointIP
+uci set network.@${CONFIG_NAME}[-1].endpoint_port=$EndpointPort
+uci set network.@${CONFIG_NAME}[-1].persistent_keepalive='25'
+uci set network.@${CONFIG_NAME}[-1].allowed_ips='0.0.0.0/0'
+uci set network.@${CONFIG_NAME}[-1].route_allowed_ips='0'
 uci commit network
 
 if ! uci show firewall | grep -q "@zone.*name='${ZONE_NAME}'"; then
@@ -231,63 +272,84 @@ if ! uci show firewall | grep -q "@forwarding.*name='${ZONE_NAME}'"; then
 	printf "\033[32;1mConfigured forwarding\033[0m\n"
 	uci add firewall forwarding
 	uci set firewall.@forwarding[-1]=forwarding
-	uci set firewall.@forwarding[-1].name="${ZONE_NAME}-lan"
+	uci set firewall.@forwarding[-1].name="${ZONE_NAME}"
 	uci set firewall.@forwarding[-1].dest=${ZONE_NAME}
 	uci set firewall.@forwarding[-1].src='lan'
 	uci set firewall.@forwarding[-1].family='ipv4'
 	uci commit firewall
 fi
 
+# Получаем список всех зон
+ZONES=$(uci show firewall | grep "zone$" | cut -d'=' -f1)
+#echo $ZONES
+# Циклически проходим по всем зонам
+for zone in $ZONES; do
+  # Получаем имя зоны
+  CURR_ZONE_NAME=$(uci get $zone.name)
+  #echo $CURR_ZONE_NAME
+  # Проверяем, является ли это зона с именем "$ZONE_NAME"
+  if [ "$CURR_ZONE_NAME" = "$ZONE_NAME" ]; then
+    # Проверяем, существует ли интерфейс в зоне
+    if ! uci get $zone.network | grep -q "$INTERFACE_NAME"; then
+      # Добавляем интерфейс в зону
+      uci add_list $zone.network="$INTERFACE_NAME"
+      uci commit firewall
+      #echo "Интерфейс '$INTERFACE_NAME' добавлен в зону '$ZONE_NAME'"
+    fi
+  fi
+done
+
+path_podkop_config="/etc/config/podkop"
+path_podkop_config_backup="/root/podkop"
+URL="https://raw.githubusercontent.com/routerich/RouterichAX3000_configs/refs/heads/main"
+
 if [ -f "/etc/init.d/podkop" ]; then
-    path_podkop_config="/etc/config/podkop"
-	path_podkop_config_backup="/root/podkop"
-	URL="https://raw.githubusercontent.com/routerich/RouterichAX3000_configs/refs/heads/main"
 	printf "Podkop installed. Reconfigured on AWG WARP? (y/n): \n"
+	is_reconfig_podkop="y"
 	read is_reconfig_podkop
 	if [ "$is_reconfig_podkop" = "y" ] || [ "$is_reconfig_podkop" = "Y" ]; then
 		cp -f "$path_podkop_config" "$path_podkop_config_backup"
-		wget -O "$path_podkop_config" "$URL/podkop" 
+		wget -O "$path_podkop_config" "$URL/config_files/podkop" 
 		echo "Backup of your config in path '$path_podkop_config_backup'"
 		echo "Podkop reconfigured..."
-		echo "Service Podkop restart..."
-		service podkop restart
 	fi
 else
 	printf "\033[32;1mInstall and configure PODKOP (a tool for point routing of traffic)?? (y/n): \033[0m\n"
+	is_install_podkop="y"
 	read is_install_podkop
 
 	if [ "$is_install_podkop" = "y" ] || [ "$is_install_podkop" = "Y" ]; then
 		DOWNLOAD_DIR="/tmp/podkop"
 		mkdir -p "$DOWNLOAD_DIR"
-		REPO="https://api.github.com/repos/itdoginfo/podkop/releases/tags/v0.2.5"
-		wget -qO- "$REPO" | grep -o 'https://[^"]*\.ipk' | while read -r url; do
-			filename=$(basename "$url")
-			echo "Download $filename..."
-			wget -q -O "$DOWNLOAD_DIR/$filename" "$url"
+		podkop_files="podkop_0.2.5-1_all.ipk
+			luci-app-podkop_0.2.5_all.ipk
+			luci-i18n-podkop-ru_0.2.5.ipk"
+		for file in $podkop_files
+		do
+			echo "Download $file..."
+			wget -q -O "$DOWNLOAD_DIR/$file" "$URL/podkop_packets/$file"
 		done
 		opkg install $DOWNLOAD_DIR/podkop*.ipk
 		opkg install $DOWNLOAD_DIR/luci-app-podkop*.ipk
 		opkg install $DOWNLOAD_DIR/luci-i18n-podkop-ru*.ipk
 		rm -f $DOWNLOAD_DIR/podkop*.ipk $DOWNLOAD_DIR/luci-app-podkop*.ipk $DOWNLOAD_DIR/luci-i18n-podkop-ru*.ipk
-
-		uci set podkop.main.mode='vpn'
-		uci set podkop.main.interface="$INTERFACE_NAME"
-		uci set podkop.main.domain_list_enabled='1'
-		uci set podkop.main.domain_list='ru_inside'
-		uci set podkop.main.delist_domains_enabled='0'
-		uci add_list podkop.main.subnets='meta'
-		uci add_list podkop.main.subnets='twitter'
-		uci add_list podkop.main.subnets='discord'
-		uci commit podkop
-		echo "Service Podkop restart..."
-		service podkop restart
+		wget -O "$path_podkop_config" "$URL/config_files/podkop" 
+		echo "Podkop installed.."
 	fi
 fi
 
-printf  "\033[32;1mStop and disabled service 'youtubeUnblock'...\033[0m"
-service youtubeUnblock stop
-service youtubeUnblock disable
+printf  "\033[32;1mStop and disabled service 'youtubeUnblock' and 'ruantiblock'...\033[0m\n"
+manage_package "youtubeUnblock" "disable" "stop"
+manage_package "ruantiblock" "disable" "stop"
 
-printf  "Configured completed...\n\033[32;1mRestart network...\033[0m\n"
+printf  "\033[32;1mRestart firewall and network...\033[0m\n"
 service firewall restart
 service network restart
+
+second=15
+echo "Please wait $second seconds for reboot network..."
+sleep $second
+printf  "\033[32;1mService Podkop restart...\033[0m\n"
+service podkop restart
+
+printf  "\033[32;1mConfigured completed...\033[0m"
