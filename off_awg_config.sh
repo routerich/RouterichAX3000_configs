@@ -55,8 +55,8 @@ echo "Run and enabled autostart youtubeUnblock and ruantiblock..."
 manage_package "youtubeUnblock" "enable" "start"
 manage_package "ruantiblock" "enable" "start"
 
-printf  "\033[32;1mRestart firewall and network...\033[0m\n"
+printf  "\033[32;1mRestart firewall...\033[0m\n"
 service firewall restart
-service network restart
+#service network restart
 
-printf  "\033[32;1mOff configured completed...\033[0m"
+printf  "\033[32;1mOff configured completed...\033[0m\n"

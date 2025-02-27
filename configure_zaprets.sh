@@ -188,4 +188,4 @@ service https-dns-proxy restart
 service dnsmasq restart
 service odhcpd restart
 
-printf  "\033[32;1mConfigured completed...\033[0m"
+printf  "\033[32;1mConfigured completed...\033[0m\n"

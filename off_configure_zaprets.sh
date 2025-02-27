@@ -35,4 +35,4 @@ then
 	rm -f "/etc/crontabs/temp"
 fi
 
-printf  "\033[32;1mOff configured completed...\033[0m"
+printf  "\033[32;1mOff configured completed...\033[0m\n"
