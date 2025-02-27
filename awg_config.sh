@@ -301,7 +301,7 @@ done
 
 path_podkop_config="/etc/config/podkop"
 path_podkop_config_backup="/root/podkop"
-URL="https://raw.githubusercontent.com/routerich/RouterichAX3000_configs/refs/heads/main"
+URL="https://raw.githubusercontent.com/CodeRoK7/RouterichAX3000_configs/refs/heads/main"
 
 if [ -f "/etc/init.d/podkop" ]; then
 	printf "Podkop installed. Reconfigured on AWG WARP? (y/n): \n"
@@ -341,6 +341,14 @@ fi
 printf  "\033[32;1mStop and disabled service 'youtubeUnblock' and 'ruantiblock'...\033[0m\n"
 manage_package "youtubeUnblock" "disable" "stop"
 manage_package "ruantiblock" "disable" "stop"
+
+str=$(grep -i "0 4 \* \* \* wget -O - $URL/configure_zaprets.sh | sh" /etc/crontabs/root)
+if [ ! -z "$str" ]
+then
+	grep -v "0 4 \* \* \* wget -O - $URL/configure_zaprets.sh | sh" /etc/crontabs/root > /etc/crontabs/temp
+	cp -f "/etc/crontabs/temp" "/etc/crontabs/root"
+	rm -f "/etc/crontabs/temp"
+fi
 
 printf  "\033[32;1mRestart firewall and network...\033[0m\n"
 service firewall restart
