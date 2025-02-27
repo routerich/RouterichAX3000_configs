@@ -21,6 +21,38 @@ checkAndAddDomainPermanentName()
   fi
 }
 
+manage_package() {
+    local name="$1"
+    local autostart="$2"
+    local process="$3"
+
+    # Проверка, установлен ли пакет
+    if opkg list-installed | grep -q "^$name"; then
+        
+        # Проверка, включен ли автозапуск
+        if /etc/init.d/$name enabled; then
+            if [ "$autostart" = "disable" ]; then
+                /etc/init.d/$name disable
+            fi
+        else
+            if [ "$autostart" = "enable" ]; then
+                /etc/init.d/$name enable
+            fi
+        fi
+
+        # Проверка, запущен ли процесс
+        if pidof $name > /dev/null; then
+            if [ "$process" = "stop" ]; then
+                /etc/init.d/$name stop
+            fi
+        else
+            if [ "$process" = "start" ]; then
+                /etc/init.d/$name start
+            fi
+        fi
+    fi
+}
+
 echo "Upgrade packages..."
 
 opkg update
@@ -146,6 +178,8 @@ then
   echo "Add cron task auto run configure_zapret..."
   echo "$cronTask" >> /etc/crontabs/root
 fi
+
+manage_package "podkop" "disable" "stop"
 
 echo "Restart service..."
 
