@@ -27,8 +27,12 @@ service odhcpd restart
 
 echo "Remove cron task auto run script configure zaprets.."
 
-grep -v "0 4 \* \* \* wget -O - $URL/configure_zaprets.sh | sh" /etc/crontabs/root > /etc/crontabs/temp
-cp -f "/etc/crontabs/temp" "/etc/crontabs/root"
-rm -f "/etc/crontabs/temp"
+str=$(grep -i "0 4 \* \* \* wget -O - $URL/configure_zaprets.sh | sh" /etc/crontabs/root)
+if [ ! -z "$str" ]
+then
+	grep -v "0 4 \* \* \* wget -O - $URL/configure_zaprets.sh | sh" /etc/crontabs/root > /etc/crontabs/temp
+	cp -f "/etc/crontabs/temp" "/etc/crontabs/root"
+	rm -f "/etc/crontabs/temp"
+fi
 
 printf  "\033[32;1mOff configured completed...\033[0m"
