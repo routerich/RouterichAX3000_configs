@@ -42,7 +42,7 @@ then
   do
     if [ "$file" != "dhcp" ] 
     then 
-      wget -O "$DIR/$file" "$URL/$file" 
+      wget -O "$DIR/$file" "$URL/config_files/$file" 
     fi
   done
 fi

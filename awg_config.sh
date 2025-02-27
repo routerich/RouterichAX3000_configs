@@ -263,7 +263,7 @@ if [ -f "/etc/init.d/podkop" ]; then
 	read is_reconfig_podkop
 	if [ "$is_reconfig_podkop" = "y" ] || [ "$is_reconfig_podkop" = "Y" ]; then
 		cp -f "$path_podkop_config" "$path_podkop_config_backup"
-		wget -O "$path_podkop_config" "$URL/podkop" 
+		wget -O "$path_podkop_config" "$URL/config_files/podkop" 
 		echo "Backup of your config in path '$path_podkop_config_backup'"
 		echo "Podkop reconfigured..."
 	fi
@@ -281,13 +281,13 @@ else
 		for file in $podkop_files
 		do
 			echo "Download $file..."
-			wget -q -O "$DOWNLOAD_DIR/$file" "$URL/$file"
+			wget -q -O "$DOWNLOAD_DIR/$file" "$URL/podkop_packets/$file"
 		done
 		opkg install $DOWNLOAD_DIR/podkop*.ipk
 		opkg install $DOWNLOAD_DIR/luci-app-podkop*.ipk
 		opkg install $DOWNLOAD_DIR/luci-i18n-podkop-ru*.ipk
 		rm -f $DOWNLOAD_DIR/podkop*.ipk $DOWNLOAD_DIR/luci-app-podkop*.ipk $DOWNLOAD_DIR/luci-i18n-podkop-ru*.ipk
-		wget -O "$path_podkop_config" "$URL/podkop" 
+		wget -O "$path_podkop_config" "$URL/config_files/podkop" 
 		echo "Podkop installed.."
 	fi
 fi
