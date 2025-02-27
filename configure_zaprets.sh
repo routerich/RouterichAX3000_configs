@@ -30,7 +30,7 @@ opkg upgrade luci-app-youtubeUnblock
 if [ ! -d "$DIR_BACKUP" ]
 then
   echo "Backup files..."
-  mkdir $DIR_BACKUP
+  mkdir -p $DIR_BACKUP
   for file in $config_files
   do
     cp -f "$DIR/$file" "$DIR_BACKUP/$file"  
