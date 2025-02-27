@@ -154,4 +154,4 @@ service https-dns-proxy restart
 service dnsmasq restart
 service odhcpd restart
 
-echo "Configure complete..."
+printf  "\033[32;1mConfigured completed...\033[0m"
