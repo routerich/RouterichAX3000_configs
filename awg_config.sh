@@ -133,6 +133,20 @@ else
 	fi
 fi
 
+DIR="/etc/config"
+DIR_BACKUP="/root/backup2"
+config_files="network
+firewall"
+
+if [ ! -d "$DIR_BACKUP" ]
+then
+    echo "Backup files..."
+    mkdir -p $DIR_BACKUP
+    for file in $config_files
+    do
+        cp -f "$DIR/$file" "$DIR_BACKUP/$file"  
+    done
+fi
 
 #запрос конфигурации WARP
 result=$(curl 'https://warp.llimonix.pw/api/warp' \
