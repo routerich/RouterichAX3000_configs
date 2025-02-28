@@ -58,11 +58,6 @@ install_youtubeunblock_packages() {
     VERSION=$(ubus call system board | jsonfilter -e '@.release.version')
     BASE_URL="https://github.com/Waujito/youtubeUnblock/releases/download/v1.0.0/"
   	PACK_NAME="youtubeUnblock"
-  	if [ ! $VERSION = "23.05.5" ]
-  	then
-  	  echo "Your version $VERSION OpenWRT not support. Please, install $PACK_NAME manually and run the script again"
-  	  exit 1
-  	fi
 
     AWG_DIR="/tmp/$PACK_NAME"
     mkdir -p "$AWG_DIR"
@@ -89,7 +84,12 @@ install_youtubeunblock_packages() {
 			fi
 		done
 		
-		
+	if [ ! $VERSION = "23.05.5" ]
+  	then
+  	  echo "Your version $VERSION OpenWRT not support. Please, install $PACK_NAME manually and run the script again"
+  	  exit 1
+  	fi
+
         YOUTUBEUNBLOCK_FILENAME="youtubeUnblock-1.0.0-10-f37c3dd-${PKGARCH}-openwrt-23.05.ipk"
         DOWNLOAD_URL="${BASE_URL}${YOUTUBEUNBLOCK_FILENAME}"
 		echo $DOWNLOAD_URL
