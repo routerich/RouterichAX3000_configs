@@ -294,6 +294,7 @@ then
 fi
 
 manage_package "podkop" "disable" "stop"
+manage_package "ruantiblock" "disable" "stop"
 manage_package "https-dns-proxy" "enable" "start"
 manage_package "youtubeUnblock" "enable" "start"
 
