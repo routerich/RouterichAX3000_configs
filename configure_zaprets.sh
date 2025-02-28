@@ -160,6 +160,14 @@ else
 	fi
 fi
 
+if ! opkg list-installed | grep -q luci-app-https-dns-proxy; then
+    opkg install luci-app-https-dns-proxy
+fi
+
+if ! opkg list-installed | grep -q luci-i18n-https-dns-proxy-ru; then
+    opkg install luci-i18n-https-dns-proxy-ru
+fi
+
 install_youtubeunblock_packages
 
 opkg upgrade youtubeUnblock
