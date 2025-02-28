@@ -60,7 +60,7 @@ install_youtubeunblock_packages() {
   	PACK_NAME="youtubeUnblock"
   	if [ ! $VERSION = "23.05.5" ]
   	then
-  	  echo "Your version $version OpenWRT not support. Please, install $PACK_NAME manually and run the script again"
+  	  echo "Your version $VERSION OpenWRT not support. Please, install $PACK_NAME manually and run the script again"
   	  exit 1
   	fi
 
