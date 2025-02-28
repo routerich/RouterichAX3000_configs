@@ -53,9 +53,115 @@ manage_package() {
     fi
 }
 
+install_youtubeunblock_packages() {
+    PKGARCH=$(opkg print-architecture | awk 'BEGIN {max=0} {if ($3 > max) {max = $3; arch = $2}} END {print arch}')
+    VERSION=$(ubus call system board | jsonfilter -e '@.release.version')
+    BASE_URL="https://github.com/Waujito/youtubeUnblock/releases/download/v1.0.0/"
+  	PACK_NAME="youtubeUnblock"
+  	if [ ! $VERSION = "23.05.5" ]
+  	then
+  	  echo "Your version $version OpenWRT not support. Please, install $PACK_NAME manually and run the script again"
+  	  exit 1
+  	fi
+
+    AWG_DIR="/tmp/$PACK_NAME"
+    mkdir -p "$AWG_DIR"
+    
+    if opkg list-installed | grep -q $PACK_NAME; then
+        echo "$PACK_NAME already installed"
+    else
+	    # Список пакетов, которые нужно проверить и установить/обновить
+		PACKAGES="kmod-nfnetlink-queue kmod-nft-queue kmod-nf-conntrack"
+
+		for pkg in $PACKAGES; do
+			# Проверяем, установлен ли пакет
+			if opkg list-installed | grep -q "^$pkg "; then
+				echo "$pkg already installed"
+			else
+				echo "$pkg not installed. Instal..."
+				opkg install $pkg
+				if [ $? -eq 0 ]; then
+					echo "$pkg file installing successfully"
+				else
+					echo "Error installing $pkg Please, install $pkg manually and run the script again"
+					exit 1
+				fi
+			fi
+		done
+		
+		
+        YOUTUBEUNBLOCK_FILENAME="youtubeUnblock-1.0.0-10-f37c3dd-${PKGARCH}-openwrt-23.05.ipk"
+        DOWNLOAD_URL="${BASE_URL}${YOUTUBEUNBLOCK_FILENAME}"
+		echo $DOWNLOAD_URL
+        wget -O "$AWG_DIR/$YOUTUBEUNBLOCK_FILENAME" "$DOWNLOAD_URL"
+
+        if [ $? -eq 0 ]; then
+            echo "$PACK_NAME file downloaded successfully"
+        else
+            echo "Error downloading $PACK_NAME. Please, install $PACK_NAME manually and run the script again"
+            exit 1
+        fi
+        
+        opkg install "$AWG_DIR/$YOUTUBEUNBLOCK_FILENAME"
+
+        if [ $? -eq 0 ]; then
+            echo "$PACK_NAME file installing successfully"
+        else
+            echo "Error installing $PACK_NAME. Please, install $PACK_NAME manually and run the script again"
+            exit 1
+        fi
+    fi
+	
+	PACK_NAME="luci-app-youtubeUnblock"
+	if opkg list-installed | grep -q $PACK_NAME; then
+        echo "$PACK_NAME already installed"
+    else
+		PACK_NAME="luci-app-youtubeUnblock"
+		YOUTUBEUNBLOCK_FILENAME="luci-app-youtubeUnblock-1.0.0-10-f37c3dd.ipk"
+        DOWNLOAD_URL="${BASE_URL}${YOUTUBEUNBLOCK_FILENAME}"
+		echo $DOWNLOAD_URL
+        wget -O "$AWG_DIR/$YOUTUBEUNBLOCK_FILENAME" "$DOWNLOAD_URL"
+		
+        if [ $? -eq 0 ]; then
+            echo "$PACK_NAME file downloaded successfully"
+        else
+            echo "Error downloading $PACK_NAME. Please, install $PACK_NAME manually and run the script again"
+            exit 1
+        fi
+        
+        opkg install "$AWG_DIR/$YOUTUBEUNBLOCK_FILENAME"
+
+        if [ $? -eq 0 ]; then
+            echo "$PACK_NAME file installing successfully"
+        else
+            echo "Error installing $PACK_NAME. Please, install $PACK_NAME manually and run the script again"
+            exit 1
+        fi
+	fi
+
+    rm -rf "$AWG_DIR"
+}
+
 echo "Upgrade packages..."
 
 opkg update
+
+#проверяем установлени ли библиотека https-dns-proxy
+if opkg list-installed | grep -q https-dns-proxy; then
+    echo "https-dns-proxy already installed..."
+else
+	echo "https-dns-proxy not installed. Installed https-dns-proxy..."
+	opkg install https-dns-proxy
+	if [ $? -eq 0 ]; then
+		echo "https-dns-proxy file installed successfully"
+	else
+		echo "Error installing https-dns-proxy. Please, install https-dns-proxy manually and run the script again"
+		exit 1
+	fi
+fi
+
+install_youtubeunblock_packages
+
 opkg upgrade youtubeUnblock
 opkg upgrade luci-app-youtubeUnblock
 
@@ -181,6 +287,7 @@ fi
 
 manage_package "podkop" "disable" "stop"
 manage_package "https-dns-proxy" "enable" "start"
+manage_package "youtubeUnblock" "enable" "start"
 
 echo "Restart service..."
 
