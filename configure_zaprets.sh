@@ -180,6 +180,7 @@ then
 fi
 
 manage_package "podkop" "disable" "stop"
+manage_package "https-dns-proxy" "enable" "start"
 
 echo "Restart service..."
 
