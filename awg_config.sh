@@ -342,6 +342,9 @@ printf  "\033[32;1mStop and disabled service 'youtubeUnblock' and 'ruantiblock'.
 manage_package "youtubeUnblock" "disable" "stop"
 manage_package "ruantiblock" "disable" "stop"
 
+printf  "\033[32;1mStart and enable service 'https-dns-proxy'...\033[0m\n"
+manage_package "https-dns-proxy" "enable" "start"
+
 str=$(grep -i "0 4 \* \* \* wget -O - $URL/configure_zaprets.sh | sh" /etc/crontabs/root)
 if [ ! -z "$str" ]
 then
