@@ -434,6 +434,7 @@ uci set network.${INTERFACE_NAME}.awg_h1=$H1
 uci set network.${INTERFACE_NAME}.awg_h2=$H2
 uci set network.${INTERFACE_NAME}.awg_h3=$H3
 uci set network.${INTERFACE_NAME}.awg_h4=$H4
+uci set network.${INTERFACE_NAME}.nohostroute='1'
 uci set network.@${CONFIG_NAME}[-1].description="${INTERFACE_NAME}_peer"
 uci set network.@${CONFIG_NAME}[-1].public_key=$PublicKey
 uci set network.@${CONFIG_NAME}[-1].endpoint_host=$EndpointIP
