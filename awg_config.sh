@@ -120,6 +120,153 @@ manage_package() {
     fi
 }
 
+checkPackageAndInstall()
+{
+    local name="$1"
+    local isRequried="$2"
+    #проверяем установлени ли библиотека $name
+    if opkg list-installed | grep -q $name; then
+        echo "$name already installed..."
+    else
+        echo "$name not installed. Installed $name..."
+        opkg install $name
+		res=$?
+		if [ "$isRequried" = "1" ]; then
+			if [ $res -eq 0 ]; then
+				echo "$name insalled successfully"
+			else
+				echo "Error installing $name. Please, install $name manually and run the script again"
+				exit 1
+			fi
+		fi
+    fi
+}
+
+requestConfWARP1()
+{
+	#запрос конфигурации WARP
+	local result=$(curl -w "%{http_code}" 'https://warp.llimonix.pw/api/warp' \
+	  -H 'Accept: */*' \
+	  -H 'Accept-Language: ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7' \
+	  -H 'Connection: keep-alive' \
+	  -H 'Content-Type: application/json' \
+	  -H 'Origin: https://warp.llimonix.pw' \
+	  -H 'Referer: https://warp.llimonix.pw/' \
+	  -H 'Sec-Fetch-Dest: empty' \
+	  -H 'Sec-Fetch-Mode: cors' \
+	  -H 'Sec-Fetch-Site: same-origin' \
+	  -H 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36' \
+	  -H 'sec-ch-ua: "Not(A:Brand";v="99", "Google Chrome";v="133", "Chromium";v="133")' \
+	  -H 'sec-ch-ua-mobile: ?0' \
+	  -H 'sec-ch-ua-platform: "Windows"' \
+	  --data-raw '{"selectedServices":[],"siteMode":"all","deviceType":"computer"}')
+	echo "$result"
+}
+
+requestConfWARP2()
+{
+	#запрос конфигурации WARP
+	local result=$(curl -w "%{http_code}" 'https://topor-warp.vercel.app/generate' \
+	  -H 'Accept: */*' \
+	  -H 'Accept-Language: ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7' \
+	  -H 'Connection: keep-alive' \
+	  -H 'Content-Type: application/json' \
+	  -H 'Origin: https://topor-warp.vercel.app' \
+	  -H 'Referer: https://topor-warp.vercel.app/' \
+	  -H 'Sec-Fetch-Dest: empty' \
+	  -H 'Sec-Fetch-Mode: cors' \
+	  -H 'Sec-Fetch-Site: same-origin' \
+	  -H 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36' \
+	  -H 'sec-ch-ua: "Not(A:Brand";v="99", "Google Chrome";v="133", "Chromium";v="133"' \
+	  -H 'sec-ch-ua-mobile: ?0' \
+	  -H 'sec-ch-ua-platform: "Windows"' \
+	  --data-raw '{"platform":"all"}')
+	echo "$result"
+}
+
+requestConfWARP3()
+{
+	#запрос конфигурации WARP
+	local result=$(curl -w "%{http_code}" 'https://warp-gen.vercel.app/generate-config' \
+		-H 'Accept: */*' \
+		-H 'Accept-Language: ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7' \
+		-H 'Connection: keep-alive' \
+		-H 'Referer: https://warp-gen.vercel.app/' \
+		-H 'Sec-Fetch-Dest: empty' \
+		-H 'Sec-Fetch-Mode: cors' \
+		-H 'Sec-Fetch-Site: same-origin' \
+		-H 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36' \
+		-H 'sec-ch-ua: "Not(A:Brand";v="99", "Google Chrome";v="133", "Chromium";v="133"' \
+		-H 'sec-ch-ua-mobile: ?0' \
+		-H 'sec-ch-ua-platform: "Windows"')
+	echo "$result"
+}
+
+requestConfWARP4()
+{
+	#запрос конфигурации WARP
+	local result=$(curl -w "%{http_code}" 'https://config-generator-warp.vercel.app/warp' \
+	  -H 'Accept: */*' \
+	  -H 'Accept-Language: ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7' \
+	  -H 'Connection: keep-alive' \
+	  -H 'Referer: https://config-generator-warp.vercel.app/' \
+	  -H 'Sec-Fetch-Dest: empty' \
+	  -H 'Sec-Fetch-Mode: cors' \
+	  -H 'Sec-Fetch-Site: same-origin' \
+	  -H 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36' \
+	  -H 'sec-ch-ua: "Not(A:Brand";v="99", "Google Chrome";v="133", "Chromium";v="133"' \
+	  -H 'sec-ch-ua-mobile: ?0' \
+	  -H 'sec-ch-ua-platform: "Windows"')
+	echo "$result"
+}
+
+# Функция для обработки выполнения запроса
+check_request() {
+    local response="$1"
+	local choice="$2"
+	
+    # Извлекаем код состояния
+    response_code="${response: -3}"  # Последние 3 символа - это код состояния
+    response_body="${response%???}"    # Все, кроме последних 3 символов - это тело ответа
+    #echo $response_body
+	#echo $response_code
+    # Проверяем код состояния
+    if [ "$response_code" -eq 200 ]; then
+		case $choice in
+		1)
+			status=$(echo $response_body | jq '.success')
+			#echo "$status"
+			if [ "$status" = "true" ]
+			then
+				content=$(echo $response_body | jq '.content')
+				configBase64=$(echo $content | jq -r '.configBase64')
+				warpGen=$(echo "$configBase64" | base64 -d)
+				echo "$warpGen";
+			else
+				echo "Error"
+			fi
+            ;;
+		2)
+			echo "$response_body"
+            ;;
+		3)
+			content=$(echo $response_body | jq -r '.config')
+			#content=$(echo "$content" | sed 's/\\n/\012/g')
+			echo "$content"
+            ;;
+		4)
+			content=$(echo $response_body | jq -r '.content')  
+            warp_config=$(echo "$content" | base64 -d)
+            echo "$warp_config"
+            ;;
+		*)
+			echo "Error"
+		esac
+	else
+		echo "Error"
+	fi
+}
+
 encoded_code="IyEvYmluL3NoCgojINCn0YLQtdC90LjQtSDQvNC+0LTQtdC70Lgg0LjQtyDRhNCw0LnQu9CwCm1vZGVsPSQoY2F0IC90bXAvc3lzaW5mby9tb2RlbCkKCiMg0J/RgNC+0LLQtdGA0LrQsCwg0YHQvtC00LXRgNC20LjRgiDQu9C4INC80L7QtNC10LvRjCDRgdC70L7QstC+ICJSb3V0ZXJpY2giCmlmICEgZWNobyAiJG1vZGVsIiB8IGdyZXAgLXEgIlJvdXRlcmljaCI7IHRoZW4KICAgIGVjaG8gIlRoaXMgc2NyaXB0IGZvciByb3V0ZXJzIFJvdXRlcmljaC4uLiBJZiB5b3Ugd2FudCB0byB1c2UgaXQsIHdyaXRlIHRvIHRoZSBlcCBjaGF0IFRHIEByb3V0ZXJpY2giCiAgICBleGl0IDEKZmk="
 eval "$(echo "$encoded_code" | base64 --decode)"
 
@@ -129,19 +276,9 @@ opkg update
 #проверка и установка пакетов AmneziaWG
 install_awg_packages
 
-#проверяем установлени ли библиотека jq
-if opkg list-installed | grep -q jq; then
-    echo "jq already installed..."
-else
-	echo "jq not installed. Installed jq..."
-	opkg install jq
-	if [ $? -eq 0 ]; then
-		echo "jq file downloaded successfully"
-	else
-		echo "Error installing jq. Please, install jq manually and run the script again"
-		exit 1
-	fi
-fi
+checkPackageAndInstall "jq" "1"
+checkPackageAndInstall "coreutils-base64" "1"
+checkPackageAndInstall "curl" "1"
 
 #проверяем установлени ли пакет dnsmasq-full
 if opkg list-installed | grep -q dnsmasq-full; then
@@ -154,18 +291,15 @@ else
 	[ -f /etc/config/dhcp-opkg ] && cp /etc/config/dhcp /etc/config/dhcp-old && mv /etc/config/dhcp-opkg /etc/config/dhcp
 fi
 
-#проверяем установлени ли пакет coreutils-base64
-if opkg list-installed | grep -q coreutils-base64; then
-	echo "coreutils-base64 already installed..."
-else
-	echo "Installed coreutils-base64"
-	opkg install coreutils-base64
-	if [ $? -eq 0 ]; then
-		echo "coreutils-base64 file downloaded successfully"
-	else
-		echo "Error installing coreutils-base64. Please, install coreutils-base64 manually and run the script again"
-		exit 1
-	fi
+openwrt_release=$(cat /etc/openwrt_release | grep -Eo [0-9]{2}[.][0-9]{2}[.][0-9]* | cut -d '.' -f 1 | tail -n 1)
+if [ $openwrt_release -ge 24 ]; then
+    if uci get dhcp.@dnsmasq[0].confdir | grep -q /tmp/dnsmasq.d; then
+        echo "confdir alreadt set"
+    else
+        printf "Setting confdir"
+        uci set dhcp.@dnsmasq[0].confdir='/tmp/dnsmasq.d'
+        uci commit dhcp
+    fi
 fi
 
 DIR="/etc/config"
@@ -183,45 +317,97 @@ then
     done
 fi
 
-#запрос конфигурации WARP
-result=$(curl 'https://warp.llimonix.pw/api/warp' \
-  -H 'Accept: */*' \
-  -H 'Accept-Language: ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7' \
-  -H 'Connection: keep-alive' \
-  -H 'Content-Type: application/json' \
-  -H 'Origin: https://warp.llimonix.pw' \
-  -H 'Referer: https://warp.llimonix.pw/' \
-  -H 'Sec-Fetch-Dest: empty' \
-  -H 'Sec-Fetch-Mode: cors' \
-  -H 'Sec-Fetch-Site: same-origin' \
-  -H 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36' \
-  -H 'sec-ch-ua: "Not(A:Brand";v="99", "Google Chrome";v="133", "Chromium";v="133")' \
-  -H 'sec-ch-ua-mobile: ?0' \
-  -H 'sec-ch-ua-platform: "Windows"' \
-  --data-raw '{"selectedServices":[],"siteMode":"all","deviceType":"computer"}')
+printf "\033[32;1mAutomatic generate config AmneziaWG WARP (n) or manual input parameters for AmneziaWG (y)...\033[0m\n"
+echo "Input manual parameters AmneziaWG? (y/n): "
+read is_manual_input_parameters
+if [ "$is_manual_input_parameters" = "y" ] || [ "$is_manual_input_parameters" = "Y" ]
+then
+	read -r -p "Enter the private key (from [Interface]):"$'\n' PrivateKey
+	read -r -p "Enter S1 value (from [Interface]):"$'\n' S1
+	read -r -p "Enter S2 value (from [Interface]):"$'\n' S2
+	read -r -p "Enter Jc value (from [Interface]):"$'\n' Jc
+	read -r -p "Enter Jmin value (from [Interface]):"$'\n' Jmin
+	read -r -p "Enter Jmax value (from [Interface]):"$'\n' Jmax
+	read -r -p "Enter H1 value (from [Interface]):"$'\n' H1
+	read -r -p "Enter H2 value (from [Interface]):"$'\n' H2
+	read -r -p "Enter H3 value (from [Interface]):"$'\n' H3
+	read -r -p "Enter H4 value (from [Interface]):"$'\n' H4
+	
+	while true; do
+		read -r -p "Enter internal IP address with subnet, example 192.168.100.5/24 (from [Interface]):"$'\n' Address
+		if echo "$Address" | egrep -oq '^([0-9]{1,3}\.){3}[0-9]{1,3}(/[0-9]+)?$'; then
+			break
+		else
+			echo "This IP is not valid. Please repeat"
+		fi
+	done
 
+	read -r -p "Enter the public key (from [Peer]):"$'\n' PublicKey
+	read -r -p "Enter Endpoint host without port (Domain or IP) (from [Peer]):"$'\n' EndpointIP
+	read -r -p "Enter Endpoint host port (from [Peer]) [51820]:"$'\n' EndpointPort
 
-#парсим результат запроса конфигурации WARP
-content=$(echo $result | jq '.content')
-configBase64=$(echo $content | jq -r '.configBase64')
-#echo "$result"
-warp_config=$(echo "$configBase64" | base64 -d)
-#echo "$warp_config"
-while IFS=' = ' read -r line; do
-    if echo "$line" | grep -q "="; then
-        # Разделяем строку по первому вхождению "="
-        key=$(echo "$line" | cut -d'=' -f1 | xargs)  # Убираем пробелы
-        value=$(echo "$line" | cut -d'=' -f2- | xargs)  # Убираем пробелы
-        eval "$key=\"$value\""
+	DNS="1.1.1.1"
+	MTU=1280
+	AllowedIPs="0.0.0.0/0"
+else
+	warp_config="Error"
+	printf "\033[32;1mRequest WARP config... Attempt #1\033[0m\n"
+	result=$(requestConfWARP1)
+	warpGen=$(check_request "$result" 1)
+	if [ "$warpGen" = "Error" ]
+	then
+		printf "\033[32;1mRequest WARP config... Attempt #2\033[0m\n"
+		result=$(requestConfWARP2)
+		warpGen=$(check_request "$result" 2)
+		if [ "$warpGen" = "Error" ]
+		then
+			printf "\033[32;1mRequest WARP config... Attempt #3\033[0m\n"
+			result=$(requestConfWARP3)
+			warpGen=$(check_request "$result" 3)
+			if [ "$warpGen" = "Error" ]
+			then
+				printf "\033[32;1mRequest WARP config... Attempt #4\033[0m\n"
+				result=$(requestConfWARP4)
+				warpGen=$(check_request "$result" 4)
+				if [ "$warpGen" = "Error" ]
+				then
+					warp_config="Error"
+				else
+					warp_config=$warpGen
+				fi
+			else
+				warp_config=$warpGen
+			fi
+		else
+			warp_config=$warpGen
+		fi
+	else
+		warp_config=$warpGen
 	fi
-done < <(echo "$warp_config")
+	
+	if [ "$warp_config" = "Error" ] 
+	then
+		printf "\033[32;1mGenerate config AWG WARP failed...Try again later...\033[0m\n"
+		exit 1
+	else
+		while IFS=' = ' read -r line; do
+		if echo "$line" | grep -q "="; then
+			# Разделяем строку по первому вхождению "="
+			key=$(echo "$line" | cut -d'=' -f1 | xargs)  # Убираем пробелы
+			value=$(echo "$line" | cut -d'=' -f2- | xargs)  # Убираем пробелы
+			#echo "key = $key, value = $value"
+			eval "$key=\"$value\""
+		fi
+		done < <(echo "$warp_config")
 
-#вытаскиваем нужные нам данные из распарсинного ответа
-Address=$(echo "$Address" | cut -d',' -f1)
-DNS=$(echo "$DNS" | cut -d',' -f1)
-AllowedIPs=$(echo "$AllowedIPs" | cut -d',' -f1)
-EndpointIP=$(echo "$Endpoint" | cut -d':' -f1)
-EndpointPort=$(echo "$Endpoint" | cut -d':' -f2)
+		#вытаскиваем нужные нам данные из распарсинного ответа
+		Address=$(echo "$Address" | cut -d',' -f1)
+		DNS=$(echo "$DNS" | cut -d',' -f1)
+		AllowedIPs=$(echo "$AllowedIPs" | cut -d',' -f1)
+		EndpointIP=$(echo "$Endpoint" | cut -d':' -f1)
+		EndpointPort=$(echo "$Endpoint" | cut -d':' -f2)
+	fi
+fi
 
 printf "\033[32;1mCreate and configure tunnel AmneziaWG WARP...\033[0m\n"
 
@@ -248,6 +434,7 @@ uci set network.${INTERFACE_NAME}.awg_h1=$H1
 uci set network.${INTERFACE_NAME}.awg_h2=$H2
 uci set network.${INTERFACE_NAME}.awg_h3=$H3
 uci set network.${INTERFACE_NAME}.awg_h4=$H4
+uci set network.${INTERFACE_NAME}.nohostroute='1'
 uci set network.@${CONFIG_NAME}[-1].description="${INTERFACE_NAME}_peer"
 uci set network.@${CONFIG_NAME}[-1].public_key=$PublicKey
 uci set network.@${CONFIG_NAME}[-1].endpoint_host=$EndpointIP
@@ -301,6 +488,32 @@ for zone in $ZONES; do
     fi
   fi
 done
+
+nameRule="option name 'Block_UDP_443'"
+str=$(grep -i "$nameRule" /etc/config/firewall)
+if [ -z "$str" ] 
+then
+  echo "Add block QUIC..."
+
+  uci add firewall rule # =cfg2492bd
+  uci set firewall.@rule[-1].name='Block_UDP_80'
+  uci add_list firewall.@rule[-1].proto='udp'
+  uci set firewall.@rule[-1].src='lan'
+  uci set firewall.@rule[-1].dest='wan'
+  uci set firewall.@rule[-1].dest_port='80'
+  uci set firewall.@rule[-1].target='REJECT'
+  uci add firewall rule # =cfg2592bd
+  uci set firewall.@rule[-1].name='Block_UDP_443'
+  uci add_list firewall.@rule[-1].proto='udp'
+  uci set firewall.@rule[-1].src='lan'
+  uci set firewall.@rule[-1].dest='wan'
+  uci set firewall.@rule[-1].dest_port='443'
+  uci set firewall.@rule[-1].target='REJECT'
+  uci commit firewall
+fi
+
+printf  "\033[32;1mRestart service dnsmasq...\033[0m\n"
+service dnsmasq restart
 
 path_podkop_config="/etc/config/podkop"
 path_podkop_config_backup="/root/podkop"
