@@ -3,7 +3,9 @@
 DIR="/etc/config"
 DIR_BACKUP="/root/backup2"
 config_files="network
-firewall"
+firewall
+https-dns-proxy
+dhcp"
 
 manage_package() {
     local name="$1"

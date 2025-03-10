@@ -267,6 +267,20 @@ check_request() {
 	fi
 }
 
+checkAndAddDomainPermanentName()
+{
+  nameRule="option name '$1'"
+  str=$(grep -i "$nameRule" /etc/config/dhcp)
+  if [ -z "$str" ] 
+  then 
+
+    uci add dhcp domain
+    uci set dhcp.@domain[-1].name="$1"
+    uci set dhcp.@domain[-1].ip="$2"
+    uci commit dhcp
+  fi
+}
+
 encoded_code="IyEvYmluL3NoCgojINCn0YLQtdC90LjQtSDQvNC+0LTQtdC70Lgg0LjQtyDRhNCw0LnQu9CwCm1vZGVsPSQoY2F0IC90bXAvc3lzaW5mby9tb2RlbCkKCiMg0J/RgNC+0LLQtdGA0LrQsCwg0YHQvtC00LXRgNC20LjRgiDQu9C4INC80L7QtNC10LvRjCDRgdC70L7QstC+ICJSb3V0ZXJpY2giCmlmICEgZWNobyAiJG1vZGVsIiB8IGdyZXAgLXEgIlJvdXRlcmljaCI7IHRoZW4KICAgIGVjaG8gIlRoaXMgc2NyaXB0IGZvciByb3V0ZXJzIFJvdXRlcmljaC4uLiBJZiB5b3Ugd2FudCB0byB1c2UgaXQsIHdyaXRlIHRvIHRoZSBlcCBjaGF0IFRHIEByb3V0ZXJpY2giCiAgICBleGl0IDEKZmk="
 eval "$(echo "$encoded_code" | base64 --decode)"
 
@@ -305,7 +319,11 @@ fi
 DIR="/etc/config"
 DIR_BACKUP="/root/backup2"
 config_files="network
-firewall"
+firewall
+https-dns-proxy
+dhcp"
+
+checkPackageAndInstall "https-dns-proxy" "0"
 
 if [ ! -d "$DIR_BACKUP" ]
 then
@@ -315,7 +333,84 @@ then
     do
         cp -f "$DIR/$file" "$DIR_BACKUP/$file"  
     done
+	echo "Replace configs..."
+
+	for file in $config_files
+	do
+		if [ "$file" == "https-dns-proxy" ] 
+		then 
+		  wget -O "$DIR/$file" "$URL/config_files/$file" 
+		fi
+	done
 fi
+
+echo "Configure dhcp..."
+
+uci set dhcp.cfg01411c.strictorder='1'
+uci set dhcp.cfg01411c.filter_aaaa='1'
+uci add_list dhcp.cfg01411c.server='127.0.0.1#5053'
+uci add_list dhcp.cfg01411c.server='127.0.0.1#5054'
+uci add_list dhcp.cfg01411c.server='127.0.0.1#5055'
+uci add_list dhcp.cfg01411c.server='127.0.0.1#5056'
+uci add_list dhcp.cfg01411c.server='/*.chatgpt.com/127.0.0.1#5056'
+uci add_list dhcp.cfg01411c.server='/*.oaistatic.com/127.0.0.1#5056'
+uci add_list dhcp.cfg01411c.server='/*.oaiusercontent.com/127.0.0.1#5056'
+uci add_list dhcp.cfg01411c.server='/*.openai.com/127.0.0.1#5056'
+uci add_list dhcp.cfg01411c.server='/*.microsoft.com/127.0.0.1#5056'
+uci add_list dhcp.cfg01411c.server='/*.windowsupdate.com/127.0.0.1#5056'
+uci add_list dhcp.cfg01411c.server='/*.bing.com/127.0.0.1#5056'
+uci add_list dhcp.cfg01411c.server='/*.supercell.com/127.0.0.1#5056'
+uci add_list dhcp.cfg01411c.server='/*.seeurlpcl.com/127.0.0.1#5056'
+uci add_list dhcp.cfg01411c.server='/*.supercellid.com/127.0.0.1#5056'
+uci add_list dhcp.cfg01411c.server='/*.supercellgames.com/127.0.0.1#5056'
+uci add_list dhcp.cfg01411c.server='/*.clashroyale.com/127.0.0.1#5056'
+uci add_list dhcp.cfg01411c.server='/*.brawlstars.com/127.0.0.1#5056'
+uci add_list dhcp.cfg01411c.server='/*.clash.com/127.0.0.1#5056'
+uci add_list dhcp.cfg01411c.server='/*.clashofclans.com/127.0.0.1#5056'
+uci add_list dhcp.cfg01411c.server='/*.x.ai/127.0.0.1#5056'
+uci add_list dhcp.cfg01411c.server='/*.grok.com/127.0.0.1#5056'
+uci add_list dhcp.cfg01411c.server='/*.github.com/127.0.0.1#5056'
+uci add_list dhcp.cfg01411c.server='/*.forzamotorsport.net/127.0.0.1#5056'
+uci add_list dhcp.cfg01411c.server='/*.forzaracingchampionship.com/127.0.0.1#5056'
+uci add_list dhcp.cfg01411c.server='/*.forzarc.com/127.0.0.1#5056'
+uci add_list dhcp.cfg01411c.server='/*.gamepass.com/127.0.0.1#5056'
+uci add_list dhcp.cfg01411c.server='/*.orithegame.com/127.0.0.1#5056'
+uci add_list dhcp.cfg01411c.server='/*.renovacionxboxlive.com/127.0.0.1#5056'
+uci add_list dhcp.cfg01411c.server='/*.tellmewhygame.com/127.0.0.1#5056'
+uci add_list dhcp.cfg01411c.server='/*.xbox.co/127.0.0.1#5056'
+uci add_list dhcp.cfg01411c.server='/*.xbox.com/127.0.0.1#5056'
+uci add_list dhcp.cfg01411c.server='/*.xbox.eu/127.0.0.1#5056'
+uci add_list dhcp.cfg01411c.server='/*.xbox.org/127.0.0.1#5056'
+uci add_list dhcp.cfg01411c.server='/*.xbox360.co/127.0.0.1#5056'
+uci add_list dhcp.cfg01411c.server='/*.xbox360.com/127.0.0.1#5056'
+uci add_list dhcp.cfg01411c.server='/*.xbox360.eu/127.0.0.1#5056'
+uci add_list dhcp.cfg01411c.server='/*.xbox360.org/127.0.0.1#5056'
+uci add_list dhcp.cfg01411c.server='/*.xboxab.com/127.0.0.1#5056'
+uci add_list dhcp.cfg01411c.server='/*.xboxgamepass.com/127.0.0.1#5056'
+uci add_list dhcp.cfg01411c.server='/*.xboxgamestudios.com/127.0.0.1#5056'
+uci add_list dhcp.cfg01411c.server='/*.xboxlive.cn/127.0.0.1#5056'
+uci add_list dhcp.cfg01411c.server='/*.xboxlive.com/127.0.0.1#5056'
+uci add_list dhcp.cfg01411c.server='/*.xboxone.co/127.0.0.1#5056'
+uci add_list dhcp.cfg01411c.server='/*.xboxone.com/127.0.0.1#5056'
+uci add_list dhcp.cfg01411c.server='/*.xboxone.eu/127.0.0.1#5056'
+uci add_list dhcp.cfg01411c.server='/*.xboxplayanywhere.com/127.0.0.1#5056'
+uci add_list dhcp.cfg01411c.server='/*.xboxservices.com/127.0.0.1#5056'
+uci add_list dhcp.cfg01411c.server='/*.xboxstudios.com/127.0.0.1#5056'
+uci add_list dhcp.cfg01411c.server='/*.xbx.lv/127.0.0.1#5056'
+uci add_list dhcp.cfg01411c.server='/*.sentry.io/127.0.0.1#5056'
+uci add_list dhcp.cfg01411c.server='/*.usercentrics.eu/127.0.0.1#5056'
+uci add_list dhcp.cfg01411c.server='/*.recaptcha.net/127.0.0.1#5056'
+uci add_list dhcp.cfg01411c.server='/*.gstatic.com/127.0.0.1#5056'
+uci add_list dhcp.cfg01411c.server='/*.brawlstarsgame.com/127.0.0.1#5056'
+uci commit dhcp
+
+echo "Add unblock ChatGPT..."
+
+checkAndAddDomainPermanentName "chatgpt.com" "94.131.119.85"
+checkAndAddDomainPermanentName "openai.com" "94.131.119.85"
+checkAndAddDomainPermanentName "webrtc.chatgpt.com" "94.131.119.85"
+checkAndAddDomainPermanentName "ios.chat.openai.com" "94.131.119.85"
+checkAndAddDomainPermanentName "searchgpt.com" "94.131.119.85"
 
 printf "\033[32;1mAutomatic generate config AmneziaWG WARP (n) or manual input parameters for AmneziaWG (y)...\033[0m\n"
 echo "Input manual parameters AmneziaWG? (y/n): "
