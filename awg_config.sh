@@ -607,8 +607,9 @@ then
   uci commit firewall
 fi
 
-printf  "\033[32;1mRestart service dnsmasq...\033[0m\n"
+printf  "\033[32;1mRestart service dnsmasq, odhcpd...\033[0m\n"
 service dnsmasq restart
+service odhcpd restart
 
 path_podkop_config="/etc/config/podkop"
 path_podkop_config_backup="/root/podkop"
