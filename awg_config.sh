@@ -322,6 +322,7 @@ config_files="network
 firewall
 https-dns-proxy
 dhcp"
+URL="https://raw.githubusercontent.com/routerich/RouterichAX3000_configs/refs/heads/main"
 
 checkPackageAndInstall "https-dns-proxy" "0"
 
