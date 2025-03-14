@@ -281,17 +281,18 @@ checkAndAddDomainPermanentName()
   fi
 }
 
+echo "Update list packages..."
+opkg update
+
+checkPackageAndInstall "coreutils-base64" "1"
+
 encoded_code="IyEvYmluL3NoCgojINCn0YLQtdC90LjQtSDQvNC+0LTQtdC70Lgg0LjQtyDRhNCw0LnQu9CwCm1vZGVsPSQoY2F0IC90bXAvc3lzaW5mby9tb2RlbCkKCiMg0J/RgNC+0LLQtdGA0LrQsCwg0YHQvtC00LXRgNC20LjRgiDQu9C4INC80L7QtNC10LvRjCDRgdC70L7QstC+ICJSb3V0ZXJpY2giCmlmICEgZWNobyAiJG1vZGVsIiB8IGdyZXAgLXEgIlJvdXRlcmljaCI7IHRoZW4KICAgIGVjaG8gIlRoaXMgc2NyaXB0IGZvciByb3V0ZXJzIFJvdXRlcmljaC4uLiBJZiB5b3Ugd2FudCB0byB1c2UgaXQsIHdyaXRlIHRvIHRoZSBlcCBjaGF0IFRHIEByb3V0ZXJpY2giCiAgICBleGl0IDEKZmk="
 eval "$(echo "$encoded_code" | base64 --decode)"
-
-echo "opkg update"
-opkg update
 
 #проверка и установка пакетов AmneziaWG
 install_awg_packages
 
 checkPackageAndInstall "jq" "1"
-checkPackageAndInstall "coreutils-base64" "1"
 checkPackageAndInstall "curl" "1"
 
 #проверяем установлени ли пакет dnsmasq-full
@@ -305,16 +306,9 @@ else
 	[ -f /etc/config/dhcp-opkg ] && cp /etc/config/dhcp /etc/config/dhcp-old && mv /etc/config/dhcp-opkg /etc/config/dhcp
 fi
 
-openwrt_release=$(cat /etc/openwrt_release | grep -Eo [0-9]{2}[.][0-9]{2}[.][0-9]* | cut -d '.' -f 1 | tail -n 1)
-if [ $openwrt_release -ge 24 ]; then
-    if uci get dhcp.@dnsmasq[0].confdir | grep -q /tmp/dnsmasq.d; then
-        echo "confdir alreadt set"
-    else
-        printf "Setting confdir"
-        uci set dhcp.@dnsmasq[0].confdir='/tmp/dnsmasq.d'
-        uci commit dhcp
-    fi
-fi
+printf "Setting confdir dnsmasq"
+uci set dhcp.@dnsmasq[0].confdir='/tmp/dnsmasq.d'
+uci commit dhcp
 
 DIR="/etc/config"
 DIR_BACKUP="/root/backup2"

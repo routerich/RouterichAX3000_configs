@@ -142,34 +142,41 @@ install_youtubeunblock_packages() {
     rm -rf "$AWG_DIR"
 }
 
-encoded_code="IyEvYmluL3NoCgojINCn0YLQtdC90LjQtSDQvNC+0LTQtdC70Lgg0LjQtyDRhNCw0LnQu9CwCm1vZGVsPSQoY2F0IC90bXAvc3lzaW5mby9tb2RlbCkKCiMg0J/RgNC+0LLQtdGA0LrQsCwg0YHQvtC00LXRgNC20LjRgiDQu9C4INC80L7QtNC10LvRjCDRgdC70L7QstC+ICJSb3V0ZXJpY2giCmlmICEgZWNobyAiJG1vZGVsIiB8IGdyZXAgLXEgIlJvdXRlcmljaCI7IHRoZW4KICAgIGVjaG8gIlRoaXMgc2NyaXB0IGZvciByb3V0ZXJzIFJvdXRlcmljaC4uLiBJZiB5b3Ugd2FudCB0byB1c2UgaXQsIHdyaXRlIHRvIHRoZSBlcCBjaGF0IFRHIEByb3V0ZXJpY2giCiAgICBleGl0IDEKZmk="
-eval "$(echo "$encoded_code" | base64 --decode)"
+checkPackageAndInstall()
+{
+    local name="$1"
+    local isRequried="$2"
+    #проверяем установлени ли библиотека $name
+    if opkg list-installed | grep -q $name; then
+        echo "$name already installed..."
+    else
+        echo "$name not installed. Installed $name..."
+        opkg install $name
+		res=$?
+		if [ "$isRequried" = "1" ]; then
+			if [ $res -eq 0 ]; then
+				echo "$name insalled successfully"
+			else
+				echo "Error installing $name. Please, install $name manually and run the script again"
+				exit 1
+			fi
+		fi
+    fi
+}
 
-echo "Upgrade packages..."
+echo "Update list packages..."
 
 opkg update
 
+checkPackageAndInstall "coreutils-base64" "1"
+
+encoded_code="IyEvYmluL3NoCgojINCn0YLQtdC90LjQtSDQvNC+0LTQtdC70Lgg0LjQtyDRhNCw0LnQu9CwCm1vZGVsPSQoY2F0IC90bXAvc3lzaW5mby9tb2RlbCkKCiMg0J/RgNC+0LLQtdGA0LrQsCwg0YHQvtC00LXRgNC20LjRgiDQu9C4INC80L7QtNC10LvRjCDRgdC70L7QstC+ICJSb3V0ZXJpY2giCmlmICEgZWNobyAiJG1vZGVsIiB8IGdyZXAgLXEgIlJvdXRlcmljaCI7IHRoZW4KICAgIGVjaG8gIlRoaXMgc2NyaXB0IGZvciByb3V0ZXJzIFJvdXRlcmljaC4uLiBJZiB5b3Ugd2FudCB0byB1c2UgaXQsIHdyaXRlIHRvIHRoZSBlcCBjaGF0IFRHIEByb3V0ZXJpY2giCiAgICBleGl0IDEKZmk="
+eval "$(echo "$encoded_code" | base64 --decode)"
+
 #проверяем установлени ли библиотека https-dns-proxy
-if opkg list-installed | grep -q https-dns-proxy; then
-    echo "https-dns-proxy already installed..."
-else
-	echo "https-dns-proxy not installed. Installed https-dns-proxy..."
-	opkg install https-dns-proxy
-	if [ $? -eq 0 ]; then
-		echo "https-dns-proxy file installed successfully"
-	else
-		echo "Error installing https-dns-proxy. Please, install https-dns-proxy manually and run the script again"
-		exit 1
-	fi
-fi
-
-if ! opkg list-installed | grep -q luci-app-https-dns-proxy; then
-    opkg install luci-app-https-dns-proxy
-fi
-
-if ! opkg list-installed | grep -q luci-i18n-https-dns-proxy-ru; then
-    opkg install luci-i18n-https-dns-proxy-ru
-fi
+checkPackageAndInstall "https-dns-proxy" "1"
+checkPackageAndInstall "luci-app-https-dns-proxy" "0"
+checkPackageAndInstall "luci-i18n-https-dns-proxy-ru" "0"
 
 install_youtubeunblock_packages
 
