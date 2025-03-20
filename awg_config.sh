@@ -145,7 +145,7 @@ checkPackageAndInstall()
 requestConfWARP1()
 {
 	#запрос конфигурации WARP
-	local result=$(curl -w "%{http_code}" 'https://warp.llimonix.pw/api/warp' \
+	local result=$(curl --connect-timeout 20 --max-time 60 -w "%{http_code}" 'https://warp.llimonix.pw/api/warp' \
 	  -H 'Accept: */*' \
 	  -H 'Accept-Language: ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7' \
 	  -H 'Connection: keep-alive' \
@@ -166,7 +166,7 @@ requestConfWARP1()
 requestConfWARP2()
 {
 	#запрос конфигурации WARP
-	local result=$(curl -w "%{http_code}" 'https://topor-warp.vercel.app/generate' \
+	local result=$(curl --connect-timeout 20 --max-time 60 -w "%{http_code}" 'https://topor-warp.vercel.app/generate' \
 	  -H 'Accept: */*' \
 	  -H 'Accept-Language: ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7' \
 	  -H 'Connection: keep-alive' \
@@ -187,7 +187,7 @@ requestConfWARP2()
 requestConfWARP3()
 {
 	#запрос конфигурации WARP
-	local result=$(curl -w "%{http_code}" 'https://warp-gen.vercel.app/generate-config' \
+	local result=$(curl --connect-timeout 20 --max-time 60 -w "%{http_code}" 'https://warp-gen.vercel.app/generate-config' \
 		-H 'Accept: */*' \
 		-H 'Accept-Language: ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7' \
 		-H 'Connection: keep-alive' \
@@ -205,7 +205,7 @@ requestConfWARP3()
 requestConfWARP4()
 {
 	#запрос конфигурации WARP
-	local result=$(curl -w "%{http_code}" 'https://config-generator-warp.vercel.app/warp' \
+	local result=$(curl --connect-timeout 20 --max-time 60 -w "%{http_code}" 'https://config-generator-warp.vercel.app/warp' \
 	  -H 'Accept: */*' \
 	  -H 'Accept-Language: ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7' \
 	  -H 'Connection: keep-alive' \
