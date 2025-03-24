@@ -294,6 +294,8 @@ install_awg_packages
 
 checkPackageAndInstall "jq" "1"
 checkPackageAndInstall "curl" "1"
+checkPackageAndInstall "unzip" "1"
+checkPackageAndInstall "sing-box" "1"
 
 #проверяем установлени ли пакет dnsmasq-full
 if opkg list-installed | grep -q dnsmasq-full; then
@@ -316,7 +318,7 @@ config_files="network
 firewall
 https-dns-proxy
 dhcp"
-URL="https://raw.githubusercontent.com/routerich/RouterichAX3000_configs/refs/heads/main"
+URL="https://raw.githubusercontent.com/routerich/RouterichAX3000_configs/refs/heads/beta"
 
 checkPackageAndInstall "https-dns-proxy" "0"
 
@@ -343,69 +345,24 @@ echo "Configure dhcp..."
 
 uci set dhcp.cfg01411c.strictorder='1'
 uci set dhcp.cfg01411c.filter_aaaa='1'
-uci add_list dhcp.cfg01411c.server='127.0.0.1#5053'
-uci add_list dhcp.cfg01411c.server='127.0.0.1#5054'
-uci add_list dhcp.cfg01411c.server='127.0.0.1#5055'
-uci add_list dhcp.cfg01411c.server='127.0.0.1#5056'
-uci add_list dhcp.cfg01411c.server='/*.chatgpt.com/127.0.0.1#5056'
-uci add_list dhcp.cfg01411c.server='/*.oaistatic.com/127.0.0.1#5056'
-uci add_list dhcp.cfg01411c.server='/*.oaiusercontent.com/127.0.0.1#5056'
-uci add_list dhcp.cfg01411c.server='/*.openai.com/127.0.0.1#5056'
-uci add_list dhcp.cfg01411c.server='/*.microsoft.com/127.0.0.1#5056'
-uci add_list dhcp.cfg01411c.server='/*.windowsupdate.com/127.0.0.1#5056'
-uci add_list dhcp.cfg01411c.server='/*.bing.com/127.0.0.1#5056'
-uci add_list dhcp.cfg01411c.server='/*.supercell.com/127.0.0.1#5056'
-uci add_list dhcp.cfg01411c.server='/*.seeurlpcl.com/127.0.0.1#5056'
-uci add_list dhcp.cfg01411c.server='/*.supercellid.com/127.0.0.1#5056'
-uci add_list dhcp.cfg01411c.server='/*.supercellgames.com/127.0.0.1#5056'
-uci add_list dhcp.cfg01411c.server='/*.clashroyale.com/127.0.0.1#5056'
-uci add_list dhcp.cfg01411c.server='/*.brawlstars.com/127.0.0.1#5056'
-uci add_list dhcp.cfg01411c.server='/*.clash.com/127.0.0.1#5056'
-uci add_list dhcp.cfg01411c.server='/*.clashofclans.com/127.0.0.1#5056'
-uci add_list dhcp.cfg01411c.server='/*.x.ai/127.0.0.1#5056'
-uci add_list dhcp.cfg01411c.server='/*.grok.com/127.0.0.1#5056'
-uci add_list dhcp.cfg01411c.server='/*.github.com/127.0.0.1#5056'
-uci add_list dhcp.cfg01411c.server='/*.forzamotorsport.net/127.0.0.1#5056'
-uci add_list dhcp.cfg01411c.server='/*.forzaracingchampionship.com/127.0.0.1#5056'
-uci add_list dhcp.cfg01411c.server='/*.forzarc.com/127.0.0.1#5056'
-uci add_list dhcp.cfg01411c.server='/*.gamepass.com/127.0.0.1#5056'
-uci add_list dhcp.cfg01411c.server='/*.orithegame.com/127.0.0.1#5056'
-uci add_list dhcp.cfg01411c.server='/*.renovacionxboxlive.com/127.0.0.1#5056'
-uci add_list dhcp.cfg01411c.server='/*.tellmewhygame.com/127.0.0.1#5056'
-uci add_list dhcp.cfg01411c.server='/*.xbox.co/127.0.0.1#5056'
-uci add_list dhcp.cfg01411c.server='/*.xbox.com/127.0.0.1#5056'
-uci add_list dhcp.cfg01411c.server='/*.xbox.eu/127.0.0.1#5056'
-uci add_list dhcp.cfg01411c.server='/*.xbox.org/127.0.0.1#5056'
-uci add_list dhcp.cfg01411c.server='/*.xbox360.co/127.0.0.1#5056'
-uci add_list dhcp.cfg01411c.server='/*.xbox360.com/127.0.0.1#5056'
-uci add_list dhcp.cfg01411c.server='/*.xbox360.eu/127.0.0.1#5056'
-uci add_list dhcp.cfg01411c.server='/*.xbox360.org/127.0.0.1#5056'
-uci add_list dhcp.cfg01411c.server='/*.xboxab.com/127.0.0.1#5056'
-uci add_list dhcp.cfg01411c.server='/*.xboxgamepass.com/127.0.0.1#5056'
-uci add_list dhcp.cfg01411c.server='/*.xboxgamestudios.com/127.0.0.1#5056'
-uci add_list dhcp.cfg01411c.server='/*.xboxlive.cn/127.0.0.1#5056'
-uci add_list dhcp.cfg01411c.server='/*.xboxlive.com/127.0.0.1#5056'
-uci add_list dhcp.cfg01411c.server='/*.xboxone.co/127.0.0.1#5056'
-uci add_list dhcp.cfg01411c.server='/*.xboxone.com/127.0.0.1#5056'
-uci add_list dhcp.cfg01411c.server='/*.xboxone.eu/127.0.0.1#5056'
-uci add_list dhcp.cfg01411c.server='/*.xboxplayanywhere.com/127.0.0.1#5056'
-uci add_list dhcp.cfg01411c.server='/*.xboxservices.com/127.0.0.1#5056'
-uci add_list dhcp.cfg01411c.server='/*.xboxstudios.com/127.0.0.1#5056'
-uci add_list dhcp.cfg01411c.server='/*.xbx.lv/127.0.0.1#5056'
-uci add_list dhcp.cfg01411c.server='/*.sentry.io/127.0.0.1#5056'
-uci add_list dhcp.cfg01411c.server='/*.usercentrics.eu/127.0.0.1#5056'
-uci add_list dhcp.cfg01411c.server='/*.recaptcha.net/127.0.0.1#5056'
-uci add_list dhcp.cfg01411c.server='/*.gstatic.com/127.0.0.1#5056'
-uci add_list dhcp.cfg01411c.server='/*.brawlstarsgame.com/127.0.0.1#5056'
 uci commit dhcp
 
-echo "Add unblock ChatGPT..."
+echo "Install opera-proxy client..."
+service stop vpn > /dev/null
+rm -f /usr/bin/vpns /etc/init.d/vpn
 
-checkAndAddDomainPermanentName "chatgpt.com" "94.131.119.85"
-checkAndAddDomainPermanentName "openai.com" "94.131.119.85"
-checkAndAddDomainPermanentName "webrtc.chatgpt.com" "94.131.119.85"
-checkAndAddDomainPermanentName "ios.chat.openai.com" "94.131.119.85"
-checkAndAddDomainPermanentName "searchgpt.com" "94.131.119.85"
+url="https://github.com/NitroOxid/openwrt-opera-proxy-bin/releases/download/1.8.0/opera-proxy_1.8.0-1_aarch64_cortex-a53.ipk"
+destination_file="/tmp/opera-proxy.ipk"
+
+echo "Downlading opera-proxy..."
+wget "$url" -O "$destination_file" || { echo "Failed to download the file"; exit 1; }
+echo "Installing opera-proxy..."
+opkg install $destination_file
+
+echo "Setting sing-box..."
+uci set sing-box.main.enabled='1'
+uci set sing-box.main.user='root'
+uci commit sing-box
 
 printf "\033[32;1mAutomatic generate config AmneziaWG WARP (n) or manual input parameters for AmneziaWG (y)...\033[0m\n"
 echo "Input manual parameters AmneziaWG? (y/n): "
@@ -608,7 +565,7 @@ service odhcpd restart
 
 path_podkop_config="/etc/config/podkop"
 path_podkop_config_backup="/root/podkop"
-URL="https://raw.githubusercontent.com/routerich/RouterichAX3000_configs/refs/heads/main"
+URL="https://raw.githubusercontent.com/routerich/RouterichAX3000_configs/refs/heads/beta"
 
 if [ -f "/etc/init.d/podkop" ]; then
 	printf "Podkop installed. Reconfigured on AWG WARP? (y/n): \n"
