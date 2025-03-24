@@ -568,7 +568,7 @@ path_podkop_config_backup="/root/podkop"
 URL="https://raw.githubusercontent.com/routerich/RouterichAX3000_configs/refs/heads/beta"
 
 if [ -f "/etc/init.d/podkop" ]; then
-	printf "Podkop installed. Reconfigured on AWG WARP? (y/n): \n"
+	printf "Podkop installed. Reconfigured on AWG WARP and Opera Proxy? (y/n): \n"
 	is_reconfig_podkop="y"
 	read is_reconfig_podkop
 	if [ "$is_reconfig_podkop" = "y" ] || [ "$is_reconfig_podkop" = "Y" ]; then
