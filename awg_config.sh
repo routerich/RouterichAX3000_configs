@@ -628,7 +628,10 @@ sleep 2
 # Включаем интерфейс
 ifup $INTERFACE_NAME
 
-printf  "\033[32;1mService Podkop restart...\033[0m\n"
+printf  "\033[32;1mService Podkop and Sing-Box restart...\033[0m\n"
+service sing-box enable
+service sing-box restart
+service podkop enable
 service podkop restart
 
 printf  "\033[32;1mConfigured completed...\033[0m\n"
