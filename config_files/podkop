@@ -34,6 +34,7 @@ config main 'main'
 	list custom_domains 'animego.org'
 	list custom_domains 'jut.su'
 	list custom_domains 'anilibria.tv'
+	list custom_domains 'twimg.com'
 
 config second 'second'
 	option second_enable '1'
