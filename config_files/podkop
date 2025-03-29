@@ -48,6 +48,7 @@ config main 'main'
 	list custom_domains 'discord.gg'
 	list custom_domains 'discordapp.net'
 	list custom_domains 'discord.media'
+	list custom_domains 'gemini.google.com'
 
 config second 'second'
 	option second_enable '1'
