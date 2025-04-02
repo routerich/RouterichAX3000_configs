@@ -145,7 +145,7 @@ checkPackageAndInstall()
 requestConfWARP1()
 {
 	#запрос конфигурации WARP
-	local result=$(curl -w "%{http_code}" 'https://warp.llimonix.pw/api/warp' \
+	local result=$(curl --connect-timeout 20 --max-time 60 -w "%{http_code}" 'https://warp.llimonix.pw/api/warp' \
 	  -H 'Accept: */*' \
 	  -H 'Accept-Language: ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7' \
 	  -H 'Connection: keep-alive' \
@@ -166,7 +166,7 @@ requestConfWARP1()
 requestConfWARP2()
 {
 	#запрос конфигурации WARP
-	local result=$(curl -w "%{http_code}" 'https://topor-warp.vercel.app/generate' \
+	local result=$(curl --connect-timeout 20 --max-time 60 -w "%{http_code}" 'https://topor-warp.vercel.app/generate' \
 	  -H 'Accept: */*' \
 	  -H 'Accept-Language: ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7' \
 	  -H 'Connection: keep-alive' \
@@ -187,7 +187,7 @@ requestConfWARP2()
 requestConfWARP3()
 {
 	#запрос конфигурации WARP
-	local result=$(curl -w "%{http_code}" 'https://warp-gen.vercel.app/generate-config' \
+	local result=$(curl --connect-timeout 20 --max-time 60 -w "%{http_code}" 'https://warp-gen.vercel.app/generate-config' \
 		-H 'Accept: */*' \
 		-H 'Accept-Language: ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7' \
 		-H 'Connection: keep-alive' \
@@ -205,7 +205,7 @@ requestConfWARP3()
 requestConfWARP4()
 {
 	#запрос конфигурации WARP
-	local result=$(curl -w "%{http_code}" 'https://config-generator-warp.vercel.app/warp' \
+	local result=$(curl --connect-timeout 20 --max-time 60 -w "%{http_code}" 'https://config-generator-warp.vercel.app/warp' \
 	  -H 'Accept: */*' \
 	  -H 'Accept-Language: ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7' \
 	  -H 'Connection: keep-alive' \
@@ -318,7 +318,7 @@ config_files="network
 firewall
 https-dns-proxy
 dhcp"
-URL="https://raw.githubusercontent.com/routerich/RouterichAX3000_configs/refs/heads/beta"
+URL="https://raw.githubusercontent.com/routerich/RouterichAX3000_configs/refs/heads/main"
 
 checkPackageAndInstall "https-dns-proxy" "0"
 
@@ -565,7 +565,7 @@ service odhcpd restart
 
 path_podkop_config="/etc/config/podkop"
 path_podkop_config_backup="/root/podkop"
-URL="https://raw.githubusercontent.com/routerich/RouterichAX3000_configs/refs/heads/beta"
+URL="https://raw.githubusercontent.com/routerich/RouterichAX3000_configs/refs/heads/main"
 
 if [ -f "/etc/init.d/podkop" ]; then
 	printf "Podkop installed. Reconfigured on AWG WARP and Opera Proxy? (y/n): \n"
@@ -628,7 +628,10 @@ sleep 2
 # Включаем интерфейс
 ifup $INTERFACE_NAME
 
-printf  "\033[32;1mService Podkop restart...\033[0m\n"
+printf  "\033[32;1mService Podkop and Sing-Box restart...\033[0m\n"
+service sing-box enable
+service sing-box restart
+service podkop enable
 service podkop restart
 
 printf  "\033[32;1mConfigured completed...\033[0m\n"
