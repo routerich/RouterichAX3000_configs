@@ -443,13 +443,63 @@ wget "$url" -O "$destination_file" || { echo "Failed to download the file"; exit
 echo "Installing opera-proxy..."
 opkg install $destination_file
 
+cat <<EOF > /etc/sing-box/config.json
+  {
+    "log": {
+    "disabled": true,
+    "level": "error"
+  },
+  "inbounds": [
+    {
+      "type": "tproxy",
+      "listen": "::",
+      "listen_port": 1100,
+      "sniff": false
+    }
+  ],
+  "outbounds": [
+    {
+      "type": "http",
+      "server": "127.0.0.1",
+      "server_port": 18080
+    }
+  ],
+  "route": {
+    "auto_detect_interface": true
+  }
+}
+EOF
+
 echo "Setting sing-box..."
 uci set sing-box.main.enabled='1'
 uci set sing-box.main.user='root'
 uci commit sing-box
 
+nameRule="option name 'Block_UDP_443'"
+str=$(grep -i "$nameRule" /etc/config/firewall)
+if [ -z "$str" ] 
+then
+  echo "Add block QUIC..."
+
+  uci add firewall rule # =cfg2492bd
+  uci set firewall.@rule[-1].name='Block_UDP_80'
+  uci add_list firewall.@rule[-1].proto='udp'
+  uci set firewall.@rule[-1].src='lan'
+  uci set firewall.@rule[-1].dest='wan'
+  uci set firewall.@rule[-1].dest_port='80'
+  uci set firewall.@rule[-1].target='REJECT'
+  uci add firewall rule # =cfg2592bd
+  uci set firewall.@rule[-1].name='Block_UDP_443'
+  uci add_list firewall.@rule[-1].proto='udp'
+  uci set firewall.@rule[-1].src='lan'
+  uci set firewall.@rule[-1].dest='wan'
+  uci set firewall.@rule[-1].dest_port='443'
+  uci set firewall.@rule[-1].target='REJECT'
+  uci commit firewall
+fi
+
 printf "\033[32;1mAutomatic generate config AmneziaWG WARP (n) or manual input parameters for AmneziaWG (y)...\033[0m\n"
-countRepeatAWGGen=0
+countRepeatAWGGen=5
 echo "Input manual parameters AmneziaWG? (y/n): "
 read is_manual_input_parameters
 currIter=0
@@ -679,6 +729,7 @@ else
 	else
 		manage_package "youtubeUnblock" "disable" "stop"
 		printf "\033[32;1myoutubeUnblock not work...Try opera proxy...\033[0m\n"
+		system sing-box restart
 		sing-box tools fetch ifconfig.co -D /etc/sing-box/
 		if [ $? -eq 0 ]; then
 			printf "\033[32;1mOpera proxy well work...\033[0m\n"
@@ -688,29 +739,6 @@ else
 			exit 1
 		fi
 	fi
-fi
-
-nameRule="option name 'Block_UDP_443'"
-str=$(grep -i "$nameRule" /etc/config/firewall)
-if [ -z "$str" ] 
-then
-  echo "Add block QUIC..."
-
-  uci add firewall rule # =cfg2492bd
-  uci set firewall.@rule[-1].name='Block_UDP_80'
-  uci add_list firewall.@rule[-1].proto='udp'
-  uci set firewall.@rule[-1].src='lan'
-  uci set firewall.@rule[-1].dest='wan'
-  uci set firewall.@rule[-1].dest_port='80'
-  uci set firewall.@rule[-1].target='REJECT'
-  uci add firewall rule # =cfg2592bd
-  uci set firewall.@rule[-1].name='Block_UDP_443'
-  uci add_list firewall.@rule[-1].proto='udp'
-  uci set firewall.@rule[-1].src='lan'
-  uci set firewall.@rule[-1].dest='wan'
-  uci set firewall.@rule[-1].dest_port='443'
-  uci set firewall.@rule[-1].target='REJECT'
-  uci commit firewall
 fi
 
 printf  "\033[32;1mRestart service dnsmasq, odhcpd...\033[0m\n"

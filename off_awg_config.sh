@@ -4,6 +4,7 @@ DIR="/etc/config"
 DIR_BACKUP="/root/backup2"
 config_files="network
 firewall
+youtubeUnblock
 https-dns-proxy
 dhcp"
 
