@@ -1,9 +1,10 @@
 #!/bin/sh
 
 DIR="/etc/config"
-DIR_BACKUP="/root/backup2"
+DIR_BACKUP="/root/backup3"
 config_files="network
 firewall
+youtubeUnblock
 https-dns-proxy
 dhcp"
 
