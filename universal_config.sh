@@ -499,7 +499,7 @@ then
 fi
 
 printf "\033[32;1mAutomatic generate config AmneziaWG WARP (n) or manual input parameters for AmneziaWG (y)...\033[0m\n"
-countRepeatAWGGen=5
+countRepeatAWGGen=1
 echo "Input manual parameters AmneziaWG? (y/n): "
 read is_manual_input_parameters
 currIter=0
@@ -692,7 +692,7 @@ do
 		# Отключаем интерфейс
 		ifdown $INTERFACE_NAME
 		# Ждем несколько секунд (по желанию)
-		sleep 2
+		sleep 5
 		# Включаем интерфейс
 		ifup $INTERFACE_NAME
 		curl -f --connect-to ::speedtest.selectel.ru https://manifest.googlevideo.com/100MB -k -o /dev/null --interface $INTERFACE_NAME --max-time 360
