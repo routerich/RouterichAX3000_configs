@@ -695,7 +695,7 @@ do
 		sleep 2
 		# Включаем интерфейс
 		ifup $INTERFACE_NAME
-		curl -f --connect-to ::speedtest.selectel.ru https://manifest.googlevideo.com/100MB -k -o /dev/null --interface $INTERFACE_NAME
+		curl -f --connect-to ::speedtest.selectel.ru https://manifest.googlevideo.com/100MB -k -o /dev/null --interface $INTERFACE_NAME --max-time 180
 
 		# Проверяем код выхода
 		if [ $? -eq 0 ]; then
@@ -735,7 +735,7 @@ else
 			printf "\033[32;1mOpera proxy well work...\033[0m\n"
 			varByPass=3
 		else
-			printf "\033[32;1mOpera proxy not work...Try custom settings router to bypass the locks...\033[0m\n"
+			printf "\033[32;1mOpera proxy not work...Try custom settings router to bypass the locks... Recomendation buy 'VPS' and up 'vless'\033[0m\n"
 			exit 1
 		fi
 	fi
