@@ -695,7 +695,7 @@ do
 		sleep 2
 		# Включаем интерфейс
 		ifup $INTERFACE_NAME
-		curl -f --connect-to ::speedtest.selectel.ru https://manifest.googlevideo.com/100MB -k -o /dev/null --interface $INTERFACE_NAME --max-time 180
+		curl -f --connect-to ::speedtest.selectel.ru https://manifest.googlevideo.com/100MB -k -o /dev/null --interface $INTERFACE_NAME --max-time 360
 
 		# Проверяем код выхода
 		if [ $? -eq 0 ]; then
