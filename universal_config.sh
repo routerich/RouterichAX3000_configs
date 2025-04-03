@@ -693,10 +693,10 @@ do
 
 		# Отключаем интерфейс
 		ifdown $INTERFACE_NAME
-		# Ждем несколько секунд (по желанию)
-		sleep 2
 		# Включаем интерфейс
 		ifup $INTERFACE_NAME
+		echp "Wait up AWG WARP 10 second..."
+		sleep 10
 		
 		pingAddress="8.8.8.8"
 		ping -c 1 -I $INTERFACE_NAME $pingAddress
