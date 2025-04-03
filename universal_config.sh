@@ -617,6 +617,7 @@ do
 			uci add network ${CONFIG_NAME}
 		fi
 		uci set network.${INTERFACE_NAME}.private_key=$PrivateKey
+		uci del network.${INTERFACE_NAME}.addresses
 		uci add_list network.${INTERFACE_NAME}.addresses=$Address
 		uci set network.${INTERFACE_NAME}.mtu=$MTU
 		uci set network.${INTERFACE_NAME}.awg_jc=$Jc
@@ -629,6 +630,7 @@ do
 		uci set network.${INTERFACE_NAME}.awg_h3=$H3
 		uci set network.${INTERFACE_NAME}.awg_h4=$H4
 		uci set network.${INTERFACE_NAME}.nohostroute='1'
+
 		uci set network.@${CONFIG_NAME}[-1].description="${INTERFACE_NAME}_peer"
 		uci set network.@${CONFIG_NAME}[-1].public_key=$PublicKey
 		uci set network.@${CONFIG_NAME}[-1].endpoint_host=$EndpointIP
@@ -685,6 +687,9 @@ do
 		if [ "$currIter" = "1" ]
 		then
 			service firewall restart
+			printf  "\033[32;1mRestart service dnsmasq, odhcpd...\033[0m\n"
+			service dnsmasq restart
+			service odhcpd restart
 		fi
 		#service firewall restart
 		#service network restart
@@ -742,10 +747,6 @@ else
 		fi
 	fi
 fi
-
-printf  "\033[32;1mRestart service dnsmasq, odhcpd...\033[0m\n"
-service dnsmasq restart
-service odhcpd restart
 
 path_podkop_config="/etc/config/podkop"
 path_podkop_config_backup="/root/podkop"
