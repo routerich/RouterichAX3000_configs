@@ -692,13 +692,14 @@ do
 		# Отключаем интерфейс
 		ifdown $INTERFACE_NAME
 		# Ждем несколько секунд (по желанию)
-		sleep 5
+		sleep 2
 		# Включаем интерфейс
 		ifup $INTERFACE_NAME
-		curl -f --connect-to ::speedtest.selectel.ru https://manifest.googlevideo.com/100MB -k -o /dev/null --interface $INTERFACE_NAME --max-time 360
+		
+		$pingAddress="8.8.8.8"
 
-		# Проверяем код выхода
-		if [ $? -eq 0 ]; then
+		if ping -c 1 -I $INTERFACE_NAME $pingAddress >/dev/null 2>&1
+		then
 			isExit=1
 		else
 			isExit=0
