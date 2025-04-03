@@ -698,7 +698,7 @@ do
 
 		pingAddress="8.8.8.8"
 
-		if ping -c 1 -I $INTERFACE_NAME $pingAddress >/dev/null 2>&1
+		if ping -c 1 -I $INTERFACE_NAME $pingAddress 2>&1
 		then
 			isExit=1
 		else
