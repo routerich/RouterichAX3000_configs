@@ -695,7 +695,7 @@ do
 		ifdown $INTERFACE_NAME
 		# Включаем интерфейс
 		ifup $INTERFACE_NAME
-		echp "Wait up AWG WARP 10 second..."
+		echo "Wait up AWG WARP 10 second..."
 		sleep 10
 		
 		pingAddress="8.8.8.8"
