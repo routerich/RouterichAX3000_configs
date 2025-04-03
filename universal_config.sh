@@ -695,10 +695,11 @@ do
 		sleep 2
 		# Включаем интерфейс
 		ifup $INTERFACE_NAME
-
+		
 		pingAddress="8.8.8.8"
-
-		if ping -c 1 -I $INTERFACE_NAME $pingAddress 2>&1
+		ping -c 1 -I $INTERFACE_NAME $pingAddress
+		
+		if ping -c 1 -I $INTERFACE_NAME $pingAddress >/dev/null 2>&1
 		then
 			isExit=1
 		else
