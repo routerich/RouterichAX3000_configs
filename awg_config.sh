@@ -537,7 +537,7 @@ do
 		DNS="1.1.1.1"
 		MTU=1280
 		AllowedIPs="0.0.0.0/0"
-		$isExit=1
+		isExit=1
 	else
 		warp_config="Error"
 		printf "\033[32;1mRequest WARP config... Attempt #1\033[0m\n"
@@ -577,7 +577,7 @@ do
 		if [ "$warp_config" = "Error" ] 
 		then
 			printf "\033[32;1mGenerate config AWG WARP failed...Try again later...\033[0m\n"
-			$isExit=2
+			isExit=2
 			#exit 1
 		else
 			while IFS=' = ' read -r line; do
@@ -601,7 +601,7 @@ do
 	
 	if [ "$isExit" = "2" ] 
 	then
-		$isExit=0
+		isExit=0
 	else
 		printf "\033[32;1mCreate and configure tunnel AmneziaWG WARP...\033[0m\n"
 
@@ -729,7 +729,7 @@ else
 	else
 		manage_package "youtubeUnblock" "disable" "stop"
 		printf "\033[32;1myoutubeUnblock not work...Try opera proxy...\033[0m\n"
-		system sing-box restart
+		service sing-box restart
 		sing-box tools fetch ifconfig.co -D /etc/sing-box/
 		if [ $? -eq 0 ]; then
 			printf "\033[32;1mOpera proxy well work...\033[0m\n"
