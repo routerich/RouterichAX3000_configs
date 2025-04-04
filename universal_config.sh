@@ -438,7 +438,7 @@ rm -f /usr/bin/vpns /etc/init.d/vpn
 url="https://github.com/NitroOxid/openwrt-opera-proxy-bin/releases/download/1.8.0/opera-proxy_1.8.0-1_aarch64_cortex-a53.ipk"
 destination_file="/tmp/opera-proxy.ipk"
 
-echo "Downlading opera-proxy..."
+echo "Downloading opera-proxy..."
 wget "$url" -O "$destination_file" || { echo "Failed to download the file"; exit 1; }
 echo "Installing opera-proxy..."
 opkg install $destination_file
@@ -499,7 +499,7 @@ then
 fi
 
 printf "\033[32;1mAutomatic generate config AmneziaWG WARP (n) or manual input parameters for AmneziaWG (y)...\033[0m\n"
-countRepeatAWGGen=1
+countRepeatAWGGen=5
 echo "Input manual parameters AmneziaWG? (y/n): "
 read is_manual_input_parameters
 currIter=0
@@ -695,12 +695,10 @@ do
 		ifdown $INTERFACE_NAME
 		# Включаем интерфейс
 		ifup $INTERFACE_NAME
-		echo "Wait up AWG WARP 10 second..."
+		printf "\033[32;1mWait up AWG WARP 10 second...\033[0m\n"
 		sleep 10
 		
 		pingAddress="8.8.8.8"
-		ping -c 1 -I $INTERFACE_NAME $pingAddress
-		
 		if ping -c 1 -I $INTERFACE_NAME $pingAddress >/dev/null 2>&1
 		then
 			isExit=1
