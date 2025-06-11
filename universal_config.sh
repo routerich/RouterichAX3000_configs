@@ -598,6 +598,8 @@ do
 			EndpointPort=$(echo "$Endpoint" | cut -d':' -f2)
 		fi
 	fi
+
+	echo "$currIter !!! --- isExit = $isExit"
 	
 	if [ "$isExit" = "2" ] 
 	then
@@ -707,6 +709,8 @@ do
 		fi
 	fi
 done
+
+echo "isExit = $isExit"
 
 varByPass=0
 
