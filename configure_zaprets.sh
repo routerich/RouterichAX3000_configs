@@ -265,11 +265,11 @@ uci commit dhcp
 
 echo "Add unblock ChatGPT..."
 
-checkAndAddDomainPermanentName "chatgpt.com" "94.131.119.85"
-checkAndAddDomainPermanentName "openai.com" "94.131.119.85"
-checkAndAddDomainPermanentName "webrtc.chatgpt.com" "94.131.119.85"
-checkAndAddDomainPermanentName "ios.chat.openai.com" "94.131.119.85"
-checkAndAddDomainPermanentName "searchgpt.com" "94.131.119.85"
+checkAndAddDomainPermanentName "chatgpt.com" "83.220.169.155"
+checkAndAddDomainPermanentName "openai.com" "83.220.169.155"
+checkAndAddDomainPermanentName "webrtc.chatgpt.com" "83.220.169.155"
+checkAndAddDomainPermanentName "ios.chat.openai.com" "83.220.169.155"
+checkAndAddDomainPermanentName "searchgpt.com" "83.220.169.155"
 
 nameRule="option name 'Block_UDP_443'"
 str=$(grep -i "$nameRule" /etc/config/firewall)

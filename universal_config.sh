@@ -402,7 +402,7 @@ firewall
 https-dns-proxy
 youtubeUnblock
 dhcp"
-URL="https://raw.githubusercontent.com/routerich/RouterichAX3000_configs/refs/heads/beta"
+URL="https://raw.githubusercontent.com/routerich/RouterichAX3000_configs/refs/heads/main"
 
 checkPackageAndInstall "https-dns-proxy" "0"
 
@@ -499,7 +499,7 @@ then
 fi
 
 printf "\033[32;1mAutomatic generate config AmneziaWG WARP (n) or manual input parameters for AmneziaWG (y)...\033[0m\n"
-countRepeatAWGGen=5
+countRepeatAWGGen=2
 echo "Input manual parameters AmneziaWG? (y/n): "
 read is_manual_input_parameters
 currIter=0
@@ -749,7 +749,7 @@ service odhcpd restart
 
 path_podkop_config="/etc/config/podkop"
 path_podkop_config_backup="/root/podkop"
-URL="https://raw.githubusercontent.com/routerich/RouterichAX3000_configs/refs/heads/beta"
+URL="https://raw.githubusercontent.com/routerich/RouterichAX3000_configs/refs/heads/main"
 
 case $varByPass in
 1)
