@@ -704,8 +704,10 @@ do
 		if ping -c 1 -I $INTERFACE_NAME $pingAddress >/dev/null 2>&1
 		then
 			isExit=1
+			echo "lolo1"
 		else
 			isExit=0
+			echo "lolo2"
 		fi
 	fi
 done
