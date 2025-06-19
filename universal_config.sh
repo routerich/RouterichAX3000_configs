@@ -512,6 +512,13 @@ isWorkYoutubeUnBlock=0
 # Проверяем код выхода
 if [ $? -eq 0 ]; then
 	printf "\033[32;1myoutubeUnblock well work...\033[0m\n"
+	cronTask="0 4 * * * service youtubeUnblock restart"
+	str=$(grep -i "0 4 \* \* \* service youtubeUnblock restart" /etc/crontabs/root)
+	if [ -z "$str" ] 
+	then
+		echo "Add cron task auto run configure_zapret..."
+		echo "$cronTask" >> /etc/crontabs/root
+	fi
 	isWorkYoutubeUnBlock=1
 else
 	manage_package "youtubeUnblock" "disable" "stop"
@@ -757,6 +764,78 @@ else
 		then
 			wget -O "/etc/config/youtubeUnblock" "$URL/config_files/youtubeUnblock"
 			service youtubeUnblock restart
+
+			echo "Configure dhcp..."
+
+			uci set dhcp.cfg01411c.strictorder='1'
+			uci set dhcp.cfg01411c.filter_aaaa='1'
+			uci add_list dhcp.cfg01411c.server='127.0.0.1#5053'
+			uci add_list dhcp.cfg01411c.server='127.0.0.1#5054'
+			uci add_list dhcp.cfg01411c.server='127.0.0.1#5055'
+			uci add_list dhcp.cfg01411c.server='127.0.0.1#5056'
+			uci add_list dhcp.cfg01411c.server='/*.chatgpt.com/127.0.0.1#5056'
+			uci add_list dhcp.cfg01411c.server='/*.oaistatic.com/127.0.0.1#5056'
+			uci add_list dhcp.cfg01411c.server='/*.oaiusercontent.com/127.0.0.1#5056'
+			uci add_list dhcp.cfg01411c.server='/*.openai.com/127.0.0.1#5056'
+			uci add_list dhcp.cfg01411c.server='/*.microsoft.com/127.0.0.1#5056'
+			uci add_list dhcp.cfg01411c.server='/*.windowsupdate.com/127.0.0.1#5056'
+			uci add_list dhcp.cfg01411c.server='/*.bing.com/127.0.0.1#5056'
+			uci add_list dhcp.cfg01411c.server='/*.supercell.com/127.0.0.1#5056'
+			uci add_list dhcp.cfg01411c.server='/*.seeurlpcl.com/127.0.0.1#5056'
+			uci add_list dhcp.cfg01411c.server='/*.supercellid.com/127.0.0.1#5056'
+			uci add_list dhcp.cfg01411c.server='/*.supercellgames.com/127.0.0.1#5056'
+			uci add_list dhcp.cfg01411c.server='/*.clashroyale.com/127.0.0.1#5056'
+			uci add_list dhcp.cfg01411c.server='/*.brawlstars.com/127.0.0.1#5056'
+			uci add_list dhcp.cfg01411c.server='/*.clash.com/127.0.0.1#5056'
+			uci add_list dhcp.cfg01411c.server='/*.clashofclans.com/127.0.0.1#5056'
+			uci add_list dhcp.cfg01411c.server='/*.x.ai/127.0.0.1#5056'
+			uci add_list dhcp.cfg01411c.server='/*.grok.com/127.0.0.1#5056'
+			uci add_list dhcp.cfg01411c.server='/*.github.com/127.0.0.1#5056'
+			uci add_list dhcp.cfg01411c.server='/*.forzamotorsport.net/127.0.0.1#5056'
+			uci add_list dhcp.cfg01411c.server='/*.forzaracingchampionship.com/127.0.0.1#5056'
+			uci add_list dhcp.cfg01411c.server='/*.forzarc.com/127.0.0.1#5056'
+			uci add_list dhcp.cfg01411c.server='/*.gamepass.com/127.0.0.1#5056'
+			uci add_list dhcp.cfg01411c.server='/*.orithegame.com/127.0.0.1#5056'
+			uci add_list dhcp.cfg01411c.server='/*.renovacionxboxlive.com/127.0.0.1#5056'
+			uci add_list dhcp.cfg01411c.server='/*.tellmewhygame.com/127.0.0.1#5056'
+			uci add_list dhcp.cfg01411c.server='/*.xbox.co/127.0.0.1#5056'
+			uci add_list dhcp.cfg01411c.server='/*.xbox.com/127.0.0.1#5056'
+			uci add_list dhcp.cfg01411c.server='/*.xbox.eu/127.0.0.1#5056'
+			uci add_list dhcp.cfg01411c.server='/*.xbox.org/127.0.0.1#5056'
+			uci add_list dhcp.cfg01411c.server='/*.xbox360.co/127.0.0.1#5056'
+			uci add_list dhcp.cfg01411c.server='/*.xbox360.com/127.0.0.1#5056'
+			uci add_list dhcp.cfg01411c.server='/*.xbox360.eu/127.0.0.1#5056'
+			uci add_list dhcp.cfg01411c.server='/*.xbox360.org/127.0.0.1#5056'
+			uci add_list dhcp.cfg01411c.server='/*.xboxab.com/127.0.0.1#5056'
+			uci add_list dhcp.cfg01411c.server='/*.xboxgamepass.com/127.0.0.1#5056'
+			uci add_list dhcp.cfg01411c.server='/*.xboxgamestudios.com/127.0.0.1#5056'
+			uci add_list dhcp.cfg01411c.server='/*.xboxlive.cn/127.0.0.1#5056'
+			uci add_list dhcp.cfg01411c.server='/*.xboxlive.com/127.0.0.1#5056'
+			uci add_list dhcp.cfg01411c.server='/*.xboxone.co/127.0.0.1#5056'
+			uci add_list dhcp.cfg01411c.server='/*.xboxone.com/127.0.0.1#5056'
+			uci add_list dhcp.cfg01411c.server='/*.xboxone.eu/127.0.0.1#5056'
+			uci add_list dhcp.cfg01411c.server='/*.xboxplayanywhere.com/127.0.0.1#5056'
+			uci add_list dhcp.cfg01411c.server='/*.xboxservices.com/127.0.0.1#5056'
+			uci add_list dhcp.cfg01411c.server='/*.xboxstudios.com/127.0.0.1#5056'
+			uci add_list dhcp.cfg01411c.server='/*.xbx.lv/127.0.0.1#5056'
+			uci add_list dhcp.cfg01411c.server='/*.sentry.io/127.0.0.1#5056'
+			uci add_list dhcp.cfg01411c.server='/*.usercentrics.eu/127.0.0.1#5056'
+			uci add_list dhcp.cfg01411c.server='/*.recaptcha.net/127.0.0.1#5056'
+			uci add_list dhcp.cfg01411c.server='/*.gstatic.com/127.0.0.1#5056'
+			uci add_list dhcp.cfg01411c.server='/*.brawlstarsgame.com/127.0.0.1#5056'
+			uci commit dhcp
+
+			echo "Add unblock ChatGPT..."
+
+			checkAndAddDomainPermanentName "chatgpt.com" "83.220.169.155"
+			checkAndAddDomainPermanentName "openai.com" "83.220.169.155"
+			checkAndAddDomainPermanentName "webrtc.chatgpt.com" "83.220.169.155"
+			checkAndAddDomainPermanentName "ios.chat.openai.com" "83.220.169.155"
+			checkAndAddDomainPermanentName "searchgpt.com" "83.220.169.155"
+
+			service dnsmasq restart
+			service odhcpd restart
+
 			printf  "\033[32;1mConfigured completed...\033[0m\n"
 		else
 			printf "\033[32;1mOpera proxy not work...Try custom settings router to bypass the locks... Recomendation buy 'VPS' and up 'vless'\033[0m\n"
