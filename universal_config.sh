@@ -402,7 +402,7 @@ firewall
 https-dns-proxy
 youtubeUnblock
 dhcp"
-URL="https://raw.githubusercontent.com/routerich/RouterichAX3000_configs/refs/heads/main"
+URL="https://raw.githubusercontent.com/routerich/RouterichAX3000_configs/refs/heads/beta"
 
 checkPackageAndInstall "https-dns-proxy" "0"
 
@@ -496,6 +496,27 @@ then
   uci set firewall.@rule[-1].dest_port='443'
   uci set firewall.@rule[-1].target='REJECT'
   uci commit firewall
+fi
+
+printf "\033[32;1mCheck work youtubeUnblock..\033[0m\n"
+install_youtubeunblock_packages
+opkg upgrade youtubeUnblock
+opkg upgrade luci-app-youtubeUnblock
+manage_package "youtubeUnblock" "enable" "start"
+wget -O "/etc/config/youtubeUnblock" "$URL/config_files/youtubeUnblockSecond"
+service youtubeUnblock restart
+curl -f -o /dev/null -k --connect-to ::google.com -L -H "Host: mirror.gcr.io" --max-time 360 https://test.googlevideo.com/v2/cimg/android/blobs/sha256:6fd8bdac3da660bde7bd0b6f2b6a46e1b686afb74b9a4614def32532b73f5eaa
+
+isWorkYoutubeUnBlock=0
+
+# Проверяем код выхода
+if [ $? -eq 0 ]; then
+	printf "\033[32;1myoutubeUnblock well work...\033[0m\n"
+	isWorkYoutubeUnBlock=1
+else
+	manage_package "youtubeUnblock" "disable" "stop"
+	printf "\033[32;1myoutubeUnblock not work...\033[0m\n"
+	isWorkYoutubeUnBlock=0
 fi
 
 printf "\033[32;1mAutomatic generate config AmneziaWG WARP (n) or manual input parameters for AmneziaWG (y)...\033[0m\n"
@@ -598,8 +619,6 @@ do
 			EndpointPort=$(echo "$Endpoint" | cut -d':' -f2)
 		fi
 	fi
-
-	echo "$currIter !!! --- isExit = $isExit"
 	
 	if [ "$isExit" = "2" ] 
 	then
@@ -704,44 +723,41 @@ do
 		if ping -c 1 -I $INTERFACE_NAME $pingAddress >/dev/null 2>&1
 		then
 			isExit=1
-			echo "lolo1"
 		else
 			isExit=0
-			echo "lolo2"
 		fi
 	fi
 done
-
-echo "isExit = $isExit"
 
 varByPass=0
 
 if [ "$isExit" = "1" ]
 then
 	printf "\033[32;1mAWG WARP well work...\033[0m\n"
-	varByPass=1
-else
-    printf "\033[32;1mAWG WARP not work...Try work youtubeunblock...Please wait...\033[0m\n"
-	install_youtubeunblock_packages
-	opkg upgrade youtubeUnblock
-	opkg upgrade luci-app-youtubeUnblock
-    manage_package "youtubeUnblock" "enable" "start"
-	wget -O "/etc/config/youtubeUnblock" "$URL/config_files/youtubeUnblockSecond"
-	service youtubeUnblock restart
-	curl -f -o /dev/null -k --connect-to ::google.com -L -H "Host: mirror.gcr.io" --max-time 360 https://test.googlevideo.com/v2/cimg/android/blobs/sha256:6fd8bdac3da660bde7bd0b6f2b6a46e1b686afb74b9a4614def32532b73f5eaa
-
-	# Проверяем код выхода
-	if [ $? -eq 0 ]; then
-		printf "\033[32;1myoutubeUnblock well work...\033[0m\n"
-		varByPass=2
+	if [ "$isWorkYoutubeUnBlock" = "1" ] 
+	then
+		varByPass=1
 	else
-		manage_package "youtubeUnblock" "disable" "stop"
-		printf "\033[32;1myoutubeUnblock not work...Try opera proxy...\033[0m\n"
-		service sing-box restart
-		sing-box tools fetch ifconfig.co -D /etc/sing-box/
-		if [ $? -eq 0 ]; then
-			printf "\033[32;1mOpera proxy well work...\033[0m\n"
+		varByPass=2
+	fi
+else
+	printf "\033[32;1mAWG WARP not work.....Try opera proxy...\033[0m\n"
+	service sing-box restart
+	sing-box tools fetch ifconfig.co -D /etc/sing-box/
+	if [ $? -eq 0 ]; then
+		printf "\033[32;1mOpera proxy well work...\033[0m\n"
+		if [ "$isWorkYoutubeUnBlock" = "1" ] 
+		then
 			varByPass=3
+		else
+			varByPass=4
+		fi
+	else
+		if [ "$isWorkYoutubeUnBlock" = "1" ]
+		then
+			wget -O "/etc/config/youtubeUnblock" "$URL/config_files/youtubeUnblock"
+			service youtubeUnblock restart
+			printf  "\033[32;1mConfigured completed...\033[0m\n"
 		else
 			printf "\033[32;1mOpera proxy not work...Try custom settings router to bypass the locks... Recomendation buy 'VPS' and up 'vless'\033[0m\n"
 			exit 1
@@ -755,21 +771,26 @@ service odhcpd restart
 
 path_podkop_config="/etc/config/podkop"
 path_podkop_config_backup="/root/podkop"
-URL="https://raw.githubusercontent.com/routerich/RouterichAX3000_configs/refs/heads/main"
+URL="https://raw.githubusercontent.com/routerich/RouterichAX3000_configs/refs/heads/beta"
 
 case $varByPass in
 1)
+	nameFileReplacePodkop="podkopNoYoutubeDiscord"
+	printf  "\033[32;1mStop and disabled service 'ruantiblock'...\033[0m\n"
+	manage_package "ruantiblock" "disable" "stop"
+	;;
+2)
 	nameFileReplacePodkop="podkop"
 	printf  "\033[32;1mStop and disabled service 'youtubeUnblock' and 'ruantiblock'...\033[0m\n"
 	manage_package "youtubeUnblock" "disable" "stop"
 	manage_package "ruantiblock" "disable" "stop"
 	;;
-2)
+3)
 	nameFileReplacePodkop="podkopSecond"
 	printf  "\033[32;1mStop and disabled service 'ruantiblock'...\033[0m\n"
 	manage_package "ruantiblock" "disable" "stop"
 	;;
-3)
+4)
 	nameFileReplacePodkop="podkopSecondYoutube"
 	printf  "\033[32;1mStop and disabled service 'youtubeUnblock' and 'ruantiblock'...\033[0m\n"
 	manage_package "youtubeUnblock" "disable" "stop"
