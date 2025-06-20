@@ -841,6 +841,8 @@ else
 	isWorkWARP=0
 fi
 
+echo "isWorkYoutubeUnBlock = $isWorkYoutubeUnBlock, isWorkOperaProxy = $isWorkOperaProxy, isWorkWARP = $isWorkWARP"
+
 if [ "$isWorkYoutubeUnBlock" = "1" ] && [ "$isWorkOperaProxy" = "1" ] && [ "$isWorkWARP" = "1" ] 
 then
 	varByPas=1
@@ -870,6 +872,8 @@ fi
 printf  "\033[32;1mRestart service dnsmasq, odhcpd...\033[0m\n"
 service dnsmasq restart
 service odhcpd restart
+
+echo "varByPas1 = $varByPas"
 
 path_podkop_config="/etc/config/podkop"
 path_podkop_config_backup="/root/podkop"
@@ -936,6 +940,8 @@ case $varByPass in
 	exit 1
 esac
 
+echo "varByPas2 = $varByPas"
+
 PACKAGE="podkop"
 REQUIRED_VERSION="0.2.5-1"
 
@@ -979,6 +985,8 @@ else
 		echo "Podkop installed.."
 	fi
 fi
+
+echo "varByPas3 = $varByPas"
 
 printf  "\033[32;1mStart and enable service 'https-dns-proxy'...\033[0m\n"
 manage_package "https-dns-proxy" "enable" "start"
