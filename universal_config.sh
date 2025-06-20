@@ -524,6 +524,13 @@ else
 	manage_package "youtubeUnblock" "disable" "stop"
 	printf "\033[32;1myoutubeUnblock not work...\033[0m\n"
 	isWorkYoutubeUnBlock=0
+	str=$(grep -i "0 4 \* \* \* service youtubeUnblock restart" /etc/crontabs/root)
+	if [ ! -z "$str" ]
+	then
+		grep -v "0 4 \* \* \* service youtubeUnblock restart" /etc/crontabs/root > /etc/crontabs/temp
+		cp -f "/etc/crontabs/temp" "/etc/crontabs/root"
+		rm -f "/etc/crontabs/temp"
+	fi
 fi
 
 printf "\033[32;1mAutomatic generate config AmneziaWG WARP (n) or manual input parameters for AmneziaWG (y)...\033[0m\n"
