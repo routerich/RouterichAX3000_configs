@@ -937,6 +937,7 @@ case $varByPass in
 	exit 1
 	;;
 *)
+    echo "buy buy"
 	exit 1
 esac
 
