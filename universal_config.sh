@@ -935,7 +935,7 @@ case $varByPass in
 	exit 1
 	;;
 *)
-    echo "buy buy"
+    echo "Unknown error. Please send message in group Telegram t.me/routerich"
 	exit 1
 esac
 
