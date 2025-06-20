@@ -281,6 +281,80 @@ checkAndAddDomainPermanentName()
   fi
 }
 
+byPassGeoBlockComssDNS()
+{
+	echo "Configure dhcp..."
+
+	uci set dhcp.cfg01411c.strictorder='1'
+	uci set dhcp.cfg01411c.filter_aaaa='1'
+	uci add_list dhcp.cfg01411c.server='127.0.0.1#5053'
+	uci add_list dhcp.cfg01411c.server='127.0.0.1#5054'
+	uci add_list dhcp.cfg01411c.server='127.0.0.1#5055'
+	uci add_list dhcp.cfg01411c.server='127.0.0.1#5056'
+	uci add_list dhcp.cfg01411c.server='/*.chatgpt.com/127.0.0.1#5056'
+	uci add_list dhcp.cfg01411c.server='/*.oaistatic.com/127.0.0.1#5056'
+	uci add_list dhcp.cfg01411c.server='/*.oaiusercontent.com/127.0.0.1#5056'
+	uci add_list dhcp.cfg01411c.server='/*.openai.com/127.0.0.1#5056'
+	uci add_list dhcp.cfg01411c.server='/*.microsoft.com/127.0.0.1#5056'
+	uci add_list dhcp.cfg01411c.server='/*.windowsupdate.com/127.0.0.1#5056'
+	uci add_list dhcp.cfg01411c.server='/*.bing.com/127.0.0.1#5056'
+	uci add_list dhcp.cfg01411c.server='/*.supercell.com/127.0.0.1#5056'
+	uci add_list dhcp.cfg01411c.server='/*.seeurlpcl.com/127.0.0.1#5056'
+	uci add_list dhcp.cfg01411c.server='/*.supercellid.com/127.0.0.1#5056'
+	uci add_list dhcp.cfg01411c.server='/*.supercellgames.com/127.0.0.1#5056'
+	uci add_list dhcp.cfg01411c.server='/*.clashroyale.com/127.0.0.1#5056'
+	uci add_list dhcp.cfg01411c.server='/*.brawlstars.com/127.0.0.1#5056'
+	uci add_list dhcp.cfg01411c.server='/*.clash.com/127.0.0.1#5056'
+	uci add_list dhcp.cfg01411c.server='/*.clashofclans.com/127.0.0.1#5056'
+	uci add_list dhcp.cfg01411c.server='/*.x.ai/127.0.0.1#5056'
+	uci add_list dhcp.cfg01411c.server='/*.grok.com/127.0.0.1#5056'
+	uci add_list dhcp.cfg01411c.server='/*.github.com/127.0.0.1#5056'
+	uci add_list dhcp.cfg01411c.server='/*.forzamotorsport.net/127.0.0.1#5056'
+	uci add_list dhcp.cfg01411c.server='/*.forzaracingchampionship.com/127.0.0.1#5056'
+	uci add_list dhcp.cfg01411c.server='/*.forzarc.com/127.0.0.1#5056'
+	uci add_list dhcp.cfg01411c.server='/*.gamepass.com/127.0.0.1#5056'
+	uci add_list dhcp.cfg01411c.server='/*.orithegame.com/127.0.0.1#5056'
+	uci add_list dhcp.cfg01411c.server='/*.renovacionxboxlive.com/127.0.0.1#5056'
+	uci add_list dhcp.cfg01411c.server='/*.tellmewhygame.com/127.0.0.1#5056'
+	uci add_list dhcp.cfg01411c.server='/*.xbox.co/127.0.0.1#5056'
+	uci add_list dhcp.cfg01411c.server='/*.xbox.com/127.0.0.1#5056'
+	uci add_list dhcp.cfg01411c.server='/*.xbox.eu/127.0.0.1#5056'
+	uci add_list dhcp.cfg01411c.server='/*.xbox.org/127.0.0.1#5056'
+	uci add_list dhcp.cfg01411c.server='/*.xbox360.co/127.0.0.1#5056'
+	uci add_list dhcp.cfg01411c.server='/*.xbox360.com/127.0.0.1#5056'
+	uci add_list dhcp.cfg01411c.server='/*.xbox360.eu/127.0.0.1#5056'
+	uci add_list dhcp.cfg01411c.server='/*.xbox360.org/127.0.0.1#5056'
+	uci add_list dhcp.cfg01411c.server='/*.xboxab.com/127.0.0.1#5056'
+	uci add_list dhcp.cfg01411c.server='/*.xboxgamepass.com/127.0.0.1#5056'
+	uci add_list dhcp.cfg01411c.server='/*.xboxgamestudios.com/127.0.0.1#5056'
+	uci add_list dhcp.cfg01411c.server='/*.xboxlive.cn/127.0.0.1#5056'
+	uci add_list dhcp.cfg01411c.server='/*.xboxlive.com/127.0.0.1#5056'
+	uci add_list dhcp.cfg01411c.server='/*.xboxone.co/127.0.0.1#5056'
+	uci add_list dhcp.cfg01411c.server='/*.xboxone.com/127.0.0.1#5056'
+	uci add_list dhcp.cfg01411c.server='/*.xboxone.eu/127.0.0.1#5056'
+	uci add_list dhcp.cfg01411c.server='/*.xboxplayanywhere.com/127.0.0.1#5056'
+	uci add_list dhcp.cfg01411c.server='/*.xboxservices.com/127.0.0.1#5056'
+	uci add_list dhcp.cfg01411c.server='/*.xboxstudios.com/127.0.0.1#5056'
+	uci add_list dhcp.cfg01411c.server='/*.xbx.lv/127.0.0.1#5056'
+	uci add_list dhcp.cfg01411c.server='/*.sentry.io/127.0.0.1#5056'
+	uci add_list dhcp.cfg01411c.server='/*.usercentrics.eu/127.0.0.1#5056'
+	uci add_list dhcp.cfg01411c.server='/*.recaptcha.net/127.0.0.1#5056'
+	uci add_list dhcp.cfg01411c.server='/*.gstatic.com/127.0.0.1#5056'
+	uci add_list dhcp.cfg01411c.server='/*.brawlstarsgame.com/127.0.0.1#5056'
+	uci commit dhcp
+
+	echo "Add unblock ChatGPT..."
+
+	checkAndAddDomainPermanentName "chatgpt.com" "83.220.169.155"
+	checkAndAddDomainPermanentName "openai.com" "83.220.169.155"
+	checkAndAddDomainPermanentName "webrtc.chatgpt.com" "83.220.169.155"
+	checkAndAddDomainPermanentName "ios.chat.openai.com" "83.220.169.155"
+	checkAndAddDomainPermanentName "searchgpt.com" "83.220.169.155"
+
+	service dnsmasq restart
+	service odhcpd restart
+}
+
 install_youtubeunblock_packages() {
     PKGARCH=$(opkg print-architecture | awk 'BEGIN {max=0} {if ($3 > max) {max = $3; arch = $2}} END {print arch}')
     VERSION=$(ubus call system board | jsonfilter -e '@.release.version')
@@ -533,6 +607,18 @@ else
 	fi
 fi
 
+isWorkOperaProxy=0
+printf "\033[32;1mAWG WARP not work.....Try opera proxy...\033[0m\n"
+service sing-box restart
+sing-box tools fetch ifconfig.co -D /etc/sing-box/
+if [ $? -eq 0 ]; then
+	printf "\033[32;1mOpera proxy well work...\033[0m\n"
+	isWorkOperaProxy=1
+else
+	printf "\033[32;1mOpera proxy not work...\033[0m\n"
+	isWorkOperaProxy=0
+fi
+
 printf "\033[32;1mAutomatic generate config AmneziaWG WARP (n) or manual input parameters for AmneziaWG (y)...\033[0m\n"
 countRepeatAWGGen=2
 echo "Input manual parameters AmneziaWG? (y/n): "
@@ -744,112 +830,41 @@ do
 done
 
 varByPass=0
+isWorkWARP=0
 
 if [ "$isExit" = "1" ]
 then
 	printf "\033[32;1mAWG WARP well work...\033[0m\n"
-	if [ "$isWorkYoutubeUnBlock" = "1" ] 
-	then
-		varByPass=1
-	else
-		varByPass=2
-	fi
+	isWorkWARP=1
 else
 	printf "\033[32;1mAWG WARP not work.....Try opera proxy...\033[0m\n"
-	service sing-box restart
-	sing-box tools fetch ifconfig.co -D /etc/sing-box/
-	if [ $? -eq 0 ]; then
-		printf "\033[32;1mOpera proxy well work...\033[0m\n"
-		if [ "$isWorkYoutubeUnBlock" = "1" ] 
-		then
-			varByPass=3
-		else
-			varByPass=4
-		fi
-	else
-		if [ "$isWorkYoutubeUnBlock" = "1" ]
-		then
-			wget -O "/etc/config/youtubeUnblock" "$URL/config_files/youtubeUnblock"
-			service youtubeUnblock restart
+	isWorkWARP=0
+fi
 
-			echo "Configure dhcp..."
-
-			uci set dhcp.cfg01411c.strictorder='1'
-			uci set dhcp.cfg01411c.filter_aaaa='1'
-			uci add_list dhcp.cfg01411c.server='127.0.0.1#5053'
-			uci add_list dhcp.cfg01411c.server='127.0.0.1#5054'
-			uci add_list dhcp.cfg01411c.server='127.0.0.1#5055'
-			uci add_list dhcp.cfg01411c.server='127.0.0.1#5056'
-			uci add_list dhcp.cfg01411c.server='/*.chatgpt.com/127.0.0.1#5056'
-			uci add_list dhcp.cfg01411c.server='/*.oaistatic.com/127.0.0.1#5056'
-			uci add_list dhcp.cfg01411c.server='/*.oaiusercontent.com/127.0.0.1#5056'
-			uci add_list dhcp.cfg01411c.server='/*.openai.com/127.0.0.1#5056'
-			uci add_list dhcp.cfg01411c.server='/*.microsoft.com/127.0.0.1#5056'
-			uci add_list dhcp.cfg01411c.server='/*.windowsupdate.com/127.0.0.1#5056'
-			uci add_list dhcp.cfg01411c.server='/*.bing.com/127.0.0.1#5056'
-			uci add_list dhcp.cfg01411c.server='/*.supercell.com/127.0.0.1#5056'
-			uci add_list dhcp.cfg01411c.server='/*.seeurlpcl.com/127.0.0.1#5056'
-			uci add_list dhcp.cfg01411c.server='/*.supercellid.com/127.0.0.1#5056'
-			uci add_list dhcp.cfg01411c.server='/*.supercellgames.com/127.0.0.1#5056'
-			uci add_list dhcp.cfg01411c.server='/*.clashroyale.com/127.0.0.1#5056'
-			uci add_list dhcp.cfg01411c.server='/*.brawlstars.com/127.0.0.1#5056'
-			uci add_list dhcp.cfg01411c.server='/*.clash.com/127.0.0.1#5056'
-			uci add_list dhcp.cfg01411c.server='/*.clashofclans.com/127.0.0.1#5056'
-			uci add_list dhcp.cfg01411c.server='/*.x.ai/127.0.0.1#5056'
-			uci add_list dhcp.cfg01411c.server='/*.grok.com/127.0.0.1#5056'
-			uci add_list dhcp.cfg01411c.server='/*.github.com/127.0.0.1#5056'
-			uci add_list dhcp.cfg01411c.server='/*.forzamotorsport.net/127.0.0.1#5056'
-			uci add_list dhcp.cfg01411c.server='/*.forzaracingchampionship.com/127.0.0.1#5056'
-			uci add_list dhcp.cfg01411c.server='/*.forzarc.com/127.0.0.1#5056'
-			uci add_list dhcp.cfg01411c.server='/*.gamepass.com/127.0.0.1#5056'
-			uci add_list dhcp.cfg01411c.server='/*.orithegame.com/127.0.0.1#5056'
-			uci add_list dhcp.cfg01411c.server='/*.renovacionxboxlive.com/127.0.0.1#5056'
-			uci add_list dhcp.cfg01411c.server='/*.tellmewhygame.com/127.0.0.1#5056'
-			uci add_list dhcp.cfg01411c.server='/*.xbox.co/127.0.0.1#5056'
-			uci add_list dhcp.cfg01411c.server='/*.xbox.com/127.0.0.1#5056'
-			uci add_list dhcp.cfg01411c.server='/*.xbox.eu/127.0.0.1#5056'
-			uci add_list dhcp.cfg01411c.server='/*.xbox.org/127.0.0.1#5056'
-			uci add_list dhcp.cfg01411c.server='/*.xbox360.co/127.0.0.1#5056'
-			uci add_list dhcp.cfg01411c.server='/*.xbox360.com/127.0.0.1#5056'
-			uci add_list dhcp.cfg01411c.server='/*.xbox360.eu/127.0.0.1#5056'
-			uci add_list dhcp.cfg01411c.server='/*.xbox360.org/127.0.0.1#5056'
-			uci add_list dhcp.cfg01411c.server='/*.xboxab.com/127.0.0.1#5056'
-			uci add_list dhcp.cfg01411c.server='/*.xboxgamepass.com/127.0.0.1#5056'
-			uci add_list dhcp.cfg01411c.server='/*.xboxgamestudios.com/127.0.0.1#5056'
-			uci add_list dhcp.cfg01411c.server='/*.xboxlive.cn/127.0.0.1#5056'
-			uci add_list dhcp.cfg01411c.server='/*.xboxlive.com/127.0.0.1#5056'
-			uci add_list dhcp.cfg01411c.server='/*.xboxone.co/127.0.0.1#5056'
-			uci add_list dhcp.cfg01411c.server='/*.xboxone.com/127.0.0.1#5056'
-			uci add_list dhcp.cfg01411c.server='/*.xboxone.eu/127.0.0.1#5056'
-			uci add_list dhcp.cfg01411c.server='/*.xboxplayanywhere.com/127.0.0.1#5056'
-			uci add_list dhcp.cfg01411c.server='/*.xboxservices.com/127.0.0.1#5056'
-			uci add_list dhcp.cfg01411c.server='/*.xboxstudios.com/127.0.0.1#5056'
-			uci add_list dhcp.cfg01411c.server='/*.xbx.lv/127.0.0.1#5056'
-			uci add_list dhcp.cfg01411c.server='/*.sentry.io/127.0.0.1#5056'
-			uci add_list dhcp.cfg01411c.server='/*.usercentrics.eu/127.0.0.1#5056'
-			uci add_list dhcp.cfg01411c.server='/*.recaptcha.net/127.0.0.1#5056'
-			uci add_list dhcp.cfg01411c.server='/*.gstatic.com/127.0.0.1#5056'
-			uci add_list dhcp.cfg01411c.server='/*.brawlstarsgame.com/127.0.0.1#5056'
-			uci commit dhcp
-
-			echo "Add unblock ChatGPT..."
-
-			checkAndAddDomainPermanentName "chatgpt.com" "83.220.169.155"
-			checkAndAddDomainPermanentName "openai.com" "83.220.169.155"
-			checkAndAddDomainPermanentName "webrtc.chatgpt.com" "83.220.169.155"
-			checkAndAddDomainPermanentName "ios.chat.openai.com" "83.220.169.155"
-			checkAndAddDomainPermanentName "searchgpt.com" "83.220.169.155"
-
-			service dnsmasq restart
-			service odhcpd restart
-
-			printf  "\033[32;1mConfigured completed...\033[0m\n"
-			exit 1
-		else
-			printf "\033[32;1mOpera proxy not work...Try custom settings router to bypass the locks... Recomendation buy 'VPS' and up 'vless'\033[0m\n"
-			exit 1
-		fi
-	fi
+if [ "$isWorkYoutubeUnBlock" = "1" ] && [ "$isWorkOperaProxy" = "1" ] && [ "$isWorkWARP" = "1" ] 
+then
+	varByPas=1
+elif [ "$isWorkYoutubeUnBlock" = "0" ] && [ "$isWorkOperaProxy" = "1" ] && [ "$isWorkWARP" = "1" ] 
+then
+	varByPas=2
+elif [ "$isWorkYoutubeUnBlock" = "1" ] && [ "$isWorkOperaProxy" = "1" ] && [ "$isWorkWARP" = "0" ] 
+then
+	varByPas=3
+elif [ "$isWorkYoutubeUnBlock" = "0" ] && [ "$isWorkOperaProxy" = "1" ] && [ "$isWorkWARP" = "0" ] 
+then
+	varByPas=4
+elif [ "$isWorkYoutubeUnBlock" = "1" ] && [ "$isWorkOperaProxy" = "0" ] && [ "$isWorkWARP" = "0" ] 
+then
+	varByPas=5
+elif [ "$isWorkYoutubeUnBlock" = "0" ] && [ "$isWorkOperaProxy" = "0" ] && [ "$isWorkWARP" = "1" ] 
+then
+	varByPas=6
+elif [ "$isWorkYoutubeUnBlock" = "1" ] && [ "$isWorkOperaProxy" = "0" ] && [ "$isWorkWARP" = "1" ] 
+then
+	varByPas=7
+elif [ "$isWorkYoutubeUnBlock" = "0" ] && [ "$isWorkOperaProxy" = "0" ] && [ "$isWorkWARP" = "0" ] 
+then
+	varByPas=8
 fi
 
 printf  "\033[32;1mRestart service dnsmasq, odhcpd...\033[0m\n"
@@ -865,6 +880,8 @@ case $varByPass in
 	nameFileReplacePodkop="podkopNoYoutubeDiscord"
 	printf  "\033[32;1mStop and disabled service 'ruantiblock'...\033[0m\n"
 	manage_package "ruantiblock" "disable" "stop"
+	wget -O "/etc/config/youtubeUnblock" "$URL/config_files/youtubeUnblockSecond"
+	service youtubeUnblock restart
 	;;
 2)
 	nameFileReplacePodkop="podkop"
@@ -876,6 +893,8 @@ case $varByPass in
 	nameFileReplacePodkop="podkopSecond"
 	printf  "\033[32;1mStop and disabled service 'ruantiblock'...\033[0m\n"
 	manage_package "ruantiblock" "disable" "stop"
+	wget -O "/etc/config/youtubeUnblock" "$URL/config_files/youtubeUnblockSecond"
+	service youtubeUnblock restart
 	;;
 4)
 	nameFileReplacePodkop="podkopSecondYoutube"
@@ -883,8 +902,38 @@ case $varByPass in
 	manage_package "youtubeUnblock" "disable" "stop"
 	manage_package "ruantiblock" "disable" "stop"
 	;;
+5)
+	nameFileReplacePodkop="podkopSecondYoutube"
+	printf  "\033[32;1mStop and disabled service 'ruantiblock' and 'podkop'...\033[0m\n"
+	manage_package "ruantiblock" "disable" "stop"
+	manage_package "podkop" "disable" "stop"
+	wget -O "/etc/config/youtubeUnblock" "$URL/config_files/youtubeUnblock"
+	service youtubeUnblock restart
+	byPassGeoBlockComssDNS
+	printf  "\033[32;1mConfigured completed...\033[0m\n"
+	exit 1
+	;;
+6)
+	nameFileReplacePodkop="podkopWARP"
+	printf  "\033[32;1mStop and disabled service 'youtubeUnblock' and 'ruantiblock'...\033[0m\n"
+	manage_package "youtubeUnblock" "disable" "stop"
+	manage_package "ruantiblock" "disable" "stop"
+	byPassGeoBlockComssDNS
+	;;
+7)
+	nameFileReplacePodkop="podkopWARPNoYoutubeDiscord"
+	printf  "\033[32;1mStop and disabled service 'youtubeUnblock' and 'ruantiblock'...\033[0m\n"
+	manage_package "ruantiblock" "disable" "stop"
+	wget -O "/etc/config/youtubeUnblock" "$URL/config_files/youtubeUnblockSecond"
+	service youtubeUnblock restart
+	byPassGeoBlockComssDNS
+	;;
+8)
+	printf "\033[32;1mTry custom settings router to bypass the locks... Recomendation buy 'VPS' and up 'vless'\033[0m\n"
+	exit 1
+	;;
 *)
-	nameFileReplacePodkop="podkop"
+	exit 1
 esac
 
 PACKAGE="podkop"
