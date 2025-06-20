@@ -845,35 +845,35 @@ echo "isWorkYoutubeUnBlock = $isWorkYoutubeUnBlock, isWorkOperaProxy = $isWorkOp
 
 if [ "$isWorkYoutubeUnBlock" = "1" ] && [ "$isWorkOperaProxy" = "1" ] && [ "$isWorkWARP" = "1" ] 
 then
-	varByPas=1
+	varByPass=1
 elif [ "$isWorkYoutubeUnBlock" = "0" ] && [ "$isWorkOperaProxy" = "1" ] && [ "$isWorkWARP" = "1" ] 
 then
-	varByPas=2
+	varByPass=2
 elif [ "$isWorkYoutubeUnBlock" = "1" ] && [ "$isWorkOperaProxy" = "1" ] && [ "$isWorkWARP" = "0" ] 
 then
-	varByPas=3
+	varByPass=3
 elif [ "$isWorkYoutubeUnBlock" = "0" ] && [ "$isWorkOperaProxy" = "1" ] && [ "$isWorkWARP" = "0" ] 
 then
-	varByPas=4
+	varByPass=4
 elif [ "$isWorkYoutubeUnBlock" = "1" ] && [ "$isWorkOperaProxy" = "0" ] && [ "$isWorkWARP" = "0" ] 
 then
-	varByPas=5
+	varByPass=5
 elif [ "$isWorkYoutubeUnBlock" = "0" ] && [ "$isWorkOperaProxy" = "0" ] && [ "$isWorkWARP" = "1" ] 
 then
-	varByPas=6
+	varByPass=6
 elif [ "$isWorkYoutubeUnBlock" = "1" ] && [ "$isWorkOperaProxy" = "0" ] && [ "$isWorkWARP" = "1" ] 
 then
-	varByPas=7
+	varByPass=7
 elif [ "$isWorkYoutubeUnBlock" = "0" ] && [ "$isWorkOperaProxy" = "0" ] && [ "$isWorkWARP" = "0" ] 
 then
-	varByPas=8
+	varByPass=8
 fi
 
 printf  "\033[32;1mRestart service dnsmasq, odhcpd...\033[0m\n"
 service dnsmasq restart
 service odhcpd restart
 
-echo "varByPas1 = $varByPas"
+echo "varByPass1 = $varByPass"
 
 path_podkop_config="/etc/config/podkop"
 path_podkop_config_backup="/root/podkop"
@@ -941,7 +941,7 @@ case $varByPass in
 	exit 1
 esac
 
-echo "varByPas2 = $varByPas"
+echo "varByPass2 = $varByPass"
 
 PACKAGE="podkop"
 REQUIRED_VERSION="0.2.5-1"
@@ -987,7 +987,7 @@ else
 	fi
 fi
 
-echo "varByPas3 = $varByPas"
+echo "varByPass3 = $varByPass"
 
 printf  "\033[32;1mStart and enable service 'https-dns-proxy'...\033[0m\n"
 manage_package "https-dns-proxy" "enable" "start"
