@@ -873,8 +873,6 @@ printf  "\033[32;1mRestart service dnsmasq, odhcpd...\033[0m\n"
 service dnsmasq restart
 service odhcpd restart
 
-echo "varByPass1 = $varByPass"
-
 path_podkop_config="/etc/config/podkop"
 path_podkop_config_backup="/root/podkop"
 URL="https://raw.githubusercontent.com/routerich/RouterichAX3000_configs/refs/heads/beta"
@@ -941,8 +939,6 @@ case $varByPass in
 	exit 1
 esac
 
-echo "varByPass2 = $varByPass"
-
 PACKAGE="podkop"
 REQUIRED_VERSION="0.2.5-1"
 
@@ -986,8 +982,6 @@ else
 		echo "Podkop installed.."
 	fi
 fi
-
-echo "varByPass3 = $varByPass"
 
 printf  "\033[32;1mStart and enable service 'https-dns-proxy'...\033[0m\n"
 manage_package "https-dns-proxy" "enable" "start"
