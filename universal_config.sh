@@ -355,6 +355,20 @@ byPassGeoBlockComssDNS()
 	service odhcpd restart
 }
 
+deleteByPassGeoBlockComssDNS()
+{
+	uci del dhcp.cfg01411c.server
+	uci add_list dhcp.cfg01411c.server='127.0.0.1#5053'
+	uci add_list dhcp.cfg01411c.server='127.0.0.1#5054'
+	uci add_list dhcp.cfg01411c.server='127.0.0.1#5055'
+	uci add_list dhcp.cfg01411c.server='127.0.0.1#5056'
+	while uci del dhcp.@domain[-1] ; do : ;  done;
+	uci commit dhcp
+	service dnsmasq restart
+	service odhcpd restart
+	service https-dns-proxy restart
+}
+
 install_youtubeunblock_packages() {
     PKGARCH=$(opkg print-architecture | awk 'BEGIN {max=0} {if ($3 > max) {max = $3; arch = $2}} END {print arch}')
     VERSION=$(ubus call system board | jsonfilter -e '@.release.version')
@@ -437,6 +451,19 @@ install_youtubeunblock_packages() {
 
     rm -rf "$AWG_DIR"
 }
+
+if [ "$1" = "y" ] || [ "$1" = "Y" ]
+then
+	is_manual_input_parameters="y"
+else
+	is_manual_input_parameters="n"
+fi
+if [ "$2" = "y" ] || [ "$2" = "Y" ]
+then
+	is_reconfig_podkop="y"
+else
+	is_reconfig_podkop="n"
+fi
 
 echo "Update list packages..."
 opkg update
@@ -619,10 +646,10 @@ else
 	isWorkOperaProxy=0
 fi
 
-printf "\033[32;1mAutomatic generate config AmneziaWG WARP (n) or manual input parameters for AmneziaWG (y)...\033[0m\n"
+#printf "\033[32;1mAutomatic generate config AmneziaWG WARP (n) or manual input parameters for AmneziaWG (y)...\033[0m\n"
 countRepeatAWGGen=2
-echo "Input manual parameters AmneziaWG? (y/n): "
-read is_manual_input_parameters
+#echo "Input manual parameters AmneziaWG? (y/n): "
+#read is_manual_input_parameters
 currIter=0
 isExit=0
 while [ $currIter -lt $countRepeatAWGGen ] && [ "$isExit" = "0" ]
@@ -877,6 +904,8 @@ path_podkop_config="/etc/config/podkop"
 path_podkop_config_backup="/root/podkop"
 URL="https://raw.githubusercontent.com/routerich/RouterichAX3000_configs/refs/heads/beta"
 
+messageComplete=""
+
 case $varByPass in
 1)
 	nameFileReplacePodkop="podkopNoYoutubeDiscord"
@@ -884,12 +913,16 @@ case $varByPass in
 	manage_package "ruantiblock" "disable" "stop"
 	wget -O "/etc/config/youtubeUnblock" "$URL/config_files/youtubeUnblockSecond"
 	service youtubeUnblock restart
+	deleteByPassGeoBlockComssDNS
+	messageComplete="ByPass block for Method 1: AWG WARP + youtubeunblock + Opera Proxy...Configured completed..."
 	;;
 2)
 	nameFileReplacePodkop="podkop"
 	printf  "\033[32;1mStop and disabled service 'youtubeUnblock' and 'ruantiblock'...\033[0m\n"
 	manage_package "youtubeUnblock" "disable" "stop"
 	manage_package "ruantiblock" "disable" "stop"
+	deleteByPassGeoBlockComssDNS
+	messageComplete="ByPass block for Method 2: AWG WARP + Opera Proxy...Configured completed..."
 	;;
 3)
 	nameFileReplacePodkop="podkopSecond"
@@ -897,12 +930,16 @@ case $varByPass in
 	manage_package "ruantiblock" "disable" "stop"
 	wget -O "/etc/config/youtubeUnblock" "$URL/config_files/youtubeUnblockSecond"
 	service youtubeUnblock restart
+	deleteByPassGeoBlockComssDNS
+	messageComplete="ByPass block for Method 3: youtubeUnblock + Opera Proxy...Configured completed..."
 	;;
 4)
 	nameFileReplacePodkop="podkopSecondYoutube"
 	printf  "\033[32;1mStop and disabled service 'youtubeUnblock' and 'ruantiblock'...\033[0m\n"
 	manage_package "youtubeUnblock" "disable" "stop"
 	manage_package "ruantiblock" "disable" "stop"
+	deleteByPassGeoBlockComssDNS
+	messageComplete="ByPass block for Method 4: Only Opera Proxy...Configured completed..."
 	;;
 5)
 	nameFileReplacePodkop="podkopSecondYoutube"
@@ -912,7 +949,7 @@ case $varByPass in
 	wget -O "/etc/config/youtubeUnblock" "$URL/config_files/youtubeUnblock"
 	service youtubeUnblock restart
 	byPassGeoBlockComssDNS
-	printf  "\033[32;1mConfigured completed...\033[0m\n"
+	printf "\033[32;1mByPass block for Method 5: youtubeUnblock + ComssDNS for GeoBlock...Configured completed...\033[0m\n"
 	exit 1
 	;;
 6)
@@ -921,14 +958,16 @@ case $varByPass in
 	manage_package "youtubeUnblock" "disable" "stop"
 	manage_package "ruantiblock" "disable" "stop"
 	byPassGeoBlockComssDNS
+	messageComplete="ByPass block for Method 6: AWG WARP + ComssDNS for GeoBlock...Configured completed..."
 	;;
 7)
 	nameFileReplacePodkop="podkopWARPNoYoutubeDiscord"
-	printf  "\033[32;1mStop and disabled service 'youtubeUnblock' and 'ruantiblock'...\033[0m\n"
+	printf  "\033[32;1mStop and disabled service 'ruantiblock'...\033[0m\n"
 	manage_package "ruantiblock" "disable" "stop"
 	wget -O "/etc/config/youtubeUnblock" "$URL/config_files/youtubeUnblockSecond"
 	service youtubeUnblock restart
 	byPassGeoBlockComssDNS
+	messageComplete="ByPass block for Method 7: AWG WARP + youtubeUnblock + ComssDNS for GeoBlock...Configured completed..."
 	;;
 8)
 	printf "\033[32;1mTry custom settings router to bypass the locks... Recomendation buy 'VPS' and up 'vless'\033[0m\n"
@@ -949,9 +988,9 @@ if [ -n "$INSTALLED_VERSION" ] && [ "$INSTALLED_VERSION" != "$REQUIRED_VERSION" 
 fi
 
 if [ -f "/etc/init.d/podkop" ]; then
-	printf "Podkop installed. Reconfigured on AWG WARP and Opera Proxy? (y/n): \n"
-	is_reconfig_podkop="y"
-	read is_reconfig_podkop
+	#printf "Podkop installed. Reconfigured on AWG WARP and Opera Proxy? (y/n): \n"
+	#is_reconfig_podkop="y"
+	#read is_reconfig_podkop
 	if [ "$is_reconfig_podkop" = "y" ] || [ "$is_reconfig_podkop" = "Y" ]; then
 		cp -f "$path_podkop_config" "$path_podkop_config_backup"
 		wget -O "$path_podkop_config" "$URL/config_files/$nameFileReplacePodkop" 
@@ -959,9 +998,9 @@ if [ -f "/etc/init.d/podkop" ]; then
 		echo "Podkop reconfigured..."
 	fi
 else
-	printf "\033[32;1mInstall and configure PODKOP (a tool for point routing of traffic)?? (y/n): \033[0m\n"
+	#printf "\033[32;1mInstall and configure PODKOP (a tool for point routing of traffic)?? (y/n): \033[0m\n"
 	is_install_podkop="y"
-	read is_install_podkop
+	#read is_install_podkop
 
 	if [ "$is_install_podkop" = "y" ] || [ "$is_install_podkop" = "Y" ]; then
 		DOWNLOAD_DIR="/tmp/podkop"
@@ -1011,4 +1050,4 @@ service sing-box restart
 service podkop enable
 service podkop restart
 
-printf  "\033[32;1mConfigured completed...\033[0m\n"
+printf "\033[32;1m$messageComplete...\033[0m\n"
