@@ -1051,4 +1051,4 @@ service sing-box restart
 service podkop enable
 service podkop restart
 
-printf "\033[32;1m$messageComplete...\033[0m\n"
+printf "\033[32;1m$messageComplete\033[0m\n"
