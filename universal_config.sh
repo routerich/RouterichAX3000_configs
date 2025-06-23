@@ -909,7 +909,7 @@ messageComplete=""
 
 case $varByPass in
 1)
-	nameFileReplacePodkop="podkopNoYoutubeDiscord"
+	nameFileReplacePodkop="podkopNoYoutube"
 	printf  "\033[32;1mStop and disabled service 'ruantiblock'...\033[0m\n"
 	manage_package "ruantiblock" "disable" "stop"
 	wget -O "/etc/config/youtubeUnblock" "$URL/config_files/youtubeUnblockSecond"
