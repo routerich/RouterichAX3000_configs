@@ -458,7 +458,7 @@ then
 else
 	is_manual_input_parameters="n"
 fi
-if [ "$2" = "y" ] || [ "$2" = "Y" ]
+if [ "$2" = "y" ] || [ "$2" = "Y" ] || [ "$2" = "" ]
 then
 	is_reconfig_podkop="y"
 else
