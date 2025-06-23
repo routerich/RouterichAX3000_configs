@@ -929,7 +929,7 @@ case $varByPass in
 	nameFileReplacePodkop="podkopSecond"
 	printf  "\033[32;1mStop and disabled service 'ruantiblock'...\033[0m\n"
 	manage_package "ruantiblock" "disable" "stop"
-	wget -O "/etc/config/youtubeUnblock" "$URL/config_files/youtubeUnblockSecond"
+	wget -O "/etc/config/youtubeUnblock" "$URL/config_files/youtubeUnblockSecondDiscord"
 	service youtubeUnblock restart
 	deleteByPassGeoBlockComssDNS
 	messageComplete="ByPass block for Method 3: youtubeUnblock + Opera Proxy...Configured completed..."
