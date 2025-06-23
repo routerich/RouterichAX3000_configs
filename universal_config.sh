@@ -962,7 +962,7 @@ case $varByPass in
 	messageComplete="ByPass block for Method 6: AWG WARP + ComssDNS for GeoBlock...Configured completed..."
 	;;
 7)
-	nameFileReplacePodkop="podkopWARPNoYoutubeDiscord"
+	nameFileReplacePodkop="podkopWARPNoYoutube"
 	printf  "\033[32;1mStop and disabled service 'ruantiblock'...\033[0m\n"
 	manage_package "ruantiblock" "disable" "stop"
 	wget -O "/etc/config/youtubeUnblock" "$URL/config_files/youtubeUnblockSecond"
