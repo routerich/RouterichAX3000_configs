@@ -618,7 +618,7 @@ if [ $? -eq 0 ]; then
 	str=$(grep -i "0 4 \* \* \* service youtubeUnblock restart" /etc/crontabs/root)
 	if [ -z "$str" ] 
 	then
-		echo "Add cron task auto run configure_zapret..."
+		echo "Add cron task auto reboot service youtubeUnblock..."
 		echo "$cronTask" >> /etc/crontabs/root
 	fi
 	isWorkYoutubeUnBlock=1
