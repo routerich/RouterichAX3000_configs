@@ -532,49 +532,53 @@ uci set dhcp.cfg01411c.strictorder='1'
 uci set dhcp.cfg01411c.filter_aaaa='1'
 uci commit dhcp
 
-echo "Install opera-proxy client..."
-service stop vpn > /dev/null
-rm -f /usr/bin/vpns /etc/init.d/vpn
+if opkg list-installed | grep -q opera-proxy; then
+	echo "Opera-proxy already installed..."
+else
+	echo "Install opera-proxy client..."
+	service stop vpn > /dev/null
+	rm -f /usr/bin/vpns /etc/init.d/vpn
 
-url="https://github.com/NitroOxid/openwrt-opera-proxy-bin/releases/download/1.8.0/opera-proxy_1.8.0-1_aarch64_cortex-a53.ipk"
-destination_file="/tmp/opera-proxy.ipk"
+	url="https://github.com/NitroOxid/openwrt-opera-proxy-bin/releases/download/1.8.0/opera-proxy_1.8.0-1_aarch64_cortex-a53.ipk"
+	destination_file="/tmp/opera-proxy.ipk"
 
-echo "Downloading opera-proxy..."
-wget "$url" -O "$destination_file" || { echo "Failed to download the file"; exit 1; }
-echo "Installing opera-proxy..."
-opkg install $destination_file
+	echo "Downloading opera-proxy..."
+	wget "$url" -O "$destination_file" || { echo "Failed to download the file"; exit 1; }
+	echo "Installing opera-proxy..."
+	opkg install $destination_file
 
-cat <<EOF > /etc/sing-box/config.json
-  {
-    "log": {
-    "disabled": true,
-    "level": "error"
-  },
-  "inbounds": [
-    {
-      "type": "tproxy",
-      "listen": "::",
-      "listen_port": 1100,
-      "sniff": false
-    }
-  ],
-  "outbounds": [
-    {
-      "type": "http",
-      "server": "127.0.0.1",
-      "server_port": 18080
-    }
-  ],
-  "route": {
-    "auto_detect_interface": true
-  }
-}
-EOF
+	cat <<EOF > /etc/sing-box/config.json
+	{
+		"log": {
+		"disabled": true,
+		"level": "error"
+	},
+	"inbounds": [
+		{
+		"type": "tproxy",
+		"listen": "::",
+		"listen_port": 1100,
+		"sniff": false
+		}
+	],
+	"outbounds": [
+		{
+		"type": "http",
+		"server": "127.0.0.1",
+		"server_port": 18080
+		}
+	],
+	"route": {
+		"auto_detect_interface": true
+	}
+	}
+	EOF
 
-echo "Setting sing-box..."
-uci set sing-box.main.enabled='1'
-uci set sing-box.main.user='root'
-uci commit sing-box
+	echo "Setting sing-box..."
+	uci set sing-box.main.enabled='1'
+	uci set sing-box.main.user='root'
+	uci commit sing-box
+fi
 
 nameRule="option name 'Block_UDP_443'"
 str=$(grep -i "$nameRule" /etc/config/firewall)
