@@ -120,25 +120,39 @@ manage_package() {
     fi
 }
 
-checkPackageAndInstall()
-{
+
+checkPackageAndInstall() {
     local name="$1"
-    local isRequried="$2"
-    #проверяем установлени ли библиотека $name
-    if opkg list-installed | grep -q $name; then
-        echo "$name already installed..."
+    local isRequired="$2"
+    local alt=""
+
+    if [ "$name" = "https-dns-proxy" ]; then
+        alt="luci-app-doh-proxy"
+    fi
+
+    if [ -n "$alt" ]; then
+        if opkg list-installed | grep -qE "^($name|$alt) "; then
+            echo "$name or $alt already installed..."
+            return 0
+        fi
     else
-        echo "$name not installed. Installed $name..."
-        opkg install $name
-		res=$?
-		if [ "$isRequried" = "1" ]; then
-			if [ $res -eq 0 ]; then
-				echo "$name insalled successfully"
-			else
-				echo "Error installing $name. Please, install $name manually and run the script again"
-				exit 1
-			fi
-		fi
+        if opkg list-installed | grep -q "^$name "; then
+            echo "$name already installed..."
+            return 0
+        fi
+    fi
+
+    echo "$name not installed. Installing $name..."
+    opkg install "$name"
+    res=$?
+
+    if [ "$isRequired" = "1" ]; then
+        if [ $res -eq 0 ]; then
+            echo "$name installed successfully"
+        else
+            echo "Error installing $name. Please, install $name manually$( [ -n "$alt" ] && echo " or $alt") and run the script again."
+            exit 1
+        fi
     fi
 }
 
