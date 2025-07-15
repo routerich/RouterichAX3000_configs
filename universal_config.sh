@@ -547,32 +547,32 @@ else
 	echo "Installing opera-proxy..."
 	opkg install $destination_file
 
-	cat <<EOF > /etc/sing-box/config.json
+cat <<EOF > /etc/sing-box/config.json
+{
+	"log": {
+	"disabled": true,
+	"level": "error"
+},
+"inbounds": [
 	{
-		"log": {
-		"disabled": true,
-		"level": "error"
-	},
-	"inbounds": [
-		{
-		"type": "tproxy",
-		"listen": "::",
-		"listen_port": 1100,
-		"sniff": false
-		}
-	],
-	"outbounds": [
-		{
-		"type": "http",
-		"server": "127.0.0.1",
-		"server_port": 18080
-		}
-	],
-	"route": {
-		"auto_detect_interface": true
+	"type": "tproxy",
+	"listen": "::",
+	"listen_port": 1100,
+	"sniff": false
 	}
+],
+"outbounds": [
+	{
+	"type": "http",
+	"server": "127.0.0.1",
+	"server_port": 18080
 	}
-	EOF
+],
+"route": {
+	"auto_detect_interface": true
+}
+}
+EOF
 
 	echo "Setting sing-box..."
 	uci set sing-box.main.enabled='1'
