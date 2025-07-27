@@ -371,10 +371,7 @@ byPassGeoBlockComssDNS()
 deleteByPassGeoBlockComssDNS()
 {
 	uci del dhcp.cfg01411c.server
-	uci add_list dhcp.cfg01411c.server='127.0.0.1#5053'
-	uci add_list dhcp.cfg01411c.server='127.0.0.1#5054'
-	uci add_list dhcp.cfg01411c.server='127.0.0.1#5055'
-	uci add_list dhcp.cfg01411c.server='127.0.0.1#5056'
+	uci add_list dhcp.cfg01411c.server='127.0.0.1#5359'
 	while uci del dhcp.@domain[-1] ; do : ;  done;
 	uci commit dhcp
 	service dnsmasq restart
