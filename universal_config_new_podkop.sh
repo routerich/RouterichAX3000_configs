@@ -1067,3 +1067,6 @@ service podkop enable
 service podkop restart
 
 printf "\033[32;1m$messageComplete\033[0m\n"
+printf "\033[31;1mAfter 10 second AUTOREBOOT ROUTER...\033[0m\n"
+sleep 10
+reboot
