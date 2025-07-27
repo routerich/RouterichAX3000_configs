@@ -515,7 +515,8 @@ config_files="network
 firewall
 https-dns-proxy
 youtubeUnblock
-dhcp"
+dhcp
+dns-failsafe-proxy"
 URL="https://raw.githubusercontent.com/routerich/RouterichAX3000_configs/refs/heads/beta_alt"
 
 checkPackageAndInstall "https-dns-proxy" "0"
@@ -532,7 +533,7 @@ then
 
 	for file in $config_files
 	do
-		if [ "$file" == "https-dns-proxy" ] 
+		if [ "$file" == "https-dns-proxy" ] || [ "$file" == "dns-failsafe-proxy" ]
 		then 
 		  wget -O "$DIR/$file" "$URL/config_files/$file" 
 		fi
