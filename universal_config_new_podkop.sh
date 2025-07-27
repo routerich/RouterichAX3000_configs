@@ -590,6 +590,7 @@ EOF
 	uci set sing-box.main.user='root'
 	uci add_list sing-box.main.ifaces='wan'
 	uci add_list sing-box.main.ifaces='wan2'
+	uci add_list sing-box.main.ifaces='wan6'
 	uci add_list sing-box.main.ifaces='modem'
 	uci add_list sing-box.main.ifaces='l2tp'
 	uci add_list sing-box.main.ifaces='pptp'
