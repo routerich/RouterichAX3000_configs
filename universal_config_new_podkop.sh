@@ -502,7 +502,7 @@ else
 	[ -f /etc/config/dhcp-opkg ] && cp /etc/config/dhcp /etc/config/dhcp-old && mv /etc/config/dhcp-opkg /etc/config/dhcp
 fi
 
-printf "Setting confdir dnsmasq"
+printf "Setting confdir dnsmasq\n"
 uci set dhcp.@dnsmasq[0].confdir='/tmp/dnsmasq.d'
 uci commit dhcp
 
@@ -517,8 +517,8 @@ dns-failsafe-proxy"
 URL="https://raw.githubusercontent.com/routerich/RouterichAX3000_configs/refs/heads/beta_alt"
 
 checkPackageAndInstall "luci-app-dns-failsafe-proxy" "1"
-checkPackageAndInstall "doh-proxy" "1"
-checkPackageAndInstall "stubby" "1"
+checkPackageAndInstall "luci-app-doh-proxy" "1"
+checkPackageAndInstall "luci-app-stubby" "1"
 
 if [ ! -d "$DIR_BACKUP" ]
 then
