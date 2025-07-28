@@ -376,7 +376,7 @@ deleteByPassGeoBlockComssDNS()
 	uci commit dhcp
 	service dnsmasq restart
 	service odhcpd restart
-	service https-dns-proxy restart
+	service doh-proxy restart
 }
 
 install_youtubeunblock_packages() {
@@ -510,13 +510,15 @@ DIR="/etc/config"
 DIR_BACKUP="/root/backup3"
 config_files="network
 firewall
-https-dns-proxy
+doh-proxy
 youtubeUnblock
 dhcp
 dns-failsafe-proxy"
 URL="https://raw.githubusercontent.com/routerich/RouterichAX3000_configs/refs/heads/beta_alt"
 
-checkPackageAndInstall "https-dns-proxy" "0"
+checkPackageAndInstall "doh-proxy" "1"
+checkPackageAndInstall "stubby" "1"
+checkPackageAndInstall "luci-app-dns-failsafe-proxy" "1"
 
 if [ ! -d "$DIR_BACKUP" ]
 then
@@ -530,7 +532,7 @@ then
 
 	for file in $config_files
 	do
-		if [ "$file" == "https-dns-proxy" ] || [ "$file" == "dns-failsafe-proxy" ]
+		if [ "$file" == "doh-proxy" ] || [ "$file" == "dns-failsafe-proxy" ]
 		then 
 		  wget -O "$DIR/$file" "$URL/config_files/$file" 
 		fi
@@ -1046,8 +1048,8 @@ else
 	fi
 fi
 
-printf  "\033[32;1mStart and enable service 'https-dns-proxy'...\033[0m\n"
-manage_package "https-dns-proxy" "enable" "start"
+printf  "\033[32;1mStart and enable service 'doh-proxy'...\033[0m\n"
+manage_package "doh-proxy" "enable" "start"
 
 str=$(grep -i "0 4 \* \* \* wget -O - $URL/configure_zaprets.sh | sh" /etc/crontabs/root)
 if [ ! -z "$str" ]
