@@ -517,8 +517,8 @@ dns-failsafe-proxy"
 URL="https://raw.githubusercontent.com/routerich/RouterichAX3000_configs/refs/heads/beta_alt"
 
 checkPackageAndInstall "luci-app-dns-failsafe-proxy" "1"
-checkPackageAndInstall "luci-app-doh-proxy" "1"
-checkPackageAndInstall "luci-app-stubby" "1"
+checkPackageAndInstall "luci-i18n-stubby-ru" "1"
+checkPackageAndInstall "luci-i18n-doh-proxy-ru" "1"
 
 if [ ! -d "$DIR_BACKUP" ]
 then
