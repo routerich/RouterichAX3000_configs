@@ -298,7 +298,7 @@ checkAndAddDomainPermanentName()
 install_youtubeunblock_packages() {
     PKGARCH=$(opkg print-architecture | awk 'BEGIN {max=0} {if ($3 > max) {max = $3; arch = $2}} END {print arch}')
     VERSION=$(ubus call system board | jsonfilter -e '@.release.version')
-    BASE_URL="https://github.com/Waujito/youtubeUnblock/releases/download/v1.0.0/"
+    BASE_URL="https://github.com/Waujito/youtubeUnblock/releases/download/v1.1.0/"
   	PACK_NAME="youtubeUnblock"
 
     AWG_DIR="/tmp/$PACK_NAME"
@@ -326,7 +326,7 @@ install_youtubeunblock_packages() {
 			fi
 		done
 
-        YOUTUBEUNBLOCK_FILENAME="youtubeUnblock-1.0.0-10-f37c3dd-${PKGARCH}-openwrt-23.05.ipk"
+        YOUTUBEUNBLOCK_FILENAME="youtubeUnblock-1.1.0-2-2d579d5-${PKGARCH}-openwrt-23.05.ipk"
         DOWNLOAD_URL="${BASE_URL}${YOUTUBEUNBLOCK_FILENAME}"
 		echo $DOWNLOAD_URL
         wget -O "$AWG_DIR/$YOUTUBEUNBLOCK_FILENAME" "$DOWNLOAD_URL"
@@ -393,6 +393,11 @@ checkPackageAndInstall "jq" "1"
 checkPackageAndInstall "curl" "1"
 checkPackageAndInstall "unzip" "1"
 checkPackageAndInstall "sing-box" "1"
+checkPackageAndInstall "opera-proxy" "1"
+checkPackageAndInstall "youtubeUnblock" "1"
+opkg upgrade youtubeUnblock
+opkg upgrade luci-app-youtubeUnblock
+manage_package "youtubeUnblock" "enable" "start"
 
 #проверяем установлени ли пакет dnsmasq-full
 if opkg list-installed | grep -q dnsmasq-full; then
@@ -436,6 +441,10 @@ then
 		then 
 		  wget -O "$DIR/$file" "$URL/config_files/$file" 
 		fi
+		if [ "$file" == "youtubeUnblock" ] 
+		then 
+		  wget -O "$DIR/$file" "$URL/config_files/youtubeUnblockCalls" 
+		fi
 	done
 fi
 
@@ -444,18 +453,6 @@ echo "Configure dhcp..."
 uci set dhcp.cfg01411c.strictorder='1'
 uci set dhcp.cfg01411c.filter_aaaa='1'
 uci commit dhcp
-
-echo "Install opera-proxy client..."
-service stop vpn > /dev/null
-rm -f /usr/bin/vpns /etc/init.d/vpn
-
-url="https://github.com/NitroOxid/openwrt-opera-proxy-bin/releases/download/1.8.0/opera-proxy_1.8.0-1_aarch64_cortex-a53.ipk"
-destination_file="/tmp/opera-proxy.ipk"
-
-echo "Downloading opera-proxy..."
-wget "$url" -O "$destination_file" || { echo "Failed to download the file"; exit 1; }
-echo "Installing opera-proxy..."
-opkg install $destination_file
 
 cat <<EOF > /etc/sing-box/config.json
   {
@@ -730,10 +727,6 @@ then
 	varByPass=1
 else
     printf "\033[32;1mAWG WARP not work...Try work youtubeunblock...Please wait...\033[0m\n"
-	install_youtubeunblock_packages
-	opkg upgrade youtubeUnblock
-	opkg upgrade luci-app-youtubeUnblock
-    manage_package "youtubeUnblock" "enable" "start"
 	wget -O "/etc/config/youtubeUnblock" "$URL/config_files/youtubeUnblockSecond"
 	service youtubeUnblock restart
 	curl -f -o /dev/null -k --connect-to ::google.com -L -H "Host: mirror.gcr.io" --max-time 360 https://test.googlevideo.com/v2/cimg/android/blobs/sha256:6fd8bdac3da660bde7bd0b6f2b6a46e1b686afb74b9a4614def32532b73f5eaa
@@ -769,7 +762,7 @@ case $varByPass in
 1)
 	nameFileReplacePodkop="podkop"
 	printf  "\033[32;1mStop and disabled service 'youtubeUnblock' and 'ruantiblock'...\033[0m\n"
-	manage_package "youtubeUnblock" "disable" "stop"
+	#manage_package "youtubeUnblock" "disable" "stop"
 	manage_package "ruantiblock" "disable" "stop"
 	;;
 2)
