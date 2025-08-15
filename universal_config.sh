@@ -353,7 +353,7 @@ install_youtubeunblock_packages() {
         echo "$PACK_NAME already installed"
     else
 		PACK_NAME="luci-app-youtubeUnblock"
-		YOUTUBEUNBLOCK_FILENAME="luci-app-youtubeUnblock-1.0.0-10-f37c3dd.ipk"
+		YOUTUBEUNBLOCK_FILENAME="luci-app-youtubeUnblock-1.1.0-1-473af29.ipk"
         DOWNLOAD_URL="${BASE_URL}${YOUTUBEUNBLOCK_FILENAME}"
 		echo $DOWNLOAD_URL
         wget -O "$AWG_DIR/$YOUTUBEUNBLOCK_FILENAME" "$DOWNLOAD_URL"
