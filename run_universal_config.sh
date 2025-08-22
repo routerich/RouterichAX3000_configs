@@ -2,6 +2,8 @@
 
 VERSION=$(ubus call system board | jsonfilter -e '@.release.description')
 
+echo "$1 ___ $2"
+
 if echo "$VERSION" | grep -qi 'RouteRich'; then
 	printf "\033[32;1mThis new firmware. Running new scprit...\033[0m\n"
 	wget --no-check-certificate -O /tmp/universal_config_new_podkop.sh https://raw.githubusercontent.com/routerich/RouterichAX3000_configs/refs/heads/beta_alt_test/universal_config_new_podkop.sh && chmod +x /tmp/universal_config_new_podkop.sh && /tmp/universal_config_new_podkop.sh $1 $2
