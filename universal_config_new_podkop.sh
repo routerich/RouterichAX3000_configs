@@ -614,11 +614,12 @@ then
 fi
 
 printf "\033[32;1mCheck work youtubeUnblock..\033[0m\n"
-install_youtubeunblock_packages
+#install_youtubeunblock_packages
 opkg upgrade youtubeUnblock
 opkg upgrade luci-app-youtubeUnblock
 manage_package "youtubeUnblock" "enable" "start"
 wget -O "/etc/config/youtubeUnblock" "$URL/config_files/youtubeUnblockSecond"
+manage_package "podkop" "enable" "stop"
 service youtubeUnblock restart
 
 isWorkYoutubeUnBlock=0

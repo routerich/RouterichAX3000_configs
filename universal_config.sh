@@ -372,7 +372,7 @@ deleteByPassGeoBlockComssDNS()
 install_youtubeunblock_packages() {
     PKGARCH=$(opkg print-architecture | awk 'BEGIN {max=0} {if ($3 > max) {max = $3; arch = $2}} END {print arch}')
     VERSION=$(ubus call system board | jsonfilter -e '@.release.version')
-    BASE_URL="https://github.com/Waujito/youtubeUnblock/releases/download/v1.0.0/"
+    BASE_URL="https://github.com/Waujito/youtubeUnblock/releases/download/v1.1.0/"
   	PACK_NAME="youtubeUnblock"
 
     AWG_DIR="/tmp/$PACK_NAME"
@@ -400,7 +400,7 @@ install_youtubeunblock_packages() {
 			fi
 		done
 
-        YOUTUBEUNBLOCK_FILENAME="youtubeUnblock-1.0.0-10-f37c3dd-${PKGARCH}-openwrt-23.05.ipk"
+        YOUTUBEUNBLOCK_FILENAME="youtubeUnblock-1.1.0-2-2d579d5-${PKGARCH}-openwrt-23.05.ipk"
         DOWNLOAD_URL="${BASE_URL}${YOUTUBEUNBLOCK_FILENAME}"
 		echo $DOWNLOAD_URL
         wget -O "$AWG_DIR/$YOUTUBEUNBLOCK_FILENAME" "$DOWNLOAD_URL"
@@ -427,7 +427,7 @@ install_youtubeunblock_packages() {
         echo "$PACK_NAME already installed"
     else
 		PACK_NAME="luci-app-youtubeUnblock"
-		YOUTUBEUNBLOCK_FILENAME="luci-app-youtubeUnblock-1.0.0-10-f37c3dd.ipk"
+		YOUTUBEUNBLOCK_FILENAME="luci-app-youtubeUnblock-1.1.0-1-473af29.ipk"
         DOWNLOAD_URL="${BASE_URL}${YOUTUBEUNBLOCK_FILENAME}"
 		echo $DOWNLOAD_URL
         wget -O "$AWG_DIR/$YOUTUBEUNBLOCK_FILENAME" "$DOWNLOAD_URL"
@@ -480,6 +480,11 @@ checkPackageAndInstall "jq" "1"
 checkPackageAndInstall "curl" "1"
 checkPackageAndInstall "unzip" "1"
 checkPackageAndInstall "sing-box" "1"
+checkPackageAndInstall "opera-proxy" "1"
+checkPackageAndInstall "youtubeUnblock" "1"
+opkg upgrade youtubeUnblock
+opkg upgrade luci-app-youtubeUnblock
+manage_package "youtubeUnblock" "enable" "start"
 
 #проверяем установлени ли пакет dnsmasq-full
 if opkg list-installed | grep -q dnsmasq-full; then
@@ -503,7 +508,7 @@ firewall
 https-dns-proxy
 youtubeUnblock
 dhcp"
-URL="https://raw.githubusercontent.com/routerich/RouterichAX3000_configs/refs/heads/beta"
+URL="https://raw.githubusercontent.com/routerich/RouterichAX3000_configs/refs/heads/beta_alt_test"
 
 checkPackageAndInstall "https-dns-proxy" "0"
 
@@ -532,21 +537,6 @@ uci set dhcp.cfg01411c.strictorder='1'
 uci set dhcp.cfg01411c.filter_aaaa='1'
 uci commit dhcp
 
-if opkg list-installed | grep -q opera-proxy; then
-	echo "Opera-proxy already installed..."
-else
-	echo "Install opera-proxy client..."
-	service stop vpn > /dev/null
-	rm -f /usr/bin/vpns /etc/init.d/vpn
-
-	url="https://github.com/NitroOxid/openwrt-opera-proxy-bin/releases/download/1.8.0/opera-proxy_1.8.0-1_aarch64_cortex-a53.ipk"
-	destination_file="/tmp/opera-proxy.ipk"
-
-	echo "Downloading opera-proxy..."
-	wget "$url" -O "$destination_file" || { echo "Failed to download the file"; exit 1; }
-	echo "Installing opera-proxy..."
-	opkg install $destination_file
-
 cat <<EOF > /etc/sing-box/config.json
 {
 	"log": {
@@ -574,11 +564,18 @@ cat <<EOF > /etc/sing-box/config.json
 }
 EOF
 
-	echo "Setting sing-box..."
-	uci set sing-box.main.enabled='1'
-	uci set sing-box.main.user='root'
-	uci commit sing-box
-fi
+echo "Setting sing-box..."
+uci set sing-box.main.enabled='1'
+uci set sing-box.main.user='root'
+uci add_list sing-box.main.ifaces='wan'
+uci add_list sing-box.main.ifaces='wan2'
+uci add_list sing-box.main.ifaces='wan6'
+uci add_list sing-box.main.ifaces='wwan'
+uci add_list sing-box.main.ifaces='wwan0'
+uci add_list sing-box.main.ifaces='modem'
+uci add_list sing-box.main.ifaces='l2tp'
+uci add_list sing-box.main.ifaces='pptp'
+uci commit sing-box
 
 nameRule="option name 'Block_UDP_443'"
 str=$(grep -i "$nameRule" /etc/config/firewall)
@@ -604,11 +601,12 @@ then
 fi
 
 printf "\033[32;1mCheck work youtubeUnblock..\033[0m\n"
-install_youtubeunblock_packages
+#install_youtubeunblock_packages
 opkg upgrade youtubeUnblock
 opkg upgrade luci-app-youtubeUnblock
 manage_package "youtubeUnblock" "enable" "start"
 wget -O "/etc/config/youtubeUnblock" "$URL/config_files/youtubeUnblockSecond"
+manage_package "podkop" "enable" "stop"
 service youtubeUnblock restart
 
 isWorkYoutubeUnBlock=0
@@ -907,7 +905,7 @@ service odhcpd restart
 
 path_podkop_config="/etc/config/podkop"
 path_podkop_config_backup="/root/podkop"
-URL="https://raw.githubusercontent.com/routerich/RouterichAX3000_configs/refs/heads/beta"
+URL="https://raw.githubusercontent.com/routerich/RouterichAX3000_configs/refs/heads/beta_alt_test"
 
 messageComplete=""
 
