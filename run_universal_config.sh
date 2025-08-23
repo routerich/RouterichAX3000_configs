@@ -2,7 +2,7 @@
 
 DESCRIPTION=$(ubus call system board | jsonfilter -e '@.release.description')
 VERSION=$(ubus call system board | jsonfilter -e '@.release.version')
-findKey="Routerich"
+findKey="RouteRich"
 findVersion="24.10.2"
 
 if echo "$DESCRIPTION" | grep -qi -- "$findKey" && printf '%s\n%s\n' "$findVersion" "$VERSION" | sort -V | tail -n1 | grep -qx -- "$VERSION"; then
