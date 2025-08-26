@@ -404,30 +404,30 @@ INSTALLED_VERSION=$(opkg list-installed | grep "^$PACKAGE" | cut -d ' ' -f 3)
 if [ -n "$INSTALLED_VERSION" ] && [ "$INSTALLED_VERSION" != "$REQUIRED_VERSION" ]; then
     echo "Version package $PACKAGE not equal $REQUIRED_VERSION. Removed packages..."
 	opkg remove --force-removal-of-dependent-packages $PACKAGE
-fi
+	
+	PACK_NAME="sing-box"
+	AWG_DIR="/tmp/$PACK_NAME"
+	SINGBOX_FILENAME="sing-box_1.11.15_openwrt_aarch64_cortex-a53.ipk"
+	BASE_URL="https://github.com/SagerNet/sing-box/releases/download/v1.11.15/"
+	DOWNLOAD_URL="${BASE_URL}${SINGBOX_FILENAME}"
+	mkdir -p "$AWG_DIR"
+	#echo $DOWNLOAD_URL
 
-PACK_NAME="sing-box"
-AWG_DIR="/tmp/$PACK_NAME"
-SINGBOX_FILENAME="sing-box_1.11.15_openwrt_aarch64_cortex-a53.ipk"
-BASE_URL="https://github.com/SagerNet/sing-box/releases/download/v1.11.15/"
-DOWNLOAD_URL="${BASE_URL}${SINGBOX_FILENAME}"
-mkdir -p "$AWG_DIR"
-#echo $DOWNLOAD_URL
-
-wget -O "$AWG_DIR/$SINGBOX_FILENAME" "$DOWNLOAD_URL"
-if [ $? -eq 0 ]; then
-    echo "$PACK_NAME file downloaded successfully"
-else
-	echo "Error downloading $PACK_NAME. Please, install $PACK_NAME manually and run the script again"
-    exit 1
-fi
-        
-opkg install "$AWG_DIR/$SINGBOX_FILENAME"
-if [ $? -eq 0 ]; then
-    echo "$PACK_NAME file installing successfully"
-else
-    echo "Error installing $PACK_NAME. Please, install $PACK_NAME manually and run the script again"
-    exit 1
+	wget -O "$AWG_DIR/$SINGBOX_FILENAME" "$DOWNLOAD_URL"
+	if [ $? -eq 0 ]; then
+		echo "$PACK_NAME file downloaded successfully"
+	else
+		echo "Error downloading $PACK_NAME. Please, install $PACK_NAME manually and run the script again"
+		exit 1
+	fi
+			
+	opkg install "$AWG_DIR/$SINGBOX_FILENAME"
+	if [ $? -eq 0 ]; then
+		echo "$PACK_NAME file installing successfully"
+	else
+		echo "Error installing $PACK_NAME. Please, install $PACK_NAME manually and run the script again"
+		exit 1
+	fi
 fi
 ###########
 
