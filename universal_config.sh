@@ -404,7 +404,10 @@ INSTALLED_VERSION=$(opkg list-installed | grep "^$PACKAGE" | cut -d ' ' -f 3)
 if [ -n "$INSTALLED_VERSION" ] && [ "$INSTALLED_VERSION" != "$REQUIRED_VERSION" ]; then
     echo "Version package $PACKAGE not equal $REQUIRED_VERSION. Removed packages..."
 	opkg remove --force-removal-of-dependent-packages $PACKAGE
-	
+fi
+
+INSTALLED_VERSION=$(opkg list-installed | grep "^$PACKAGE")
+if [ -n "$INSTALLED_VERSION" ]; then
 	PACK_NAME="sing-box"
 	AWG_DIR="/tmp/$PACK_NAME"
 	SINGBOX_FILENAME="sing-box_1.11.15_openwrt_aarch64_cortex-a53.ipk"
