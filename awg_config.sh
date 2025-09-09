@@ -145,13 +145,13 @@ checkPackageAndInstall()
 requestConfWARP1()
 {
 	#запрос конфигурации WARP
-	local result=$(curl --connect-timeout 20 --max-time 60 -w "%{http_code}" 'https://warp.llimonix.pw/api/warp' \
+	local result=$(curl --connect-timeout 20 --max-time 60 -w "%{http_code}" 'https://warp.llimonix.dev/api/warp' \
 	  -H 'Accept: */*' \
 	  -H 'Accept-Language: ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7' \
 	  -H 'Connection: keep-alive' \
 	  -H 'Content-Type: application/json' \
-	  -H 'Origin: https://warp.llimonix.pw' \
-	  -H 'Referer: https://warp.llimonix.pw/' \
+	  -H 'Origin: https://warp.llimonix.dev' \
+	  -H 'Referer: https://warp.llimonix.dev/' \
 	  -H 'Sec-Fetch-Dest: empty' \
 	  -H 'Sec-Fetch-Mode: cors' \
 	  -H 'Sec-Fetch-Site: same-origin' \
