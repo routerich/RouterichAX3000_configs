@@ -1036,7 +1036,7 @@ case $varByPass in
 esac
 
 PACKAGE="podkop"
-REQUIRED_VERSION="v0.4.8-r1"
+REQUIRED_VERSION="v0.4.10-r1"
 
 INSTALLED_VERSION=$(opkg list-installed | grep "^$PACKAGE" | cut -d ' ' -f 3)
 if [ -n "$INSTALLED_VERSION" ] && [ "$INSTALLED_VERSION" != "$REQUIRED_VERSION" ]; then
@@ -1062,9 +1062,9 @@ else
 	if [ "$is_install_podkop" = "y" ] || [ "$is_install_podkop" = "Y" ]; then
 		DOWNLOAD_DIR="/tmp/podkop"
 		mkdir -p "$DOWNLOAD_DIR"
-		podkop_files="podkop_v0.4.8-r1_all.ipk
-			luci-app-podkop_v0.4.8-r1_all.ipk
-			luci-i18n-podkop-ru_0.4.8.ipk"
+		podkop_files="podkop_v0.4.10-r1_all.ipk
+			luci-app-podkop_v0.4.10-r1_all.ipk
+			luci-i18n-podkop-ru_0.4.10.ipk"
 		for file in $podkop_files
 		do
 			echo "Download $file..."
