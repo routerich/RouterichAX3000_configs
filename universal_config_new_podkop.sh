@@ -1071,7 +1071,7 @@ case $varByPass in
 	chmod +x "/opt/zapret/init.d/openwrt/custom.d/50-discord-media"
 	service zapret restart
 	byPassGeoBlockComssDNS
-	messageComplete="ByPass block for Method 7: AWG WARP + youtubeUnblock + ComssDNS for GeoBlock...Configured completed..."
+	messageComplete="ByPass block for Method 7: AWG WARP + zapret + ComssDNS for GeoBlock...Configured completed..."
 	;;
 8)
 	printf "\033[32;1mTry custom settings router to bypass the locks... Recomendation buy 'VPS' and up 'vless'\033[0m\n"
