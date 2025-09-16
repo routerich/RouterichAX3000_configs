@@ -491,7 +491,7 @@ checkPackageAndInstall "curl" "1"
 checkPackageAndInstall "unzip" "1"
 #checkPackageAndInstall "sing-box" "1"
 checkPackageAndInstall "opera-proxy" "1"
-checkPackageAndInstall "youtubeUnblock" "1"
+checkPackageAndInstall "zapret" "1"
 
 ###########
 manage_package "podkop" "enable" "stop"
@@ -533,9 +533,9 @@ if [ -z "$INSTALLED_VERSION" ]; then
 fi
 ###########
 
-opkg upgrade youtubeUnblock
-opkg upgrade luci-app-youtubeUnblock
-manage_package "youtubeUnblock" "enable" "start"
+opkg upgrade zapret
+opkg upgrade luci-app-zapret
+manage_package "zapret" "enable" "start"
 
 #проверяем установлени ли пакет dnsmasq-full
 if opkg list-installed | grep -q dnsmasq-full; then
@@ -553,11 +553,11 @@ uci set dhcp.@dnsmasq[0].confdir='/tmp/dnsmasq.d'
 uci commit dhcp
 
 DIR="/etc/config"
-DIR_BACKUP="/root/backup3"
+DIR_BACKUP="/root/backup4"
 config_files="network
 firewall
 doh-proxy
-youtubeUnblock
+zapret
 dhcp
 dns-failsafe-proxy"
 URL="https://raw.githubusercontent.com/routerich/RouterichAX3000_configs/refs/heads/beta_zapret"
@@ -654,38 +654,52 @@ then
   uci commit firewall
 fi
 
-printf "\033[32;1mCheck work youtubeUnblock..\033[0m\n"
+printf "\033[32;1mCheck work zapret.\033[0m\n"
 #install_youtubeunblock_packages
-opkg upgrade youtubeUnblock
-opkg upgrade luci-app-youtubeUnblock
-manage_package "youtubeUnblock" "enable" "start"
-wget -O "/etc/config/youtubeUnblock" "$URL/config_files/youtubeUnblockSecond"
+opkg upgrade zapret
+opkg upgrade luci-app-zapret
+manage_package "zapret" "enable" "start"
+wget -O "/etc/config/zapret" "$URL/config_files/zapret"
 manage_package "podkop" "enable" "stop"
-service youtubeUnblock restart
+service zapret restart
 
-isWorkYoutubeUnBlock=0
+isWorkZapret=0
 
 curl -f -o /dev/null -k --connect-to ::google.com -L -H "Host: mirror.gcr.io" --max-time 120 https://test.googlevideo.com/v2/cimg/android/blobs/sha256:2ab09b027e7f3a0c2e8bb1944ac46de38cebab7145f0bd6effebfe5492c818b6
 
 # Проверяем код выхода
 if [ $? -eq 0 ]; then
-	printf "\033[32;1myoutubeUnblock well work...\033[0m\n"
-	cronTask="0 4 * * * service youtubeUnblock restart"
-	str=$(grep -i "0 4 \* \* \* service youtubeUnblock restart" /etc/crontabs/root)
+	printf "\033[32;1mzapret well work...\033[0m\n"
+	cronTask="0 4 * * * service zapret restart"
+	str=$(grep -i "0 4 \* \* \* service zapret restart" /etc/crontabs/root)
 	if [ -z "$str" ] 
 	then
-		echo "Add cron task auto reboot service youtubeUnblock..."
+		echo "Add cron task auto reboot service zapret..."
 		echo "$cronTask" >> /etc/crontabs/root
 	fi
-	isWorkYoutubeUnBlock=1
-else
-	manage_package "youtubeUnblock" "disable" "stop"
-	printf "\033[32;1myoutubeUnblock not work...\033[0m\n"
-	isWorkYoutubeUnBlock=0
 	str=$(grep -i "0 4 \* \* \* service youtubeUnblock restart" /etc/crontabs/root)
 	if [ ! -z "$str" ]
 	then
 		grep -v "0 4 \* \* \* service youtubeUnblock restart" /etc/crontabs/root > /etc/crontabs/temp
+		cp -f "/etc/crontabs/temp" "/etc/crontabs/root"
+		rm -f "/etc/crontabs/temp"
+	fi
+	isWorkZapret=1
+else
+	manage_package "zapret" "disable" "stop"
+	printf "\033[32;1mzapret not work...\033[0m\n"
+	isWorkZapret=0
+	str=$(grep -i "0 4 \* \* \* service youtubeUnblock restart" /etc/crontabs/root)
+	if [ ! -z "$str" ]
+	then
+		grep -v "0 4 \* \* \* service youtubeUnblock restart" /etc/crontabs/root > /etc/crontabs/temp
+		cp -f "/etc/crontabs/temp" "/etc/crontabs/root"
+		rm -f "/etc/crontabs/temp"
+	fi
+	str=$(grep -i "0 4 \* \* \* service zapret restart" /etc/crontabs/root)
+	if [ ! -z "$str" ]
+	then
+		grep -v "0 4 \* \* \* service zapret restart" /etc/crontabs/root > /etc/crontabs/temp
 		cp -f "/etc/crontabs/temp" "/etc/crontabs/root"
 		rm -f "/etc/crontabs/temp"
 	fi
@@ -925,30 +939,30 @@ else
 	isWorkWARP=0
 fi
 
-echo "isWorkYoutubeUnBlock = $isWorkYoutubeUnBlock, isWorkOperaProxy = $isWorkOperaProxy, isWorkWARP = $isWorkWARP"
+echo "isWorkZapret = $isWorkZapret, isWorkOperaProxy = $isWorkOperaProxy, isWorkWARP = $isWorkWARP"
 
-if [ "$isWorkYoutubeUnBlock" = "1" ] && [ "$isWorkOperaProxy" = "1" ] && [ "$isWorkWARP" = "1" ] 
+if [ "$isWorkZapret" = "1" ] && [ "$isWorkOperaProxy" = "1" ] && [ "$isWorkWARP" = "1" ] 
 then
 	varByPass=1
-elif [ "$isWorkYoutubeUnBlock" = "0" ] && [ "$isWorkOperaProxy" = "1" ] && [ "$isWorkWARP" = "1" ] 
+elif [ "$isWorkZapret" = "0" ] && [ "$isWorkOperaProxy" = "1" ] && [ "$isWorkWARP" = "1" ] 
 then
 	varByPass=2
-elif [ "$isWorkYoutubeUnBlock" = "1" ] && [ "$isWorkOperaProxy" = "1" ] && [ "$isWorkWARP" = "0" ] 
+elif [ "$isWorkZapret" = "1" ] && [ "$isWorkOperaProxy" = "1" ] && [ "$isWorkWARP" = "0" ] 
 then
 	varByPass=3
-elif [ "$isWorkYoutubeUnBlock" = "0" ] && [ "$isWorkOperaProxy" = "1" ] && [ "$isWorkWARP" = "0" ] 
+elif [ "$isWorkZapret" = "0" ] && [ "$isWorkOperaProxy" = "1" ] && [ "$isWorkWARP" = "0" ] 
 then
 	varByPass=4
-elif [ "$isWorkYoutubeUnBlock" = "1" ] && [ "$isWorkOperaProxy" = "0" ] && [ "$isWorkWARP" = "0" ] 
+elif [ "$isWorkZapret" = "1" ] && [ "$isWorkOperaProxy" = "0" ] && [ "$isWorkWARP" = "0" ] 
 then
 	varByPass=5
-elif [ "$isWorkYoutubeUnBlock" = "0" ] && [ "$isWorkOperaProxy" = "0" ] && [ "$isWorkWARP" = "1" ] 
+elif [ "$isWorkZapret" = "0" ] && [ "$isWorkOperaProxy" = "0" ] && [ "$isWorkWARP" = "1" ] 
 then
 	varByPass=6
-elif [ "$isWorkYoutubeUnBlock" = "1" ] && [ "$isWorkOperaProxy" = "0" ] && [ "$isWorkWARP" = "1" ] 
+elif [ "$isWorkZapret" = "1" ] && [ "$isWorkOperaProxy" = "0" ] && [ "$isWorkWARP" = "1" ] 
 then
 	varByPass=7
-elif [ "$isWorkYoutubeUnBlock" = "0" ] && [ "$isWorkOperaProxy" = "0" ] && [ "$isWorkWARP" = "0" ] 
+elif [ "$isWorkZapret" = "0" ] && [ "$isWorkOperaProxy" = "0" ] && [ "$isWorkWARP" = "0" ] 
 then
 	varByPass=8
 fi
@@ -966,12 +980,18 @@ messageComplete=""
 case $varByPass in
 1)
 	nameFileReplacePodkop="podkopNewNoYoutube"
-	printf  "\033[32;1mStop and disabled service 'ruantiblock'...\033[0m\n"
+	printf  "\033[32;1mStop and disabled service 'ruantiblock' and 'youtubeUnblock'...\033[0m\n"
 	manage_package "ruantiblock" "disable" "stop"
-	wget -O "/etc/config/youtubeUnblock" "$URL/config_files/youtubeUnblockSecond"
-	service youtubeUnblock restart
+	manage_package "youtubeUnblock" "disable" "stop"
+	wget -O "/etc/config/zapret" "$URL/config_files/zapret"
+	wget -O "/opt/zapret/ipset/zapret-hosts-user.txt" "$URL/config_files/zapret-hosts-user.txt"
+	wget -O "/opt/zapret/init.d/openwrt/custom.d/50-stun4all" "$URL/config_files/50-stun4all"
+	wget -O "/opt/zapret/init.d/openwrt/custom.d/50-wg4all" "$URL/config_files/50-wg4all"
+	chmod +x "/opt/zapret/init.d/openwrt/custom.d/50-stun4all"
+	chmod +x "/opt/zapret/init.d/openwrt/custom.d/50-wg4all"
+	service zapret restart
 	deleteByPassGeoBlockComssDNS
-	messageComplete="ByPass block for Method 1: AWG WARP + youtubeunblock + Opera Proxy...Configured completed..."
+	messageComplete="ByPass block for Method 1: AWG WARP + zapret + Opera Proxy...Configured completed..."
 	;;
 2)
 	nameFileReplacePodkop="podkopNew"

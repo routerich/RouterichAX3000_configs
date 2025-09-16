@@ -1,0 +1,57 @@
+
+config main 'config'
+	option run_on_boot '1'
+	option FWTYPE 'nftables'
+	option POSTNAT '1'
+	option FLOWOFFLOAD 'none'
+	option INIT_APPLY_FW '1'
+	option DISABLE_IPV4 '0'
+	option DISABLE_IPV6 '1'
+	option FILTER_TTL_EXPIRED_ICMP '1'
+	option MODE_FILTER 'hostlist'
+	option DISABLE_CUSTOM '0'
+	option WS_USER 'daemon'
+	option DAEMON_LOG_ENABLE '0'
+	option DAEMON_LOG_FILE '/tmp/zapret+<DAEMON_NAME>+<DAEMON_IDNUM>+<DAEMON_CFGNAME>.log'
+	option AUTOHOSTLIST_RETRANS_THRESHOLD '3'
+	option AUTOHOSTLIST_FAIL_THRESHOLD '3'
+	option AUTOHOSTLIST_FAIL_TIME '60'
+	option AUTOHOSTLIST_DEBUGLOG '0'
+	option NFQWS_ENABLE '1'
+	option DESYNC_MARK '0x40000000'
+	option DESYNC_MARK_POSTNAT '0x20000000'
+	option NFQWS_PORTS_TCP '80,443'
+	option NFQWS_PORTS_UDP '443'
+	option NFQWS_TCP_PKT_OUT '9'
+	option NFQWS_TCP_PKT_IN '3'
+	option NFQWS_UDP_PKT_OUT '9'
+	option NFQWS_UDP_PKT_IN '0'
+	option NFQWS_PORTS_TCP_KEEPALIVE '0'
+	option NFQWS_PORTS_UDP_KEEPALIVE '0'
+	option NFQWS_OPT '
+--filter-tcp=80 <HOSTLIST>
+--dpi-desync=fake,fakedsplit
+--dpi-desync-autottl=2
+--dpi-desync-fooling=badsum
+--new
+--filter-tcp=443 --hostlist=/opt/zapret/ipset/zapret-hosts-google.txt
+--dpi-desync=fake,multidisorder
+--dpi-desync-split-pos=1,midsld
+--dpi-desync-repeats=11
+--dpi-desync-fooling=badsum
+--dpi-desync-fake-tls-mod=rnd,dupsid,sni=www.google.com
+--new
+--filter-udp=443 --hostlist=/opt/zapret/ipset/zapret-hosts-google.txt
+--dpi-desync=fake
+--dpi-desync-repeats=11
+--dpi-desync-fake-quic=/opt/zapret/files/fake/quic_initial_www_google_com.bin
+--new
+--filter-udp=443 <HOSTLIST_NOAUTO>
+--dpi-desync=fake
+--dpi-desync-repeats=11
+--new
+--filter-tcp=443 <HOSTLIST>
+--dpi-desync=multidisorder
+--dpi-desync-split-pos=1,sniext+1,host+1,midsld-2,midsld,midsld+2,endhost-1
+'
+
