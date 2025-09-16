@@ -560,7 +560,7 @@ doh-proxy
 youtubeUnblock
 dhcp
 dns-failsafe-proxy"
-URL="https://raw.githubusercontent.com/routerich/RouterichAX3000_configs/refs/heads/beta_alt_test"
+URL="https://raw.githubusercontent.com/routerich/RouterichAX3000_configs/refs/heads/beta_zapret"
 
 checkPackageAndInstall "luci-app-dns-failsafe-proxy" "1"
 checkPackageAndInstall "luci-i18n-stubby-ru" "1"
@@ -959,7 +959,7 @@ service odhcpd restart
 
 path_podkop_config="/etc/config/podkop"
 path_podkop_config_backup="/root/podkop"
-URL="https://raw.githubusercontent.com/routerich/RouterichAX3000_configs/refs/heads/beta_alt_test"
+URL="https://raw.githubusercontent.com/routerich/RouterichAX3000_configs/refs/heads/beta_zapret"
 
 messageComplete=""
 
