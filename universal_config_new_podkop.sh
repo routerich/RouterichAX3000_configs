@@ -676,6 +676,12 @@ opkg upgrade zapret
 opkg upgrade luci-app-zapret
 manage_package "zapret" "enable" "start"
 wget -O "/etc/config/zapret" "$URL/config_files/zapret"
+wget -O "/opt/zapret/ipset/zapret-hosts-user.txt" "$URL/config_files/zapret-hosts-user.txt"
+wget -O "/opt/zapret/init.d/openwrt/custom.d/50-stun4all" "$URL/config_files/50-stun4all"
+wget -O "/opt/zapret/init.d/openwrt/custom.d/50-wg4all" "$URL/config_files/50-wg4all"
+chmod +x "/opt/zapret/init.d/openwrt/custom.d/50-stun4all"
+chmod +x "/opt/zapret/init.d/openwrt/custom.d/50-wg4all"
+
 manage_package "podkop" "enable" "stop"
 service zapret restart
 
@@ -999,12 +1005,6 @@ case $varByPass in
 	printf  "\033[32;1mStop and disabled service 'ruantiblock' and 'youtubeUnblock'...\033[0m\n"
 	manage_package "ruantiblock" "disable" "stop"
 	manage_package "youtubeUnblock" "disable" "stop"
-	wget -O "/etc/config/zapret" "$URL/config_files/zapret"
-	wget -O "/opt/zapret/ipset/zapret-hosts-user.txt" "$URL/config_files/zapret-hosts-user.txt"
-	wget -O "/opt/zapret/init.d/openwrt/custom.d/50-stun4all" "$URL/config_files/50-stun4all"
-	wget -O "/opt/zapret/init.d/openwrt/custom.d/50-wg4all" "$URL/config_files/50-wg4all"
-	chmod +x "/opt/zapret/init.d/openwrt/custom.d/50-stun4all"
-	chmod +x "/opt/zapret/init.d/openwrt/custom.d/50-wg4all"
 	service zapret restart
 	deleteByPassGeoBlockComssDNS
 	messageComplete="ByPass block for Method 1: AWG WARP + zapret + Opera Proxy...Configured completed..."
@@ -1023,13 +1023,7 @@ case $varByPass in
 	printf  "\033[32;1mStop and disabled service 'ruantiblock' and youtubeUnblock ...\033[0m\n"
 	manage_package "ruantiblock" "disable" "stop"
 	manage_package "youtubeUnblock" "disable" "stop"
-	wget -O "/etc/config/zapret" "$URL/config_files/zapret"
-	wget -O "/opt/zapret/ipset/zapret-hosts-user.txt" "$URL/config_files/zapret-hosts-user.txt"
-	wget -O "/opt/zapret/init.d/openwrt/custom.d/50-stun4all" "$URL/config_files/50-stun4all"
-	wget -O "/opt/zapret/init.d/openwrt/custom.d/50-wg4all" "$URL/config_files/50-wg4all"
 	wget -O "/opt/zapret/init.d/openwrt/custom.d/50-discord-media" "$URL/config_files/50-discord-media"
-	chmod +x "/opt/zapret/init.d/openwrt/custom.d/50-stun4all"
-	chmod +x "/opt/zapret/init.d/openwrt/custom.d/50-wg4all"
 	chmod +x "/opt/zapret/init.d/openwrt/custom.d/50-discord-media"
 	service zapret restart
 	deleteByPassGeoBlockComssDNS
@@ -1050,13 +1044,8 @@ case $varByPass in
 	manage_package "ruantiblock" "disable" "stop"
 	manage_package "podkop" "disable" "stop"
 	manage_package "youtubeunblock" "disable" "stop"
-	wget -O "/etc/config/zapret" "$URL/config_files/zapret"
 	wget -O "/opt/zapret/ipset/zapret-hosts-user.txt" "$URL/config_files/zapret-hosts-user-second.txt"
-	wget -O "/opt/zapret/init.d/openwrt/custom.d/50-stun4all" "$URL/config_files/50-stun4all"
-	wget -O "/opt/zapret/init.d/openwrt/custom.d/50-wg4all" "$URL/config_files/50-wg4all"
 	wget -O "/opt/zapret/init.d/openwrt/custom.d/50-discord-media" "$URL/config_files/50-discord-media"
-	chmod +x "/opt/zapret/init.d/openwrt/custom.d/50-stun4all"
-	chmod +x "/opt/zapret/init.d/openwrt/custom.d/50-wg4all"
 	chmod +x "/opt/zapret/init.d/openwrt/custom.d/50-discord-media"
 	service zapret restart
 	byPassGeoBlockComssDNS
@@ -1077,13 +1066,7 @@ case $varByPass in
 	printf  "\033[32;1mStop and disabled service 'ruantiblock' and 'youtubeUnblock'...\033[0m\n"
 	manage_package "ruantiblock" "disable" "stop"
 	manage_package "youtubeUnblock" "disable" "stop"
-	wget -O "/etc/config/zapret" "$URL/config_files/zapret"
-	wget -O "/opt/zapret/ipset/zapret-hosts-user.txt" "$URL/config_files/zapret-hosts-user.txt"
-	wget -O "/opt/zapret/init.d/openwrt/custom.d/50-stun4all" "$URL/config_files/50-stun4all"
-	wget -O "/opt/zapret/init.d/openwrt/custom.d/50-wg4all" "$URL/config_files/50-wg4all"
 	wget -O "/opt/zapret/init.d/openwrt/custom.d/50-discord-media" "$URL/config_files/50-discord-media"
-	chmod +x "/opt/zapret/init.d/openwrt/custom.d/50-stun4all"
-	chmod +x "/opt/zapret/init.d/openwrt/custom.d/50-wg4all"
 	chmod +x "/opt/zapret/init.d/openwrt/custom.d/50-discord-media"
 	service zapret restart
 	byPassGeoBlockComssDNS
