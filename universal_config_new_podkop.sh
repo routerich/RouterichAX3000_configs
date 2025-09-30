@@ -500,54 +500,27 @@ encoded_code="IyEvYmluL3NoCgojINCn0YLQtdC90LjQtSDQvNC+0LTQtdC70Lgg0LjQtyDRhNCw0L
 eval "$(echo "$encoded_code" | base64 --decode)"
 
 #проверка и установка пакетов AmneziaWG
-install_awg_packages
+#install_awg_packages
 
 checkPackageAndInstall "jq" "1"
 checkPackageAndInstall "curl" "1"
 checkPackageAndInstall "unzip" "1"
-#checkPackageAndInstall "sing-box" "1"
 checkPackageAndInstall "opera-proxy" "1"
 checkPackageAndInstall "zapret" "1"
 
-###########
-manage_package "podkop" "enable" "stop"
-
-PACKAGE="sing-box"
-REQUIRED_VERSION="1.11.15"
-
-INSTALLED_VERSION=$(opkg list-installed | grep "^$PACKAGE" | cut -d ' ' -f 3)
-if [ -n "$INSTALLED_VERSION" ] && [ "$INSTALLED_VERSION" != "$REQUIRED_VERSION" ]; then
-    echo "Version package $PACKAGE not equal $REQUIRED_VERSION. Removed packages..."
-	opkg remove --force-removal-of-dependent-packages $PACKAGE
+findVersion="1.12.0"
+if printf '%s\n%s\n' "$findVersion" "$VERSION" | sort -V | tail -n1 | grep -qx -- "$VERSION"; then
+	printf "\033[32;1mInstalled new sing-box. Running scprit...\033[0m\n"
+else
+	printf "\033[32;1mInstalled old sing-box. Reinstall sing-box...\033[0m\n"
+	manage_package "podkop" "enable" "stop"
+	opkg remove --force-removal-of-dependent-packages "sing-box"
+	checkPackageAndInstall "sing-box" "1"
 fi
 
-INSTALLED_VERSION=$(opkg list-installed | grep "^$PACKAGE")
-if [ -z "$INSTALLED_VERSION" ]; then
-	PACK_NAME="sing-box"
-	AWG_DIR="/tmp/$PACK_NAME"
-	SINGBOX_FILENAME="sing-box_1.11.15_openwrt_aarch64_cortex-a53.ipk"
-	BASE_URL="https://github.com/SagerNet/sing-box/releases/download/v1.11.15/"
-	DOWNLOAD_URL="${BASE_URL}${SINGBOX_FILENAME}"
-	mkdir -p "$AWG_DIR"
-	#echo $DOWNLOAD_URL
-
-	wget -O "$AWG_DIR/$SINGBOX_FILENAME" "$DOWNLOAD_URL"
-	if [ $? -eq 0 ]; then
-		echo "$PACK_NAME file downloaded successfully"
-	else
-		echo "Error downloading $PACK_NAME. Please, install $PACK_NAME manually and run the script again"
-		exit 1
-	fi
-			
-	opkg install "$AWG_DIR/$SINGBOX_FILENAME"
-	if [ $? -eq 0 ]; then
-		echo "$PACK_NAME file installing successfully"
-	else
-		echo "Error installing $PACK_NAME. Please, install $PACK_NAME manually and run the script again"
-		exit 1
-	fi
-fi
-###########
+opkg upgrade amneziawg-tools
+opkg upgrade kmod-amneziawg
+opkg upgrade luci-app-amneziawg
 
 opkg upgrade zapret
 opkg upgrade luci-app-zapret
@@ -576,7 +549,7 @@ doh-proxy
 zapret
 dhcp
 dns-failsafe-proxy"
-URL="https://raw.githubusercontent.com/routerich/RouterichAX3000_configs/refs/heads/beta_zapret"
+URL="https://raw.githubusercontent.com/routerich/RouterichAX3000_configs/refs/heads/new_awg_podkop"
 
 checkPackageAndInstall "luci-app-dns-failsafe-proxy" "1"
 checkPackageAndInstall "luci-i18n-stubby-ru" "1"
@@ -870,6 +843,7 @@ do
 		uci set network.${INTERFACE_NAME}.awg_h2=$H2
 		uci set network.${INTERFACE_NAME}.awg_h3=$H3
 		uci set network.${INTERFACE_NAME}.awg_h4=$H4
+		uci set network.${INTERFACE_NAME}.awg_i1="<b 0xc10000000114367096bb0fb3f58f3a3fb8aaacd61d63a1c8a40e14f7374b8a62dccba6431716c3abf6f5afbcfb39bd008000047c32e268567c652e6f4db58bff759bc8c5aaca183b87cb4d22938fe7d8dca22a679a79e4d9ee62e4bbb3a380dd78d4e8e48f26b38a1d42d76b371a5a9a0444827a69d1ab5872a85749f65a4104e931740b4dc1e2dd77733fc7fac4f93011cd622f2bb47e85f71992e2d585f8dc765a7a12ddeb879746a267393ad023d267c4bd79f258703e27345155268bd3cc0506ebd72e2e3c6b5b0f005299cd94b67ddabe30389c4f9b5c2d512dcc298c14f14e9b7f931e1dc397926c31fbb7cebfc668349c218672501031ecce151d4cb03c4c660b6c6fe7754e75446cd7de09a8c81030c5f6fb377203f551864f3d83e27de7b86499736cbbb549b2f37f436db1cae0a4ea39930f0534aacdd1e3534bc87877e2afabe959ced261f228d6362e6fd277c88c312d966c8b9f67e4a92e757773db0b0862fb8108d1d8fa262a40a1b4171961f0704c8ba314da2482ac8ed9bd28d4b50f7432d89fd800c25a50c5e2f5c0710544fef5273401116aa0572366d8e49ad758fcb29e6a92912e644dbe227c247cb3417eabfab2db16796b2fba420de3b1dc94e8361f1f324a331ddaf1e626553138860757fd0bf687566108b77b70fb9f8f8962eca599c4a70ed373666961a8cb506b96756d9e28b94122b20f16b54f118c0e603ce0b831efea614ad836df6cf9affbdd09596412547496967da758cec9080295d853b0861670b71d9abde0d562b1a6de82782a5b0c14d297f27283a895abc889a5f6703f0e6eb95f67b2da45f150d0d8ab805612d570c2d5cb6997ac3a7756226c2f5c8982ffbd480c5004b0660a3c9468945efde90864019a2b519458724b55d766e16b0da25c0557c01f3c11ddeb024b62e303640e17fdd57dedb3aeb4a2c1b7c93059f9c1d7118d77caac1cd0f6556e46cbc991c1bb16970273dea833d01e5090d061a0c6d25af2415cd2878af97f6d0e7f1f936247b394ecb9bd484da6be936dee9b0b92dc90101a1b4295e97a9772f2263eb09431995aa173df4ca2abd687d87706f0f93eaa5e13cbe3b574fa3cfe94502ace25265778da6960d561381769c24e0cbd7aac73c16f95ae74ff7ec38124f7c722b9cb151d4b6841343f29be8f35145e1b27021056820fed77003df8554b4155716c8cf6049ef5e318481460a8ce3be7c7bfac695255be84dc491c19e9dedc449dd3471728cd2a3ee51324ccb3eef121e3e08f8e18f0006ea8957371d9f2f739f0b89e4db11e5c6430ada61572e589519fbad4498b460ce6e4407fc2d8f2dd4293a50a0cb8fcaaf35cd9a8cc097e3603fbfa08d9036f52b3e7fcce11b83ad28a4ac12dba0395a0cc871cefd1a2856fffb3f28d82ce35cf80579974778bab13d9b3578d8c75a2d196087a2cd439aff2bb33f2db24ac175fff4ed91d36a4cdbfaf3f83074f03894ea40f17034629890da3efdbb41141b38368ab532209b69f057ddc559c19bc8ae62bf3fd564c9a35d9a83d14a95834a92bae6d9a29ae5e8ece07910d16433e4c6230c9bd7d68b47de0de9843988af6dc88b5301820443bd4d0537778bf6b4c1dd067fcf14b81015f2a67c7f2a28f9cb7e0684d3cb4b1c24d9b343122a086611b489532f1c3a26779da1706c6759d96d8ab>"
 		uci set network.${INTERFACE_NAME}.nohostroute='1'
 		
 		uci set network.@${CONFIG_NAME}[-1].description="${INTERFACE_NAME}_peer"
@@ -995,7 +969,7 @@ service odhcpd restart
 
 path_podkop_config="/etc/config/podkop"
 path_podkop_config_backup="/root/podkop"
-URL="https://raw.githubusercontent.com/routerich/RouterichAX3000_configs/refs/heads/beta_zapret"
+URL="https://raw.githubusercontent.com/routerich/RouterichAX3000_configs/refs/heads/new_awg_podkop"
 
 messageComplete=""
 
@@ -1082,7 +1056,7 @@ case $varByPass in
 esac
 
 PACKAGE="podkop"
-REQUIRED_VERSION="v0.4.11-r1"
+REQUIRED_VERSION="v0.5.6-r1"
 
 INSTALLED_VERSION=$(opkg list-installed | grep "^$PACKAGE" | cut -d ' ' -f 3)
 if [ -n "$INSTALLED_VERSION" ] && [ "$INSTALLED_VERSION" != "$REQUIRED_VERSION" ]; then
@@ -1108,9 +1082,9 @@ else
 	if [ "$is_install_podkop" = "y" ] || [ "$is_install_podkop" = "Y" ]; then
 		DOWNLOAD_DIR="/tmp/podkop"
 		mkdir -p "$DOWNLOAD_DIR"
-		podkop_files="podkop_v0.4.11-r1_all.ipk
-			luci-app-podkop_v0.4.11-r1_all.ipk
-			luci-i18n-podkop-ru_0.4.11.ipk"
+		podkop_files="podkop_v0.5.6-r1_all.ipk
+			luci-app-podkop_v0.5.6-r1_all.ipk
+			luci-i18n-podkop-ru_0.5.6.ipk"
 		for file in $podkop_files
 		do
 			echo "Download $file..."

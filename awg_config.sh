@@ -318,7 +318,7 @@ config_files="network
 firewall
 https-dns-proxy
 dhcp"
-URL="https://raw.githubusercontent.com/routerich/RouterichAX3000_configs/refs/heads/beta_zapret"
+URL="https://raw.githubusercontent.com/routerich/RouterichAX3000_configs/refs/heads/new_awg_podkop"
 
 checkPackageAndInstall "https-dns-proxy" "0"
 
@@ -575,7 +575,7 @@ fi
 
 path_podkop_config="/etc/config/podkop"
 path_podkop_config_backup="/root/podkop"
-URL="https://raw.githubusercontent.com/routerich/RouterichAX3000_configs/refs/heads/beta_zapret"
+URL="https://raw.githubusercontent.com/routerich/RouterichAX3000_configs/refs/heads/new_awg_podkop"
 
 if [ -f "/etc/init.d/podkop" ]; then
 	printf "Podkop installed. Reconfigured on AWG WARP and Opera Proxy? (y/n): \n"
