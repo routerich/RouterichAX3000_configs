@@ -508,6 +508,12 @@ checkPackageAndInstall "unzip" "1"
 checkPackageAndInstall "opera-proxy" "1"
 checkPackageAndInstall "zapret" "1"
 
+
+INSTALLED_VERSION=$(opkg list-installed | grep "^sing-box")
+if [ -z "$INSTALLED_VERSION" ]; then
+	checkPackageAndInstall "sing-box" "1"
+fi
+
 findVersion="1.12.0"
 if printf '%s\n%s\n' "$findVersion" "$VERSION" | sort -V | tail -n1 | grep -qx -- "$VERSION"; then
 	printf "\033[32;1mInstalled new sing-box. Running scprit...\033[0m\n"
@@ -542,7 +548,7 @@ uci set dhcp.@dnsmasq[0].confdir='/tmp/dnsmasq.d'
 uci commit dhcp
 
 DIR="/etc/config"
-DIR_BACKUP="/root/backup4"
+DIR_BACKUP="/root/backup5"
 config_files="network
 firewall
 doh-proxy
@@ -579,33 +585,6 @@ echo "Configure dhcp..."
 uci set dhcp.cfg01411c.strictorder='1'
 uci set dhcp.cfg01411c.filter_aaaa='1'
 uci commit dhcp
-
-cat <<EOF > /etc/sing-box/config.json
-{
-	"log": {
-	"disabled": true,
-	"level": "error"
-},
-"inbounds": [
-	{
-	"type": "tproxy",
-	"listen": "::",
-	"listen_port": 1100,
-	"sniff": false
-	}
-],
-"outbounds": [
-	{
-	"type": "http",
-	"server": "127.0.0.1",
-	"server_port": 18080
-	}
-],
-"route": {
-	"auto_detect_interface": true
-}
-}
-EOF
 
 echo "Setting sing-box..."
 uci set sing-box.main.enabled='1'
