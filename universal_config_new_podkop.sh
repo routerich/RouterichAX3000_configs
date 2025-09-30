@@ -508,17 +508,11 @@ checkPackageAndInstall "unzip" "1"
 checkPackageAndInstall "opera-proxy" "1"
 checkPackageAndInstall "zapret" "1"
 
-
-INSTALLED_VERSION=$(opkg list-installed | grep "^sing-box")
-if [ -z "$INSTALLED_VERSION" ]; then
-	checkPackageAndInstall "sing-box" "1"
-fi
-
 findVersion="1.12.0"
-if printf '%s\n%s\n' "$findVersion" "$VERSION" | sort -V | tail -n1 | grep -qx -- "$VERSION"; then
+if opkg list-installed | grep "^sing-box" && printf '%s\n%s\n' "$findVersion" "$VERSION" | sort -V | tail -n1 | grep -qx -- "$VERSION"; then
 	printf "\033[32;1mInstalled new sing-box. Running scprit...\033[0m\n"
 else
-	printf "\033[32;1mInstalled old sing-box. Reinstall sing-box...\033[0m\n"
+	printf "\033[32;1mInstalled old sing-box or not install sing-box. Reinstall sing-box...\033[0m\n"
 	manage_package "podkop" "enable" "stop"
 	opkg remove --force-removal-of-dependent-packages "sing-box"
 	checkPackageAndInstall "sing-box" "1"
