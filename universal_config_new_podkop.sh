@@ -586,6 +586,33 @@ uci set dhcp.cfg01411c.strictorder='1'
 uci set dhcp.cfg01411c.filter_aaaa='1'
 uci commit dhcp
 
+cat <<EOF > /etc/sing-box/config.json
+{
+	"log": {
+	"disabled": true,
+	"level": "error"
+},
+"inbounds": [
+	{
+	"type": "tproxy",
+	"listen": "::",
+	"listen_port": 1100,
+	"sniff": false
+	}
+],
+"outbounds": [
+	{
+	"type": "http",
+	"server": "127.0.0.1",
+	"server_port": 18080
+	}
+],
+"route": {
+	"auto_detect_interface": true
+}
+}
+EOF
+
 echo "Setting sing-box..."
 uci set sing-box.main.enabled='1'
 uci set sing-box.main.user='root'
