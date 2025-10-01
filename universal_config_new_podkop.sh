@@ -260,6 +260,7 @@ check_request() {
             ;;
 		3)
 			content=$(echo $response_body | jq -r '.content')  
+			content=$(echo $content | jq -r '.configBase64')  
             warp_config=$(echo "$content" | base64 -d)
             echo "$warp_config"
             ;;
