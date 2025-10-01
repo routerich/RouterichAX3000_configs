@@ -144,82 +144,46 @@ checkPackageAndInstall()
 
 requestConfWARP1()
 {
+  #запрос конфигурации WARP
   local result=$(curl --connect-timeout 20 --max-time 60 -w "%{http_code}" 'https://warp-gen.vercel.app/generate-config' \
     -H 'accept: */*' \
-    -H 'accept-language: ru-RU,ru;q=0.8' \
-    -H 'cache-control: no-cache' \
-    -H 'dnt: 1' \
-    -H 'pragma: no-cache' \
-    -H 'priority: u=1, i' \
+    -H 'accept-language: ru-RU,ru;q=0.9' \
     -H 'referer: https://warp-gen.vercel.app/' \
-    -H 'sec-ch-ua: "Chromium";v="140", "Not=A?Brand";v="24", "Brave";v="140"' \
-    -H 'sec-ch-ua-mobile: ?0' \
-    -H 'sec-ch-ua-platform: "Windows"' \
-    -H 'sec-fetch-dest: empty' \
-    -H 'sec-fetch-mode: cors' \
-    -H 'sec-fetch-site: same-origin' \
-    -H 'sec-gpc: 1' \
-    -H 'user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36')
+    -H 'user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36')
   echo "$result"
 }
 
+
 requestConfWARP2()
 {
-  local result=$(curl --connect-timeout 20 --max-time 60 -w "%{http_code}" 'https://warp-gen.vercel.app/generate-config' \
-    -H 'Accept: */*' \
-    -H 'Accept-Language: ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7' \
-    -H 'Connection: keep-alive' \
-    -H 'Referer: https://warp-gen.vercel.app/' \
-    -H 'Sec-Fetch-Dest: empty' \
-    -H 'Sec-Fetch-Mode: cors' \
-    -H 'Sec-Fetch-Site: same-origin' \
-    -H 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36' \
-    -H 'sec-ch-ua: "Not(A:Brand";v="99", "Google Chrome";v="133", "Chromium";v="133"' \
-    -H 'sec-ch-ua-mobile: ?0' \
-    -H 'sec-ch-ua-platform: "Windows"')
+  #запрос конфигурации WARP
+  local result=$(curl --connect-timeout 20 --max-time 60 -w "%{http_code}" 'https://warp-generator.vercel.app/api/warp' \
+    -H 'accept: */*' \
+    -H 'accept-language: ru-RU,ru;q=0.6' \
+    -H 'content-type: application/json' \
+    -H 'referer: https://warp-generator.vercel.app/' \
+    --data-raw '{"selectedServices":[],"siteMode":"all","deviceType":"computer"}')
   echo "$result"
 }
 
 requestConfWARP3()
 {
-  local result=$(curl --connect-timeout 20 --max-time 60 -w "%{http_code}" 'https://warp-generator.vercel.app/api/warp' \
+  #запрос конфигурации WARP
+  local result=$(curl --connect-timeout 20 --max-time 60 -w "%{http_code}" 'https://config-generator-warp.vercel.app/warpt?dns=1.1.1.1%2C%201.0.0.1%2C%202606%3A4700%3A4700%3A%3A1111%2C%202606%3A4700%3A4700%3A%3A1001&allowedIPs=0.0.0.0%2F0%2C%20%3A%3A%2F0' \
     -H 'accept: */*' \
-    -H 'accept-language: ru-RU,ru;q=0.6' \
-    -H 'cache-control: no-cache' \
-    -H 'content-type: application/json' \
-    -H 'dnt: 1' \
-    -H 'origin: https://warp-generator.vercel.app' \
-    -H 'pragma: no-cache' \
-    -H 'priority: u=1, i' \
-    -H 'referer: https://warp-generator.vercel.app/' \
-    -H 'sec-ch-ua: "Chromium";v="140", "Not=A?Brand";v="24", "Brave";v="140"' \
-    -H 'sec-ch-ua-mobile: ?0' \
-    -H 'sec-ch-ua-platform: "Windows"' \
-    -H 'sec-fetch-dest: empty' \
-    -H 'sec-fetch-mode: cors' \
-    -H 'sec-fetch-site: same-origin' \
-    -H 'sec-gpc: 1' \
-    -H 'user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36' \
-    --data-raw '{"selectedServices":[],"siteMode":"all","deviceType":"computer"}')
+    -H 'accept-language: ru-RU,ru;q=0.9' \
+    -H 'referer: https://config-generator-warp.vercel.app/')
   echo "$result"
 }
 
 requestConfWARP4()
 {
-	#запрос конфигурации WARP
-	local result=$(curl --connect-timeout 20 --max-time 60 -w "%{http_code}" 'https://config-generator-warp.vercel.app/warp' \
-	  -H 'Accept: */*' \
-	  -H 'Accept-Language: ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7' \
-	  -H 'Connection: keep-alive' \
-	  -H 'Referer: https://config-generator-warp.vercel.app/' \
-	  -H 'Sec-Fetch-Dest: empty' \
-	  -H 'Sec-Fetch-Mode: cors' \
-	  -H 'Sec-Fetch-Site: same-origin' \
-	  -H 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36' \
-	  -H 'sec-ch-ua: "Not(A:Brand";v="99", "Google Chrome";v="133", "Chromium";v="133"' \
-	  -H 'sec-ch-ua-mobile: ?0' \
-	  -H 'sec-ch-ua-platform: "Windows"')
-	echo "$result"
+  #запрос конфигурации WARP без параметров
+  local result=$(curl --connect-timeout 20 --max-time 60 -w "%{http_code}" 'https://config-generator-warp.vercel.app/warpt' \
+    -H 'accept: */*' \
+    -H 'accept-language: ru-RU,ru;q=0.9' \
+    -H 'referer: https://config-generator-warp.vercel.app/')
+  echo "$result"
 }
 
 # Функция для обработки выполнения запроса
@@ -241,12 +205,13 @@ check_request() {
 			echo "$content"
             ;;
 		2)
-			content=$(echo $response_body | jq -r '.config')
-			#content=$(echo "$content" | sed 's/\\n/\012/g')
-			echo "$content"
+			content=$(echo $response_body | jq -r '.content')  
+			content=$(echo $content | jq -r '.configBase64')  
+            warp_config=$(echo "$content" | base64 -d)
+            echo "$warp_config"
             ;;
 		3)
-			content=$(echo $response_body | jq -r '.content')  
+			content=$(echo $response_body | jq -r '.content')    
             warp_config=$(echo "$content" | base64 -d)
             echo "$warp_config"
             ;;
