@@ -144,62 +144,64 @@ checkPackageAndInstall()
 
 requestConfWARP1()
 {
-	#запрос конфигурации WARP
-	local result=$(curl --connect-timeout 20 --max-time 60 -w "%{http_code}" 'https://warp.llimonix.pw/api/warp' \
-	  -H 'Accept: */*' \
-	  -H 'Accept-Language: ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7' \
-	  -H 'Connection: keep-alive' \
-	  -H 'Content-Type: application/json' \
-	  -H 'Origin: https://warp.llimonix.pw' \
-	  -H 'Referer: https://warp.llimonix.pw/' \
-	  -H 'Sec-Fetch-Dest: empty' \
-	  -H 'Sec-Fetch-Mode: cors' \
-	  -H 'Sec-Fetch-Site: same-origin' \
-	  -H 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36' \
-	  -H 'sec-ch-ua: "Not(A:Brand";v="99", "Google Chrome";v="133", "Chromium";v="133")' \
-	  -H 'sec-ch-ua-mobile: ?0' \
-	  -H 'sec-ch-ua-platform: "Windows"' \
-	  --data-raw '{"selectedServices":[],"siteMode":"all","deviceType":"computer"}')
-	echo "$result"
+  local result=$(curl --connect-timeout 20 --max-time 60 -w "%{http_code}" 'https://warp-gen.vercel.app/generate-config' \
+    -H 'accept: */*' \
+    -H 'accept-language: ru-RU,ru;q=0.8' \
+    -H 'cache-control: no-cache' \
+    -H 'dnt: 1' \
+    -H 'pragma: no-cache' \
+    -H 'priority: u=1, i' \
+    -H 'referer: https://warp-gen.vercel.app/' \
+    -H 'sec-ch-ua: "Chromium";v="140", "Not=A?Brand";v="24", "Brave";v="140"' \
+    -H 'sec-ch-ua-mobile: ?0' \
+    -H 'sec-ch-ua-platform: "Windows"' \
+    -H 'sec-fetch-dest: empty' \
+    -H 'sec-fetch-mode: cors' \
+    -H 'sec-fetch-site: same-origin' \
+    -H 'sec-gpc: 1' \
+    -H 'user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36')
+  echo "$result"
 }
 
 requestConfWARP2()
 {
-	#запрос конфигурации WARP
-	local result=$(curl --connect-timeout 20 --max-time 60 -w "%{http_code}" 'https://topor-warp.vercel.app/generate' \
-	  -H 'Accept: */*' \
-	  -H 'Accept-Language: ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7' \
-	  -H 'Connection: keep-alive' \
-	  -H 'Content-Type: application/json' \
-	  -H 'Origin: https://topor-warp.vercel.app' \
-	  -H 'Referer: https://topor-warp.vercel.app/' \
-	  -H 'Sec-Fetch-Dest: empty' \
-	  -H 'Sec-Fetch-Mode: cors' \
-	  -H 'Sec-Fetch-Site: same-origin' \
-	  -H 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36' \
-	  -H 'sec-ch-ua: "Not(A:Brand";v="99", "Google Chrome";v="133", "Chromium";v="133"' \
-	  -H 'sec-ch-ua-mobile: ?0' \
-	  -H 'sec-ch-ua-platform: "Windows"' \
-	  --data-raw '{"platform":"all"}')
-	echo "$result"
+  local result=$(curl --connect-timeout 20 --max-time 60 -w "%{http_code}" 'https://warp-gen.vercel.app/generate-config' \
+    -H 'Accept: */*' \
+    -H 'Accept-Language: ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7' \
+    -H 'Connection: keep-alive' \
+    -H 'Referer: https://warp-gen.vercel.app/' \
+    -H 'Sec-Fetch-Dest: empty' \
+    -H 'Sec-Fetch-Mode: cors' \
+    -H 'Sec-Fetch-Site: same-origin' \
+    -H 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36' \
+    -H 'sec-ch-ua: "Not(A:Brand";v="99", "Google Chrome";v="133", "Chromium";v="133"' \
+    -H 'sec-ch-ua-mobile: ?0' \
+    -H 'sec-ch-ua-platform: "Windows"')
+  echo "$result"
 }
 
 requestConfWARP3()
 {
-	#запрос конфигурации WARP
-	local result=$(curl --connect-timeout 20 --max-time 60 -w "%{http_code}" 'https://warp-gen.vercel.app/generate-config' \
-		-H 'Accept: */*' \
-		-H 'Accept-Language: ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7' \
-		-H 'Connection: keep-alive' \
-		-H 'Referer: https://warp-gen.vercel.app/' \
-		-H 'Sec-Fetch-Dest: empty' \
-		-H 'Sec-Fetch-Mode: cors' \
-		-H 'Sec-Fetch-Site: same-origin' \
-		-H 'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36' \
-		-H 'sec-ch-ua: "Not(A:Brand";v="99", "Google Chrome";v="133", "Chromium";v="133"' \
-		-H 'sec-ch-ua-mobile: ?0' \
-		-H 'sec-ch-ua-platform: "Windows"')
-	echo "$result"
+  local result=$(curl --connect-timeout 20 --max-time 60 -w "%{http_code}" 'https://warp-generator.vercel.app/api/warp' \
+    -H 'accept: */*' \
+    -H 'accept-language: ru-RU,ru;q=0.6' \
+    -H 'cache-control: no-cache' \
+    -H 'content-type: application/json' \
+    -H 'dnt: 1' \
+    -H 'origin: https://warp-generator.vercel.app' \
+    -H 'pragma: no-cache' \
+    -H 'priority: u=1, i' \
+    -H 'referer: https://warp-generator.vercel.app/' \
+    -H 'sec-ch-ua: "Chromium";v="140", "Not=A?Brand";v="24", "Brave";v="140"' \
+    -H 'sec-ch-ua-mobile: ?0' \
+    -H 'sec-ch-ua-platform: "Windows"' \
+    -H 'sec-fetch-dest: empty' \
+    -H 'sec-fetch-mode: cors' \
+    -H 'sec-fetch-site: same-origin' \
+    -H 'sec-gpc: 1' \
+    -H 'user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36' \
+    --data-raw '{"selectedServices":[],"siteMode":"all","deviceType":"computer"}')
+  echo "$result"
 }
 
 requestConfWARP4()
@@ -234,25 +236,19 @@ check_request() {
     if [ "$response_code" -eq 200 ]; then
 		case $choice in
 		1)
-			status=$(echo $response_body | jq '.success')
-			#echo "$status"
-			if [ "$status" = "true" ]
-			then
-				content=$(echo $response_body | jq '.content')
-				configBase64=$(echo $content | jq -r '.configBase64')
-				warpGen=$(echo "$configBase64" | base64 -d)
-				echo "$warpGen";
-			else
-				echo "Error"
-			fi
-            ;;
-		2)
-			echo "$response_body"
-            ;;
-		3)
 			content=$(echo $response_body | jq -r '.config')
 			#content=$(echo "$content" | sed 's/\\n/\012/g')
 			echo "$content"
+            ;;
+		2)
+			content=$(echo $response_body | jq -r '.config')
+			#content=$(echo "$content" | sed 's/\\n/\012/g')
+			echo "$content"
+            ;;
+		3)
+			content=$(echo $response_body | jq -r '.content')  
+            warp_config=$(echo "$content" | base64 -d)
+            echo "$warp_config"
             ;;
 		4)
 			content=$(echo $response_body | jq -r '.content')  
