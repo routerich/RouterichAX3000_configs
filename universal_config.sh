@@ -120,6 +120,28 @@ manage_package() {
     fi
 }
 
+checkPackageAndInstall()
+{
+    local name="$1"
+    local isRequried="$2"
+    #проверяем установлени ли библиотека $name
+    if opkg list-installed | grep -q $name; then
+        echo "$name already installed..."
+    else
+        echo "$name not installed. Installed $name..."
+        opkg install $name
+		res=$?
+		if [ "$isRequried" = "1" ]; then
+			if [ $res -eq 0 ]; then
+				echo "$name insalled successfully"
+			else
+				echo "Error installing $name. Please, install $name manually and run the script again"
+				exit 1
+			fi
+		fi
+    fi
+}
+
 requestConfWARP1()
 {
   #запрос конфигурации WARP
