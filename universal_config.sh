@@ -145,7 +145,7 @@ checkPackageAndInstall()
 requestConfWARP1()
 {
   #запрос конфигурации WARP
-  local result=$(curl --connect-timeout 20 --max-time 60 -w "%{http_code}" 'https://config-generator-warp.vercel.app/warpt?dns=1.1.1.1%2C%201.0.0.1%2C%202606%3A4700%3A4700%3A%3A1111%2C%202606%3A4700%3A4700%3A%3A1001&allowedIPs=0.0.0.0%2F0%2C%20%3A%3A%2F0' \
+  local result=$(curl --connect-timeout 20 --max-time 60 -w "%{http_code}" 'https://config-generator-warp.vercel.app/warpd?dns=1.1.1.1%2C%201.0.0.1%2C%202606%3A4700%3A4700%3A%3A1111%2C%202606%3A4700%3A4700%3A%3A1001&allowedIPs=0.0.0.0%2F0%2C%20%3A%3A%2F0' \
     -H 'accept: */*' \
     -H 'accept-language: ru-RU,ru;q=0.9' \
     -H 'referer: https://config-generator-warp.vercel.app/')
@@ -155,7 +155,7 @@ requestConfWARP1()
 requestConfWARP2()
 {
   #запрос конфигурации WARP без параметров
-  local result=$(curl --connect-timeout 20 --max-time 60 -w "%{http_code}" 'https://config-generator-warp.vercel.app/warpt' \
+  local result=$(curl --connect-timeout 20 --max-time 60 -w "%{http_code}" 'https://config-generator-warp.vercel.app/warpd' \
     -H 'accept: */*' \
     -H 'accept-language: ru-RU,ru;q=0.9' \
     -H 'referer: https://config-generator-warp.vercel.app/')
