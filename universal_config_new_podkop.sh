@@ -158,7 +158,7 @@ checkPackageAndInstall() {
 requestConfWARP1()
 {
   #запрос конфигурации WARP
-  local result=$(curl --connect-timeout 20 --max-time 60 -w "%{http_code}" 'https://config-generator-warp.vercel.app/warpt?dns=1.1.1.1%2C%201.0.0.1%2C%202606%3A4700%3A4700%3A%3A1111%2C%202606%3A4700%3A4700%3A%3A1001&allowedIPs=0.0.0.0%2F0%2C%20%3A%3A%2F0' \
+  local result=$(curl --connect-timeout 20 --max-time 60 -w "%{http_code}" 'https://config-generator-warp.vercel.app/warpd' \
     -H 'accept: */*' \
     -H 'accept-language: ru-RU,ru;q=0.9' \
     -H 'referer: https://config-generator-warp.vercel.app/')
@@ -168,7 +168,7 @@ requestConfWARP1()
 requestConfWARP2()
 {
   #запрос конфигурации WARP без параметров
-  local result=$(curl --connect-timeout 20 --max-time 60 -w "%{http_code}" 'https://config-generator-warp.vercel.app/warpt' \
+  local result=$(curl --connect-timeout 20 --max-time 60 -w "%{http_code}" 'https://config-generator-warp.vercel.app/warp6t' \
     -H 'accept: */*' \
     -H 'accept-language: ru-RU,ru;q=0.9' \
     -H 'referer: https://config-generator-warp.vercel.app/')
@@ -177,15 +177,13 @@ requestConfWARP2()
 
 requestConfWARP3()
 {
-  #запрос конфигурации WARP
-  local result=$(curl --connect-timeout 20 --max-time 60 -w "%{http_code}" 'https://warp-gen.vercel.app/generate-config' \
+  #запрос конфигурации WARP без параметров
+  local result=$(curl --connect-timeout 20 --max-time 60 -w "%{http_code}" 'https://config-generator-warp.vercel.app/warp4t' \
     -H 'accept: */*' \
     -H 'accept-language: ru-RU,ru;q=0.9' \
-    -H 'referer: https://warp-gen.vercel.app/' \
-    -H 'user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36')
+    -H 'referer: https://config-generator-warp.vercel.app/')
   echo "$result"
 }
-
 
 requestConfWARP4()
 {
@@ -223,7 +221,7 @@ check_request() {
             echo "$warp_config"
             ;;
 		3)
-			content=$(echo $response_body | jq -r '.config')
+			content=$(echo $response_body | jq -r '.content')
 			#content=$(echo "$content" | sed 's/\\n/\012/g')
 			echo "$content"
             ;;
