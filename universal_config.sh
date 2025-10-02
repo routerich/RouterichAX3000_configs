@@ -145,20 +145,20 @@ checkPackageAndInstall()
 requestConfWARP1()
 {
   #запрос конфигурации WARP
-  local result=$(curl --connect-timeout 20 --max-time 60 -w "%{http_code}" 'https://warp-gen.vercel.app/generate-config' \
+  local result=$(curl --connect-timeout 20 --max-time 60 -w "%{http_code}" 'https://valokda-amnezia.vercel.app/api/warp' \
     -H 'accept: */*' \
     -H 'accept-language: ru-RU,ru;q=0.9' \
-    -H 'referer: https://warp-gen.vercel.app/generate-config')
+    -H 'referer: https://valokda-amnezia.vercel.app/api/warp')
   echo "$result"
 }
 
 requestConfWARP2()
 {
   #запрос конфигурации WARP
-  local result=$(curl --connect-timeout 20 --max-time 60 -w "%{http_code}" 'https://valokda-amnezia.vercel.app/api/warp' \
+  local result=$(curl --connect-timeout 20 --max-time 60 -w "%{http_code}" 'https://warp-gen.vercel.app/generate-config' \
     -H 'accept: */*' \
     -H 'accept-language: ru-RU,ru;q=0.9' \
-    -H 'referer: https://valokda-amnezia.vercel.app/api/warp')
+    -H 'referer: https://warp-gen.vercel.app/generate-config')
   echo "$result"
 }
 
@@ -218,13 +218,13 @@ check_request() {
     if [ "$response_code" -eq 200 ]; then
 		case $choice in
 		1)
-			content=$(echo $response_body | jq -r '.config')    
-            echo "$content"
-            ;;
-		2)
 			content=$(echo $response_body | jq -r '.content')    
             warp_config=$(echo "$content" | base64 -d)
             echo "$warp_config"
+            ;;
+		2)
+			content=$(echo $response_body | jq -r '.config')    
+            echo "$content"
             ;;
 		3)
 			content=$(echo $response_body | jq -r '.content')    
