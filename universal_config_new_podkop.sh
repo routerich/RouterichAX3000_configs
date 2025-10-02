@@ -168,17 +168,17 @@ requestConfWARP1()
 requestConfWARP2()
 {
   #запрос конфигурации WARP
-  local result=$(curl --connect-timeout 20 --max-time 60 -w "%{http_code}" 'https://config-generator-warp.vercel.app/warpd' \
+  local result=$(curl --connect-timeout 20 --max-time 60 -w "%{http_code}" 'https://valokda-amnezia.vercel.app/api/warp' \
     -H 'accept: */*' \
     -H 'accept-language: ru-RU,ru;q=0.9' \
-    -H 'referer: https://config-generator-warp.vercel.app/')
+    -H 'referer: https://valokda-amnezia.vercel.app/api/warp')
   echo "$result"
 }
 
 requestConfWARP3()
 {
-  #запрос конфигурации WARP без параметров
-  local result=$(curl --connect-timeout 20 --max-time 60 -w "%{http_code}" 'https://config-generator-warp.vercel.app/warp6t' \
+  #запрос конфигурации WARP
+  local result=$(curl --connect-timeout 20 --max-time 60 -w "%{http_code}" 'https://config-generator-warp.vercel.app/warpd' \
     -H 'accept: */*' \
     -H 'accept-language: ru-RU,ru;q=0.9' \
     -H 'referer: https://config-generator-warp.vercel.app/')
@@ -188,7 +188,7 @@ requestConfWARP3()
 requestConfWARP4()
 {
   #запрос конфигурации WARP без параметров
-  local result=$(curl --connect-timeout 20 --max-time 60 -w "%{http_code}" 'https://config-generator-warp.vercel.app/warp4t' \
+  local result=$(curl --connect-timeout 20 --max-time 60 -w "%{http_code}" 'https://config-generator-warp.vercel.app/warp6t' \
     -H 'accept: */*' \
     -H 'accept-language: ru-RU,ru;q=0.9' \
     -H 'referer: https://config-generator-warp.vercel.app/')
@@ -196,6 +196,16 @@ requestConfWARP4()
 }
 
 requestConfWARP5()
+{
+  #запрос конфигурации WARP без параметров
+  local result=$(curl --connect-timeout 20 --max-time 60 -w "%{http_code}" 'https://config-generator-warp.vercel.app/warp4t' \
+    -H 'accept: */*' \
+    -H 'accept-language: ru-RU,ru;q=0.9' \
+    -H 'referer: https://config-generator-warp.vercel.app/')
+  echo "$result"
+}
+
+requestConfWARP6()
 {
   #запрос конфигурации WARP
   local result=$(curl --connect-timeout 20 --max-time 60 -w "%{http_code}" 'https://warp-generator.vercel.app/api/warp' \
@@ -230,16 +240,21 @@ check_request() {
             echo "$warp_config"
             ;;
 		3)
-			content=$(echo $response_body | jq -r '.content')  
+			content=$(echo $response_body | jq -r '.content')    
             warp_config=$(echo "$content" | base64 -d)
             echo "$warp_config"
             ;;
 		4)
+			content=$(echo $response_body | jq -r '.content')  
+            warp_config=$(echo "$content" | base64 -d)
+            echo "$warp_config"
+            ;;
+		5)
 			content=$(echo $response_body | jq -r '.content')
 			warp_config=$(echo "$content" | base64 -d)
             echo "$warp_config"
             ;;
-		5)
+		6)
 			content=$(echo $response_body | jq -r '.content')  
 			content=$(echo $content | jq -r '.configBase64')  
             warp_config=$(echo "$content" | base64 -d)
