@@ -880,7 +880,7 @@ do
 		#service network restart
 
 		if [ "$is_manual_input_parameters" = "n" ]; then
-			WARP_ENDPOINT="engage.cloudflareclient.com:500 engage.cloudflareclient.com:1701 engage.cloudflareclient.com:2408 engage.cloudflareclient.com:4500 162.159.192.4:3138 162.159.192.4:2408"
+			WARP_ENDPOINT="engage.cloudflareclient.com:500 engage.cloudflareclient.com:1701 engage.cloudflareclient.com:2408 engage.cloudflareclient.com:4500 162.159.192.4:2408 162.159.192.4:3138"
 			for element in $WARP_ENDPOINT; do
 				EndpointIP="${element%%:*}"
 				EndpointPort="${element##*:}"
@@ -891,17 +891,17 @@ do
 				ifdown $INTERFACE_NAME
 				# Включаем интерфейс
 				ifup $INTERFACE_NAME
-				printf "\033[33;1mCheck Endpointt WARP $element. Wait up AWG WARP 10 second...\033[0m\n"
+				printf "\033[33;1mCheck Endpoint WARP $element. Wait up AWG WARP 10 second...\033[0m\n"
 				sleep 10
 				
 				pingAddress="8.8.8.8"
 				if ping -c 1 -I $INTERFACE_NAME $pingAddress >/dev/null 2>&1
 				then
-					printf "\033[32;1mEndpointt WARP $element work...\033[0m\n"
+					printf "\033[32;1mEndpoint WARP $element work...\033[0m\n"
 					isExit=1
 					break
 				else
-					printf "\033[31;1mEndpointt WARP $element not work...\033[0m\n"
+					printf "\033[31;1mEndpoint WARP $element not work...\033[0m\n"
 					isExit=0
 				fi
 			done
