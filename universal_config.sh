@@ -765,7 +765,15 @@ do
 							warpGen=$(check_request "$result" 6)
 							if [ "$warpGen" = "Error" ]
 							then
-								warp_config="Error"
+								printf "\033[32;1mRequest WARP config... Attempt #7\033[0m\n"
+								result=$(requestConfWARP7)
+								warpGen=$(check_request "$result" 7)
+								if [ "$warpGen" = "Error" ]
+								then
+									warp_config="Error"
+								else
+									warp_config=$warpGen
+								fi
 							else
 								warp_config=$warpGen
 							fi
