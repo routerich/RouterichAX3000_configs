@@ -145,6 +145,16 @@ checkPackageAndInstall()
 requestConfWARP1()
 {
   #запрос конфигурации WARP
+  local result=$(curl --connect-timeout 20 --max-time 60 -w "%{http_code}" 'https://generator-warp-config.vercel.app/warp4s?dns=1.1.1.1%2C%201.0.0.1%2C%202606%3A4700%3A4700%3A%3A1111%2C%202606%3A4700%3A4700%3A%3A1001&allowedIPs=0.0.0.0%2F0%2C%20%3A%3A%2F0' \
+    -H 'accept: */*' \
+    -H 'accept-language: ru-RU,ru;q=0.9' \
+    -H 'referer: https://generator-warp-config.vercel.app')
+  echo "$result"
+}
+
+requestConfWARP2()
+{
+  #запрос конфигурации WARP
   local result=$(curl --connect-timeout 20 --max-time 60 -w "%{http_code}" 'https://valokda-amnezia.vercel.app/api/warp' \
     -H 'accept: */*' \
     -H 'accept-language: ru-RU,ru;q=0.9' \
@@ -152,7 +162,7 @@ requestConfWARP1()
   echo "$result"
 }
 
-requestConfWARP2()
+requestConfWARP3()
 {
   #запрос конфигурации WARP
   local result=$(curl --connect-timeout 20 --max-time 60 -w "%{http_code}" 'https://warp-gen.vercel.app/generate-config' \
@@ -162,20 +172,10 @@ requestConfWARP2()
   echo "$result"
 }
 
-requestConfWARP3()
-{
-  #запрос конфигурации WARP
-  local result=$(curl --connect-timeout 20 --max-time 60 -w "%{http_code}" 'https://config-generator-warp.vercel.app/warpd' \
-    -H 'accept: */*' \
-    -H 'accept-language: ru-RU,ru;q=0.9' \
-    -H 'referer: https://config-generator-warp.vercel.app/')
-  echo "$result"
-}
-
 requestConfWARP4()
 {
-  #запрос конфигурации WARP без параметров
-  local result=$(curl --connect-timeout 20 --max-time 60 -w "%{http_code}" 'https://config-generator-warp.vercel.app/warp6t' \
+  #запрос конфигурации WARP
+  local result=$(curl --connect-timeout 20 --max-time 60 -w "%{http_code}" 'https://config-generator-warp.vercel.app/warps' \
     -H 'accept: */*' \
     -H 'accept-language: ru-RU,ru;q=0.9' \
     -H 'referer: https://config-generator-warp.vercel.app/')
@@ -185,7 +185,7 @@ requestConfWARP4()
 requestConfWARP5()
 {
   #запрос конфигурации WARP без параметров
-  local result=$(curl --connect-timeout 20 --max-time 60 -w "%{http_code}" 'https://config-generator-warp.vercel.app/warp4t' \
+  local result=$(curl --connect-timeout 20 --max-time 60 -w "%{http_code}" 'https://config-generator-warp.vercel.app/warp6s' \
     -H 'accept: */*' \
     -H 'accept-language: ru-RU,ru;q=0.9' \
     -H 'referer: https://config-generator-warp.vercel.app/')
@@ -193,6 +193,16 @@ requestConfWARP5()
 }
 
 requestConfWARP6()
+{
+  #запрос конфигурации WARP без параметров
+  local result=$(curl --connect-timeout 20 --max-time 60 -w "%{http_code}" 'https://config-generator-warp.vercel.app/warp4s' \
+    -H 'accept: */*' \
+    -H 'accept-language: ru-RU,ru;q=0.9' \
+    -H 'referer: https://config-generator-warp.vercel.app/')
+  echo "$result"
+}
+
+requestConfWARP7()
 {
   #запрос конфигурации WARP
   local result=$(curl --connect-timeout 20 --max-time 60 -w "%{http_code}" 'https://warp-generator.vercel.app/api/warp' \
@@ -223,25 +233,30 @@ check_request() {
             echo "$warp_config"
             ;;
 		2)
-			content=$(echo $response_body | jq -r '.config')    
-            echo "$content"
-            ;;
-		3)
 			content=$(echo $response_body | jq -r '.content')    
             warp_config=$(echo "$content" | base64 -d)
             echo "$warp_config"
             ;;
+		3)
+			content=$(echo $response_body | jq -r '.config')    
+            echo "$content"
+            ;;
 		4)
-			content=$(echo $response_body | jq -r '.content')  
+			content=$(echo $response_body | jq -r '.content')    
             warp_config=$(echo "$content" | base64 -d)
             echo "$warp_config"
             ;;
 		5)
+			content=$(echo $response_body | jq -r '.content')  
+            warp_config=$(echo "$content" | base64 -d)
+            echo "$warp_config"
+            ;;
+		6)
 			content=$(echo $response_body | jq -r '.content')
 			warp_config=$(echo "$content" | base64 -d)
             echo "$warp_config"
             ;;
-		6)
+		7)
 			content=$(echo $response_body | jq -r '.content')  
 			content=$(echo $content | jq -r '.configBase64')  
             warp_config=$(echo "$content" | base64 -d)
@@ -745,7 +760,23 @@ do
 						warpGen=$(check_request "$result" 5)
 						if [ "$warpGen" = "Error" ]
 						then
-							warp_config="Error"
+							printf "\033[32;1mRequest WARP config... Attempt #6\033[0m\n"
+							result=$(requestConfWARP6)
+							warpGen=$(check_request "$result" 6)
+							if [ "$warpGen" = "Error" ]
+							then
+								printf "\033[32;1mRequest WARP config... Attempt #7\033[0m\n"
+								result=$(requestConfWARP7)
+								warpGen=$(check_request "$result" 7)
+								if [ "$warpGen" = "Error" ]
+								then
+									warp_config="Error"
+								else
+									warp_config=$warpGen
+								fi
+							else
+								warp_config=$warpGen
+							fi
 						else
 							warp_config=$warpGen
 						fi
