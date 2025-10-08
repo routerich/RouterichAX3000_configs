@@ -1,11 +1,9 @@
 #!/bin/sh
 
-URL='https://generator-warp-config.vercel.app/warp4d?dns=1.1.1.1%2C%201.0.0.1%2C%202606%3A4700%3A4700%3A%3A1111%2C%202606%3A4700%3A4700%3A%3A1001&allowedIPs=0.0.0.0%2F0%2C%20%3A%3A%2F0'
 TMP_JSON="/tmp/warp.json"
 TMP_CONF="/tmp/warp_decoded.conf"
 
 fail() {
-	echo "Error: $*" >&2
 	exit 1
 }
 
@@ -22,44 +20,49 @@ if ! need amneziawg; then
 	fail "amneziawg is required. Please install amneziawg 1.5+"
 fi
 
-curl -fsSL -A 'curl-openwrt/warp-fetch' "$URL" -o "$TMP_JSON"
-if [ $? -ne 0 ]; then
-	fail "Failed to download $URL"
-fi
+ENC_BASE='aHR0cHM6Ly9nZW5lcmF0b3Itd2FycC1jb25maWcudmVyY2VsLmFwcA=='
 
-CONTENT=$(grep -o '"content":"[^"]*"' "$TMP_JSON" | sed -e 's/^"content":"//' -e 's/"$//' | tr -d '\r\n')
-if [ -z "$CONTENT" ]; then
-	fail "Field 'content' not found in JSON"
-fi
-
-decode_base64_to_file() {
-	out="$1"
-	printf '%s' "$CONTENT" | awk '
+decode_base64() {
+	echo "$1" | awk '
 	BEGIN {
-		b64 = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
-		for(i=1;i<=length(b64);i++) map[substr(b64,i,1)] = i-1;
+		b64="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+		for(i=1;i<=length(b64);i++) map[substr(b64,i,1)]=i-1
 	}
 	{
-		gsub(/[^A-Za-z0-9+\/=]/,"",$0)
-		line=line$0
+		gsub(/[^A-Za-z0-9+=]/,"",$0)
+		line=line $0
 	}
 	END {
-		len=length(line)
-		for(i=1;i<=len;i+=4){
+		for(i=1;i<=length(line);i+=4){
 			a_c=substr(line,i,1); b_c=substr(line,i+1,1); c_c=substr(line,i+2,1); d_c=substr(line,i+3,1);
-			if(a_c==""||b_c=="") break;
-			a=(a_c in map)?map[a_c]:0;
-			b=(b_c in map)?map[b_c]:0;
-			byte1=a*4+int(b/16); printf("%c",byte1);
-			if(c_c!="="&&c_c!=""){c=(c_c in map)?map[c_c]:0; byte2=(b%16)*16+int(c/4); printf("%c",byte2);
-			if(d_c!="="&&d_c!=""){d=(d_c in map)?map[d_c]:0; byte3=(c%4)*64+d; printf("%c",byte3)}}}
-	}' > "$out"
+			if(a_c==""||b_c=="") break
+			a=(a_c in map)?map[a_c]:0
+			b=(b_c in map)?map[b_c]:0
+			byte1=int(a*4 + b/16); printf("%c",byte1)
+			if(c_c!="" && c_c!="="){ c=(c_c in map)?map[c_c]:0; byte2=int((b%16)*16 + c/4); printf("%c",byte2)
+				if(d_c!="" && d_c!="="){ d=(d_c in map)?map[d_c]:0; byte3=int((c%4)*64 + d); printf("%c",byte3) }
+			}
+		}
+	}'
 }
 
-decode_base64_to_file "$TMP_CONF"
-if [ $? -ne 0 ]; then
-	fail "Failed to decode content"
-fi
+BASE_URL=$(decode_base64 "$ENC_BASE") || fail "Cannot decode base URL"
+
+PARAMS='?dns=1.1.1.1%2C1.0.0.1%2C2606:4700:4700::1111%2C2606:4700:4700::1001&allowedIPs=0.0.0.0/0,%20::/0'
+ENDPOINT_PATH='/warp4s'
+
+URL="${BASE_URL}${ENDPOINT_PATH}${PARAMS}"
+
+curl -fsSL \
+	-A 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36' \
+	-H "Referer: ${BASE_URL}/" \
+	-H "Origin: ${BASE_URL}" \
+	"$URL" -o "$TMP_JSON" || fail "Failed to download $URL"
+
+CONTENT=$(grep -o '"content":"[^"]*"' "$TMP_JSON" | sed -e 's/^"content":"//' -e 's/"$//' | tr -d '\r\n')
+[ -z "$CONTENT" ] && fail "Field 'content' not found in JSON"
+
+decode_base64 "$CONTENT" > "$TMP_CONF" || fail "Failed to decode content"
 
 getval() {
 	key="$1"
@@ -75,15 +78,11 @@ ENDPOINT_DOMAIN="${ENDPOINT%%:*}"
 ENDPOINT_PORT="${ENDPOINT##*:}"
 
 IPV6=$(printf '%s' "$ADDR_LINE" | awk -F',' '{print $2}' | sed 's/^[ \t]*//;s/[ \t]*$//')
-
 [ -n "$IPV6" ] && case "$IPV6" in */*) IPV6_MASK="$IPV6" ;; *) IPV6_MASK="${IPV6}/128" ;; esac
 
 for var in PRIVATE_KEY IPV6_MASK ENDPOINT_DOMAIN ENDPOINT_PORT PUBLIC_KEY; do
 	eval val=\$$var
-	if [ -z "$val" ]; then
-		echo "Error: variable $var is empty, aborting" >&2
-		exit 1
-	fi
+	[ -z "$val" ] && fail "Variable $var is empty"
 done
 
 uci -q del network.wan6
@@ -131,4 +130,3 @@ uci -q commit firewall
 service firewall restart
 
 rm -f "$TMP_JSON" "$TMP_CONF"
-
