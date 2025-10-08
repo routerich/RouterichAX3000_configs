@@ -159,9 +159,9 @@ requestConfWARP1()
 {
   #запрос конфигурации WARP
   local result=$(curl --connect-timeout 20 --max-time 60 -w "%{http_code}" 'https://generator-warp-config.vercel.app/warp4s?dns=1.1.1.1%2C%201.0.0.1%2C%202606%3A4700%3A4700%3A%3A1111%2C%202606%3A4700%3A4700%3A%3A1001&allowedIPs=0.0.0.0%2F0%2C%20%3A%3A%2F0' \
-    -H 'accept: */*' \
-    -H 'accept-language: ru-RU,ru;q=0.9' \
-    -H 'referer: https://generator-warp-config.vercel.app')
+    -A 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36' \
+    -H 'referer: https://generator-warp-config.vercel.app' \
+	-H "Origin: https://generator-warp-config.vercel.app")
   echo "$result"
 }
 
@@ -169,7 +169,8 @@ requestConfWARP2()
 {
   #запрос конфигурации WARP
   local result=$(curl --connect-timeout 20 --max-time 60 -w "%{http_code}" 'https://valokda-amnezia.vercel.app/api/warp' \
-    -H 'accept: */*' \
+    -A 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36' \
+	-H 'accept: */*' \
     -H 'accept-language: ru-RU,ru;q=0.9' \
     -H 'referer: https://valokda-amnezia.vercel.app/api/warp')
   echo "$result"
@@ -179,7 +180,8 @@ requestConfWARP3()
 {
   #запрос конфигурации WARP
   local result=$(curl --connect-timeout 20 --max-time 60 -w "%{http_code}" 'https://warp-gen.vercel.app/generate-config' \
-    -H 'accept: */*' \
+    -A 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36' \
+	-H 'accept: */*' \
     -H 'accept-language: ru-RU,ru;q=0.9' \
     -H 'referer: https://warp-gen.vercel.app/generate-config')
   echo "$result"
@@ -189,7 +191,8 @@ requestConfWARP4()
 {
   #запрос конфигурации WARP
   local result=$(curl --connect-timeout 20 --max-time 60 -w "%{http_code}" 'https://config-generator-warp.vercel.app/warps' \
-    -H 'accept: */*' \
+    -A 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36' \
+	-H 'accept: */*' \
     -H 'accept-language: ru-RU,ru;q=0.9' \
     -H 'referer: https://config-generator-warp.vercel.app/')
   echo "$result"
@@ -199,7 +202,8 @@ requestConfWARP5()
 {
   #запрос конфигурации WARP без параметров
   local result=$(curl --connect-timeout 20 --max-time 60 -w "%{http_code}" 'https://config-generator-warp.vercel.app/warp6s' \
-    -H 'accept: */*' \
+    -A 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36' \
+	-H 'accept: */*' \
     -H 'accept-language: ru-RU,ru;q=0.9' \
     -H 'referer: https://config-generator-warp.vercel.app/')
   echo "$result"
@@ -209,7 +213,8 @@ requestConfWARP6()
 {
   #запрос конфигурации WARP без параметров
   local result=$(curl --connect-timeout 20 --max-time 60 -w "%{http_code}" 'https://config-generator-warp.vercel.app/warp4s' \
-    -H 'accept: */*' \
+    -A 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36' \
+	-H 'accept: */*' \
     -H 'accept-language: ru-RU,ru;q=0.9' \
     -H 'referer: https://config-generator-warp.vercel.app/')
   echo "$result"
@@ -219,7 +224,8 @@ requestConfWARP7()
 {
   #запрос конфигурации WARP
   local result=$(curl --connect-timeout 20 --max-time 60 -w "%{http_code}" 'https://warp-generator.vercel.app/api/warp' \
-    -H 'accept: */*' \
+    -A 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36' \
+	-H 'accept: */*' \
     -H 'accept-language: ru-RU,ru;q=0.6' \
     -H 'content-type: application/json' \
     -H 'referer: https://warp-generator.vercel.app/' \
