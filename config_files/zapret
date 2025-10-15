@@ -38,7 +38,6 @@ config main 'config'
 --hostlist=/opt/zapret/ipset/zapret-hosts-google.txt
 --dpi-desync=multidisorder
 --dpi-desync-split-pos=1,midsld
---dpi-desync-fake-tls-mod=rnd,dupsid,sni=www.google.com
 --new
 --filter-udp=443 --hostlist=/opt/zapret/ipset/zapret-hosts-google.txt
 --dpi-desync=fake
