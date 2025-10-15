@@ -619,15 +619,16 @@ checkPackageAndInstall "curl" "1"
 checkPackageAndInstall "unzip" "1"
 checkPackageAndInstall "opera-proxy" "1"
 checkPackageAndInstall "zapret" "1"
+opkg remove --force-removal-of-dependent-packages "sing-box"
 
 findVersion="1.12.0"
-if opkg list-installed | grep "^sing-box" && printf '%s\n%s\n' "$findVersion" "$VERSION" | sort -V | tail -n1 | grep -qx -- "$VERSION"; then
-	printf "\033[32;1mInstalled new sing-box. Running scprit...\033[0m\n"
+if opkg list-installed | grep "^sing-box-tiny" && printf '%s\n%s\n' "$findVersion" "$VERSION" | sort -V | tail -n1 | grep -qx -- "$VERSION"; then
+	printf "\033[32;1mInstalled new sing-box-tiny. Running scprit...\033[0m\n"
 else
-	printf "\033[32;1mInstalled old sing-box or not install sing-box. Reinstall sing-box...\033[0m\n"
+	printf "\033[32;1mInstalled old sing-box-tiny or not install sing-box-tiny. Reinstall sing-box-tiny...\033[0m\n"
 	manage_package "podkop" "enable" "stop"
-	opkg remove --force-removal-of-dependent-packages "sing-box"
-	checkPackageAndInstall "sing-box" "1"
+	opkg remove --force-removal-of-dependent-packages "sing-box-tiny"
+	checkPackageAndInstall "sing-box-tiny" "1"
 fi
 
 opkg upgrade amneziawg-tools
@@ -1250,7 +1251,7 @@ case $varByPass in
 esac
 
 PACKAGE="podkop"
-REQUIRED_VERSION="v0.5.6-r1"
+REQUIRED_VERSION="v0.6.2-r1"
 
 INSTALLED_VERSION=$(opkg list-installed | grep "^$PACKAGE" | cut -d ' ' -f 3)
 if [ -n "$INSTALLED_VERSION" ] && [ "$INSTALLED_VERSION" != "$REQUIRED_VERSION" ]; then
