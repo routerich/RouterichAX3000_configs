@@ -1277,9 +1277,9 @@ else
 	if [ "$is_install_podkop" = "y" ] || [ "$is_install_podkop" = "Y" ]; then
 		DOWNLOAD_DIR="/tmp/podkop"
 		mkdir -p "$DOWNLOAD_DIR"
-		podkop_files="podkop_v0.6.2-r1_all.ipk
-			luci-app-podkop_v0.6.2-r1_all.ipk
-			luci-i18n-podkop-ru_0.6.2.ipk"
+		podkop_files="podkop-v0.6.2-r1-all.ipk
+			luci-app-podkop-v0.6.2-r1-all.ipk
+			luci-i18n-podkop-ru-0.6.2.ipk"
 		for file in $podkop_files
 		do
 			echo "Download $file..."
