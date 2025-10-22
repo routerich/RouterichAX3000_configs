@@ -676,6 +676,14 @@ else
 	[ -f /etc/config/dhcp-opkg ] && cp /etc/config/dhcp /etc/config/dhcp-old && mv /etc/config/dhcp-opkg /etc/config/dhcp
 fi
 
+#проверяем установлени ли пакет https-dns-proxy
+if opkg list-installed | grep -q https-dns-proxy; then
+	echo "Packet https-dns-proxy not installed..."
+else
+	echo "Delete packet https-dns-proxy..."
+	opkg remove https-dns-proxy
+fi
+
 printf "Setting confdir dnsmasq\n"
 uci set dhcp.@dnsmasq[0].confdir='/tmp/dnsmasq.d'
 uci commit dhcp
