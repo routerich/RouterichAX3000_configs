@@ -793,7 +793,7 @@ fi
 isWorkOperaProxy=0
 printf "\033[32;1mCheck opera proxy...\033[0m\n"
 service sing-box restart
-sing-box tools fetch ifconfig.co -D /etc/sing-box/
+sing-box tools fetch ifconfig.me -D /etc/sing-box/
 if [ $? -eq 0 ]; then
 	printf "\033[32;1mOpera proxy well work...\033[0m\n"
 	isWorkOperaProxy=1
