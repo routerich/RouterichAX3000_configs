@@ -824,7 +824,7 @@ fi
 isWorkOperaProxy=0
 printf "\033[32;1mCheck opera proxy...\033[0m\n"
 service sing-box restart
-sing-box tools fetch ifconfig.me -D /etc/sing-box/
+curl --proxy http://127.0.0.1:18080 ipinfo.io/ip
 if [ $? -eq 0 ]; then
 	printf "\033[32;1mOpera proxy well work...\033[0m\n"
 	isWorkOperaProxy=1
