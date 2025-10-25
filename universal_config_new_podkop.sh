@@ -669,7 +669,8 @@ firewall
 doh-proxy
 zapret
 dhcp
-dns-failsafe-proxy"
+dns-failsafe-proxy
+stubby"
 URL="https://raw.githubusercontent.com/routerich/RouterichAX3000_configs/refs/heads/podkop07"
 
 checkPackageAndInstall "luci-app-dns-failsafe-proxy" "1"
@@ -688,7 +689,7 @@ then
 
 	for file in $config_files
 	do
-		if [ "$file" == "doh-proxy" ] || [ "$file" == "dns-failsafe-proxy" ]
+		if [ "$file" == "doh-proxy" ] || [ "$file" == "dns-failsafe-proxy" ] || [ "$file" == "stubby" ]
 		then 
 		  wget -O "$DIR/$file" "$URL/config_files/$file" 
 		fi
