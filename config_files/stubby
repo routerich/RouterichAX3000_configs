@@ -1,0 +1,86 @@
+
+config stubby 'global'
+	option manual '0'
+	list dns_transport 'GETDNS_TRANSPORT_TLS'
+	option tls_authentication '1'
+	option tls_query_padding_blocksize '128'
+	option appdata_dir '/var/lib/stubby'
+	option edns_client_subnet_private '1'
+	option idle_timeout '10000'
+	option round_robin_upstreams '0'
+	list listen_address '127.0.0.1@5453'
+	list listen_address '0::1@5453'
+	list trigger 'wan'
+	list trigger 'wan6'
+	list trigger 'pppoe'
+	list trigger 'l2tp'
+	list trigger 'pptp'
+	list trigger 'modem'
+	list trigger 'wwan'
+	list trigger 'wwan0'
+	option log_level '0'
+
+config resolver
+	option address '94.140.14.14'
+	option tls_auth_name 'dns.adguard.com'
+
+config resolver
+	option address '94.140.14.15'
+	option tls_auth_name 'dns.adguard.com'
+
+config resolver
+	option address '2a10:50c0::ad1:ff'
+	option tls_auth_name 'dns.adguard.com'
+
+config resolver
+	option address '2a10:50c0::ad2:ff'
+	option tls_auth_name 'dns.adguard.com'
+
+config resolver
+	option address '8.8.8.8'
+	option tls_auth_name 'dns.google'
+
+config resolver
+	option address '1.1.1.1'
+	option tls_auth_name 'cloudflare-dns.com'
+
+config resolver
+	option address '2001:4860:4860::8888'
+	option tls_auth_name 'dns.google'
+
+config resolver
+	option address '2606:4700:4700::1111'
+	option tls_auth_name 'cloudflare-dns.com'
+
+config resolver
+	option address '8.8.4.4'
+	option tls_auth_name 'dns.google'
+
+config resolver
+	option address '1.0.0.1'
+	option tls_auth_name 'cloudflare-dns.com'
+
+config resolver
+	option address '2001:4860:4860::8844'
+	option tls_auth_name 'dns.google'
+
+config resolver
+	option address '2606:4700:4700::1001'
+	option tls_auth_name 'cloudflare-dns.com'
+
+config resolver
+	option address '9.9.9.9'
+	option tls_auth_name 'dns.quad9.net'
+
+config resolver
+	option address '149.112.112.112'
+	option tls_auth_name 'dns.quad9.net'
+
+config resolver
+	option address '2620:fe::fe'
+	option tls_auth_name 'dns.quad9.net'
+
+config resolver
+	option address '2620:fe::9'
+	option tls_auth_name 'dns.quad9.net'
+
