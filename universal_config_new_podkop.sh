@@ -652,8 +652,6 @@ fi
 
 #проверяем установлени ли пакет https-dns-proxy
 if opkg list-installed | grep -q https-dns-proxy; then
-	echo "Packet https-dns-proxy not installed..."
-else
 	echo "Delete packet https-dns-proxy..."
 	opkg remove https-dns-proxy
 fi
