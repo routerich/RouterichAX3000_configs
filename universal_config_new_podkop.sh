@@ -653,7 +653,7 @@ fi
 #проверяем установлени ли пакет https-dns-proxy
 if opkg list-installed | grep -q https-dns-proxy; then
 	echo "Delete packet https-dns-proxy..."
-	opkg remove https-dns-proxy
+	opkg remove --force-removal-of-dependent-packages "https-dns-proxy"
 fi
 
 printf "Setting confdir dnsmasq\n"
