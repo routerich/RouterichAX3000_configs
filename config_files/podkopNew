@@ -51,4 +51,5 @@ config section 'Youtube_Discord'
 	list community_lists 'youtube'
 	list community_lists 'discord'
 	option user_domains_text '2ip.ru'
+	option user_domains_text 'amazonws.com'
 
