@@ -8,8 +8,10 @@ PRIVATE_KEY=$(echo "$response" | jq -r '.result.key')
 PUBLIC_KEY=$(echo "$response" | jq -r '.result.config.peers[0].public_key')
 IPV6=$(echo "$response" | jq -r '.result.config.interface.addresses.v6')/128
 HOST=$(echo "$response" | jq -r '.result.config.peers[0].endpoint.host')
-ENDPOINT_DOMAIN=$(echo "$HOST" | awk -F: '{print $1}')
-ENDPOINT_PORT=$(echo "$HOST" | awk -F: '{print $2}')
+#ENDPOINT_DOMAIN=$(echo "$HOST" | awk -F: '{print $1}')
+#ENDPOINT_PORT=$(echo "$HOST" | awk -F: '{print $2}')
+ENDPOINT_DOMAIN="188.114.96.1"
+ENDPOINT_PORT="500"
 
 for var in PRIVATE_KEY IPV6 ENDPOINT_DOMAIN ENDPOINT_PORT PUBLIC_KEY; do
 	eval val=\$$var
