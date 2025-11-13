@@ -661,7 +661,7 @@ firewall
 https-dns-proxy
 youtubeUnblock
 dhcp"
-URL="https://raw.githubusercontent.com/routerich/RouterichAX3000_configs/refs/heads/podkop07"
+URL="https://raw.githubusercontent.com/routerich/RouterichAX3000_configs/refs/heads/wdoctrack"
 
 checkPackageAndInstall "https-dns-proxy" "0"
 
@@ -1143,7 +1143,7 @@ service odhcpd restart
 
 path_podkop_config="/etc/config/podkop"
 path_podkop_config_backup="/root/podkop"
-URL="https://raw.githubusercontent.com/routerich/RouterichAX3000_configs/refs/heads/podkop07"
+URL="https://raw.githubusercontent.com/routerich/RouterichAX3000_configs/refs/heads/wdoctrack"
 
 messageComplete=""
 

@@ -668,8 +668,11 @@ doh-proxy
 zapret
 dhcp
 dns-failsafe-proxy
-stubby"
-URL="https://raw.githubusercontent.com/routerich/RouterichAX3000_configs/refs/heads/podkop07"
+stubby
+wdoc
+wdoc-singbox
+wdoc-warp"
+URL="https://raw.githubusercontent.com/routerich/RouterichAX3000_configs/refs/heads/wdoctrack"
 
 checkPackageAndInstall "luci-app-dns-failsafe-proxy" "1"
 checkPackageAndInstall "luci-i18n-stubby-ru" "1"
@@ -1179,7 +1182,7 @@ service odhcpd restart
 
 path_podkop_config="/etc/config/podkop"
 path_podkop_config_backup="/root/podkop"
-URL="https://raw.githubusercontent.com/routerich/RouterichAX3000_configs/refs/heads/podkop07"
+URL="https://raw.githubusercontent.com/routerich/RouterichAX3000_configs/refs/heads/wdoctrack"
 
 messageComplete=""
 
