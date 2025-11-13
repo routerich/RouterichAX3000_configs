@@ -688,7 +688,7 @@ then
 
 	for file in $config_files
 	do
-		if [ "$file" == "doh-proxy" ] || [ "$file" == "dns-failsafe-proxy" ] || [ "$file" == "stubby" ] || [ "$file" == "wdoc-singbox" ] || [ "$file" == "wdoc-warp" ]
+		if [ "$file" == "doh-proxy" ] || [ "$file" == "dns-failsafe-proxy" ] || [ "$file" == "stubby" ] || [ "$file" == "wdoc" ] || [ "$file" == "wdoc-singbox" ] || [ "$file" == "wdoc-warp" ]
 		then 
 		  wget -O "$DIR/$file" "$URL/config_files/$file" 
 		fi
@@ -1333,6 +1333,7 @@ fi
 
 service doh-proxy restart
 service stubby restart
+service wdoc restart
 service wdoc-singbox restart
 service wdoc-warp restart
 service dns-failsafe-proxy restart

@@ -1,0 +1,10 @@
+
+config wdoc 'main'
+	option enabled '1'
+	option timeout '900'
+	option ping_ip '77.88.8.8'
+	option ping_domain 'ya.ru'
+	option curl_domain 'https://scbh.yandex.net/generate_204'
+	option firstboot '0'
+	option log '0'
+
