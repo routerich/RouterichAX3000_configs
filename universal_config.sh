@@ -1045,30 +1045,37 @@ do
 
 		if [ "$is_manual_input_parameters" = "n" ]; then
 			I=0
-			WARP_ENDPOINT="engage.cloudflareclient.com:500 engage.cloudflareclient.com:1701 engage.cloudflareclient.com:2408 engage.cloudflareclient.com:3138 engage.cloudflareclient.com:4500 162.159.192.4:500 162.159.192.4:1701 162.159.192.4:2408 162.159.192.4:3138 162.159.192.4:4500"
-			for element in $WARP_ENDPOINT; do
-				I=$(( $I + 1 ))
-				EndpointIP="${element%%:*}"
-				EndpointPort="${element##*:}"
-				uci set network.@${CONFIG_NAME}[-1].endpoint_host=$EndpointIP
-				uci set network.@${CONFIG_NAME}[-1].endpoint_port=$EndpointPort
-				uci commit network
-				# Отключаем интерфейс
-				ifdown $INTERFACE_NAME
-				# Включаем интерфейс
-				ifup $INTERFACE_NAME
-				printf "\033[33;1mIter #$I: Check Endpoint WARP $element. Wait up AWG WARP 10 second...\033[0m\n"
-				sleep 10
-				
-				pingAddress="8.8.8.8"
-				if ping -c 1 -I $INTERFACE_NAME $pingAddress >/dev/null 2>&1
+			WARP_ENDPOINT_HOSTS="engage.cloudflareclient.com 162.159.192.1 162.159.192.2 162.159.192.4 162.159.195.1 162.159.195.4 188.114.96.1 188.114.96.23 188.114.96.50 188.114.96.81"
+			WARP_ENDPOINT_PORTS="500 1701 2408 3138 4500"
+			for element in $WARP_ENDPOINT_HOSTS; do
+				EndpointIP="$element"
+				for element2 in $WARP_ENDPOINT_PORTS; do
+					I=$(( $I + 1 ))
+					EndpointPort="$element2"
+					uci set network.@${CONFIG_NAME}[-1].endpoint_host=$EndpointIP
+					uci set network.@${CONFIG_NAME}[-1].endpoint_port=$EndpointPort
+					uci commit network
+					# Отключаем интерфейс
+					ifdown $INTERFACE_NAME
+					# Включаем интерфейс
+					ifup $INTERFACE_NAME
+					printf "\033[33;1mIter #$I: Check Endpoint WARP $element:$element2. Wait up AWG WARP 10 second...\033[0m\n"
+					sleep 10
+					
+					pingAddress="8.8.8.8"
+					if ping -c 1 -I $INTERFACE_NAME $pingAddress >/dev/null 2>&1
+					then
+						printf "\033[32;1m	Endpoint WARP $element:$element2 work...\033[0m\n"
+						isExit=1
+						break
+					else
+						printf "\033[31;1m	Endpoint WARP $element:$element2 not work...\033[0m\n"
+						isExit=0
+					fi
+				done
+				if [ "$isExit" = "1" ]
 				then
-					printf "\033[32;1m	Endpoint WARP $element work...\033[0m\n"
-					isExit=1
 					break
-				else
-					printf "\033[31;1m	Endpoint WARP $element not work...\033[0m\n"
-					isExit=0
 				fi
 			done
 		else
