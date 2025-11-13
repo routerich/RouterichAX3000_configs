@@ -661,7 +661,7 @@ uci set dhcp.@dnsmasq[0].confdir='/tmp/dnsmasq.d'
 uci commit dhcp
 
 DIR="/etc/config"
-DIR_BACKUP="/root/backup5"
+DIR_BACKUP="/root/backup6"
 config_files="network
 firewall
 doh-proxy
@@ -676,8 +676,10 @@ URL="https://raw.githubusercontent.com/routerich/RouterichAX3000_configs/refs/he
 
 checkPackageAndInstall "luci-app-dns-failsafe-proxy" "1"
 checkPackageAndInstall "luci-i18n-stubby-ru" "1"
+checkPackageAndInstall "luci-i18n-doh-proxy-ru" "1"
 checkPackageAndInstall "luci-i18n-wdoc-singbox-ru" "1"
 checkPackageAndInstall "luci-i18n-wdoc-warp-ru" "1"
+checkPackageAndInstall "luci-i18n-wdoc-wg-ru" "1"
 
 if [ ! -d "$DIR_BACKUP" ]
 then
