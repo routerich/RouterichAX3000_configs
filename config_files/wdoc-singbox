@@ -1,0 +1,7 @@
+
+config wdoc-singbox 'main'
+	option enabled '1'
+	option timeout '120'
+	option url_test 'facebook.com'
+	option log '0'
+

@@ -1,0 +1,14 @@
+
+config wdoc-warp 'main'
+	option enabled '1'
+	option timeout '300'
+	option check_inet1 '77.88.8.8'
+	option check_inet2 '8.8.8.8'
+	option log '0'
+
+config interface
+	option iface 'awg10'
+	option check_ip1 '8.8.8.8'
+	option check_ip2 '1.1.1.1'
+	option attempts '10'
+

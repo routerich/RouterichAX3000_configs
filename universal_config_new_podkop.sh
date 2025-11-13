@@ -673,7 +673,8 @@ URL="https://raw.githubusercontent.com/routerich/RouterichAX3000_configs/refs/he
 
 checkPackageAndInstall "luci-app-dns-failsafe-proxy" "1"
 checkPackageAndInstall "luci-i18n-stubby-ru" "1"
-checkPackageAndInstall "luci-i18n-doh-proxy-ru" "1"
+checkPackageAndInstall "luci-i18n-wdoc-singbox-ru" "1"
+checkPackageAndInstall "luci-i18n-wdoc-warp-ru" "1"
 
 if [ ! -d "$DIR_BACKUP" ]
 then
@@ -687,7 +688,7 @@ then
 
 	for file in $config_files
 	do
-		if [ "$file" == "doh-proxy" ] || [ "$file" == "dns-failsafe-proxy" ] || [ "$file" == "stubby" ]
+		if [ "$file" == "doh-proxy" ] || [ "$file" == "dns-failsafe-proxy" ] || [ "$file" == "stubby" ] || [ "$file" == "wdoc-singbox" ] || [ "$file" == "wdoc-warp" ]
 		then 
 		  wget -O "$DIR/$file" "$URL/config_files/$file" 
 		fi
@@ -1329,6 +1330,12 @@ fi
 #sleep 2
 # Включаем интерфейс
 #ifup $INTERFACE_NAME
+
+service doh-proxy restart
+service stubby restart
+service wdoc-singbox restart
+service wdoc-warp restart
+service dns-failsafe-proxy restart
 
 printf  "\033[32;1mService Podkop and Sing-Box restart...\033[0m\n"
 service sing-box enable
