@@ -1343,6 +1343,7 @@ service stubby restart
 service wdoc restart
 service wdoc-singbox restart
 service wdoc-warp restart
+service wdoc-wg restart
 service dns-failsafe-proxy restart
 
 printf  "\033[32;1mService Podkop and Sing-Box restart...\033[0m\n"
