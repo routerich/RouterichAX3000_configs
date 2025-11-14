@@ -1,6 +1,6 @@
 
 config wdoc-wg 'main'
-	option enabled '1'
+	option enabled '0'
 	option timeout '900'
 	option log '0'
 	option dns1 '77.88.8.8'

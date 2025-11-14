@@ -694,7 +694,7 @@ then
 
 	for file in $config_files
 	do
-		if [ "$file" == "doh-proxy" ] || [ "$file" == "dns-failsafe-proxy" ] || [ "$file" == "stubby" ] || [ "$file" == "wdoc" ] || [ "$file" == "wdoc-singbox" ] || [ "$file" == "wdoc-warp" ] || [ "$file" == "wdoc-wg" ]
+		if [ "$file" == "doh-proxy" ] || [ "$file" == "dns-failsafe-proxy" ] || [ "$file" == "stubby" ] || [ "$file" == "wdoc" ] || [ "$file" == "wdoc-singbox" ] || [ "$file" == "wdoc-warp" ]
 		then 
 		  wget -O "$DIR/$file" "$URL/config_files/$file" 
 		fi
