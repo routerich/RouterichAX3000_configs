@@ -782,6 +782,7 @@ chmod +x "/opt/zapret/init.d/openwrt/custom.d/50-stun4all"
 chmod +x "/opt/zapret/init.d/openwrt/custom.d/50-wg4all"
 
 manage_package "podkop" "enable" "stop"
+manage_package "youtubeUnblock" "disable" "stop"
 service zapret restart
 
 isWorkZapret=0
