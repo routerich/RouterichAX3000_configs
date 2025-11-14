@@ -1,0 +1,13 @@
+
+config wdoc-wg 'main'
+	option enabled '1'
+	option timeout '900'
+	option log '0'
+	option dns1 '77.88.8.8'
+	option dns2 '8.8.8.8'
+
+config interface
+	option iface 'awg10'
+	option ip '172.16.0.1'
+	option check_inet '1'
+

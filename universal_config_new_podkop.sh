@@ -671,7 +671,8 @@ dns-failsafe-proxy
 stubby
 wdoc
 wdoc-singbox
-wdoc-warp"
+wdoc-warp
+wdoc-wg"
 URL="https://raw.githubusercontent.com/routerich/RouterichAX3000_configs/refs/heads/wdoctrack"
 
 checkPackageAndInstall "luci-app-dns-failsafe-proxy" "1"
@@ -693,7 +694,7 @@ then
 
 	for file in $config_files
 	do
-		if [ "$file" == "doh-proxy" ] || [ "$file" == "dns-failsafe-proxy" ] || [ "$file" == "stubby" ] || [ "$file" == "wdoc" ] || [ "$file" == "wdoc-singbox" ] || [ "$file" == "wdoc-warp" ]
+		if [ "$file" == "doh-proxy" ] || [ "$file" == "dns-failsafe-proxy" ] || [ "$file" == "stubby" ] || [ "$file" == "wdoc" ] || [ "$file" == "wdoc-singbox" ] || [ "$file" == "wdoc-warp" ] || [ "$file" == "wdoc-wg" ]
 		then 
 		  wget -O "$DIR/$file" "$URL/config_files/$file" 
 		fi
