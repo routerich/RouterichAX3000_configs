@@ -19,7 +19,7 @@ config section
 	option frag_sni_faked '0'
 	option frag_middle_sni '1'
 	option frag_sni_pos '1'
-	option seg2delay '0'
+	option seg2delay '3'
 	option fk_winsize '0'
 	option synfake '0'
 	option sni_detection 'parse'
