@@ -650,12 +650,6 @@ else
 	[ -f /etc/config/dhcp-opkg ] && cp /etc/config/dhcp /etc/config/dhcp-old && mv /etc/config/dhcp-opkg /etc/config/dhcp
 fi
 
-#проверяем установлени ли пакет https-dns-proxy
-if opkg list-installed | grep -q https-dns-proxy; then
-	echo "Delete packet https-dns-proxy..."
-	opkg remove --force-removal-of-dependent-packages "https-dns-proxy"
-fi
-
 printf "Setting confdir dnsmasq\n"
 uci set dhcp.@dnsmasq[0].confdir='/tmp/dnsmasq.d'
 uci commit dhcp
@@ -681,6 +675,12 @@ checkPackageAndInstall "luci-i18n-doh-proxy-ru" "1"
 checkPackageAndInstall "luci-i18n-wdoc-singbox-ru" "1"
 checkPackageAndInstall "luci-i18n-wdoc-warp-ru" "1"
 checkPackageAndInstall "luci-i18n-wdoc-wg-ru" "1"
+
+#проверяем установлени ли пакет https-dns-proxy
+if opkg list-installed | grep -q https-dns-proxy; then
+	echo "Delete packet https-dns-proxy..."
+	opkg remove --force-removal-of-dependent-packages "https-dns-proxy"
+fi
 
 if [ ! -d "$DIR_BACKUP" ]
 then
