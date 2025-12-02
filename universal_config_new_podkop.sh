@@ -832,10 +832,10 @@ printf "\033[32;1mCheck opera proxy...\033[0m\n"
 service sing-box restart
 curl --proxy http://127.0.0.1:18080 ipinfo.io/ip
 if [ $? -eq 0 ]; then
-	printf "\033[32;1mOpera proxy well work...\033[0m\n"
+	printf "\n\033[32;1mOpera proxy well work...\033[0m\n"
 	isWorkOperaProxy=1
 else
-	printf "\033[32;1mOpera proxy not work...\033[0m\n"
+	printf "\n\033[32;1mOpera proxy not work...\033[0m\n"
 	isWorkOperaProxy=0
 fi
 
