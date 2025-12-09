@@ -51,5 +51,5 @@ config section 'Youtube_Discord'
 	list community_lists 'youtube'
 	list community_lists 'discord'
 	option user_domains_text '2ip.ru'
-	option user_domains_text 'amazonaws.com'
-
+	option user_domains_text 'amazonaws.com whatsapp.com whatsapp.net whatsapp.biz wa.me'
+	list remote_subnet_lists 'https://raw.githubusercontent.com/HybridNetworks/whatsapp-cidr/main/WhatsApp/whatsapp_cidr_ipv4.txt'
