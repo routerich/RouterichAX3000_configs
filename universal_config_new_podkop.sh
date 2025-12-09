@@ -614,6 +614,9 @@ eval "$(echo "$encoded_code" | base64 --decode)"
 #проверка и установка пакетов AmneziaWG
 #install_awg_packages
 
+opkg remove zapret luci-app-zapret
+rm -r /opt/zapret
+
 checkPackageAndInstall "jq" "1"
 checkPackageAndInstall "curl" "1"
 checkPackageAndInstall "unzip" "1"
