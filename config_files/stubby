@@ -21,6 +21,10 @@ config stubby 'global'
 	option log_level '0'
 
 config resolver
+	option address '8.8.8.8'
+	option tls_auth_name 'dns.google'
+
+config resolver
 	option address '94.140.14.14'
 	option tls_auth_name 'dns.adguard.com'
 
@@ -35,10 +39,6 @@ config resolver
 config resolver
 	option address '2a10:50c0::ad2:ff'
 	option tls_auth_name 'dns.adguard.com'
-
-config resolver
-	option address '8.8.8.8'
-	option tls_auth_name 'dns.google'
 
 config resolver
 	option address '1.1.1.1'
