@@ -670,7 +670,7 @@ wdoc
 wdoc-singbox
 wdoc-warp
 wdoc-wg"
-URL="https://raw.githubusercontent.com/routerich/RouterichAX3000_configs/refs/heads/wdoctrack"
+URL="https://raw.githubusercontent.com/routerich/RouterichAX3000_configs/refs/heads/zapret271225"
 
 checkPackageAndInstall "luci-app-dns-failsafe-proxy" "1"
 checkPackageAndInstall "luci-i18n-stubby-ru" "1"
@@ -1189,7 +1189,7 @@ service odhcpd restart
 
 path_podkop_config="/etc/config/podkop"
 path_podkop_config_backup="/root/podkop"
-URL="https://raw.githubusercontent.com/routerich/RouterichAX3000_configs/refs/heads/wdoctrack"
+URL="https://raw.githubusercontent.com/routerich/RouterichAX3000_configs/refs/heads/zapret271225"
 
 messageComplete=""
 
