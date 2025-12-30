@@ -796,13 +796,13 @@ curl -f -o /dev/null -k --connect-to ::google.com -L -H "Host: mirror.gcr.io" --
 # Проверяем код выхода
 if [ $? -eq 0 ]; then
 	printf "\033[32;1mzapret well work...\033[0m\n"
-	cronTask="0 4 * * * service zapret restart"
-	str=$(grep -i "0 4 \* \* \* service zapret restart" /etc/crontabs/root)
-	if [ -z "$str" ] 
-	then
-		echo "Add cron task auto reboot service zapret..."
-		echo "$cronTask" >> /etc/crontabs/root
-	fi
+	#cronTask="0 4 * * * service zapret restart"
+	#str=$(grep -i "0 4 \* \* \* service zapret restart" /etc/crontabs/root)
+	#if [ -z "$str" ] 
+	#then
+		#echo "Add cron task auto reboot service zapret..."
+		#echo "$cronTask" >> /etc/crontabs/root
+	#fi
 	str=$(grep -i "0 4 \* \* \* service youtubeUnblock restart" /etc/crontabs/root)
 	if [ ! -z "$str" ]
 	then
