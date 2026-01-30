@@ -1,6 +1,6 @@
 
 config wdoc 'main'
-	option enabled '1'
+	option enabled '0'
 	option timeout '900'
 	option ping_ip '77.88.8.8'
 	option ping_domain 'ya.ru'
