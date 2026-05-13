@@ -592,7 +592,7 @@ fi
 DESCRIPTION=$(ubus call system board | jsonfilter -e '@.release.description')
 VERSION=$(ubus call system board | jsonfilter -e '@.release.version')
 findKey="RouteRich"
-findVersion="24.10.2"
+findVersion="24.10.5"
 
 if echo "$DESCRIPTION" | grep -qi -- "$findKey" && printf '%s\n%s\n' "$findVersion" "$VERSION" | sort -V | tail -n1 | grep -qx -- "$VERSION"; then
 	printf "\033[32;1mThis new firmware. Running scprit...\033[0m\n"
