@@ -617,11 +617,13 @@ eval "$(echo "$encoded_code" | base64 --decode)"
 #opkg remove zapret luci-app-zapret
 #rm -r /opt/zapret
 
+manage_package "zapret" "disable" "stop"
+
 checkPackageAndInstall "jq" "1"
 checkPackageAndInstall "curl" "1"
 checkPackageAndInstall "unzip" "1"
 checkPackageAndInstall "opera-proxy" "1"
-checkPackageAndInstall "zapret" "1"
+checkPackageAndInstall "zapret2" "1"
 opkg remove --force-removal-of-dependent-packages "sing-box"
 
 findVersion="1.12.0"
@@ -638,9 +640,9 @@ opkg upgrade amneziawg-tools
 opkg upgrade kmod-amneziawg
 opkg upgrade luci-app-amneziawg
 
-opkg upgrade zapret
-opkg upgrade luci-app-zapret
-manage_package "zapret" "enable" "start"
+opkg upgrade zapret2
+opkg upgrade luci-app-zapret2
+manage_package "zapret2" "enable" "start"
 
 #проверяем установлени ли пакет dnsmasq-full
 if opkg list-installed | grep -q dnsmasq-full; then
@@ -662,7 +664,7 @@ DIR_BACKUP="/root/backup6"
 config_files="network
 firewall
 doh-proxy
-zapret
+zapret2
 dhcp
 dns-failsafe-proxy
 stubby
@@ -670,7 +672,7 @@ wdoc
 wdoc-singbox
 wdoc-warp
 wdoc-wg"
-URL="https://raw.githubusercontent.com/routerich/RouterichAX3000_configs/refs/heads/podkop0711"
+URL="https://raw.githubusercontent.com/routerich/RouterichAX3000_configs/refs/heads/zapret2"
 
 checkPackageAndInstall "luci-app-dns-failsafe-proxy" "1"
 checkPackageAndInstall "luci-i18n-stubby-ru" "1"
@@ -773,21 +775,24 @@ then
   uci commit firewall
 fi
 
-printf "\033[32;1mCheck work zapret.\033[0m\n"
+printf "\033[32;1mCheck work zapret2.\033[0m\n"
 #install_youtubeunblock_packages
-opkg upgrade zapret
-opkg upgrade luci-app-zapret
-manage_package "zapret" "enable" "start"
-wget -O "/etc/config/zapret" "$URL/config_files/zapret"
-wget -O "/opt/zapret/ipset/zapret-hosts-user.txt" "$URL/config_files/zapret-hosts-user.txt"
-wget -O "/opt/zapret/ipset/zapret-hosts-user-exclude.txt" "$URL/config_files/zapret-hosts-user-exclude.txt"
-wget -O "/opt/zapret/init.d/openwrt/custom.d/50-stun4all" "$URL/config_files/50-stun4all"
-chmod +x "/opt/zapret/init.d/openwrt/custom.d/50-stun4all"
-sh /opt/zapret/sync_config.sh
+opkg upgrade zapret2
+opkg upgrade luci-app-zapret2
+manage_package "zapret2" "enable" "start"
+wget -O "/etc/config/zapret2" "$URL/config_files/zapret2"
+wget -O "/opt/zapret2/ipset/zapret_hosts_auto.txt" "$URL/config_files/zapret_hosts_auto.txt"
+wget -O "/opt/zapret2/ipset/zapret_hosts_user.txt" "$URL/config_files/zapret_hosts_user.txt"
+wget -O "/opt/zapret2/ipset/zapret_hosts_user_exclude.txt" "$URL/config_files/zapret_hosts_user_exclude.txt"
+wget -O "/opt/zapret2/ipset/zapret_hosts_youtube.txt" "$URL/config_files/zapret_hosts_youtube.txt"
+wget -O "/opt/zapret2/init.d/openwrt/custom.d/50-stun4all" "$URL/config_files/z2_50-stun4all"
+chmod +x "/opt/zapret2/init.d/openwrt/custom.d/50-stun4all"
+wget -O "/opt/zapret2/init.d/openwrt/custom.d/50-discord_media" "$URL/config_files/z2_50-discord_media"
+chmod +x "/opt/zapret2/init.d/openwrt/custom.d/50-discord_media"
 
 manage_package "podkop" "enable" "stop"
 manage_package "youtubeUnblock" "disable" "stop"
-service zapret restart
+service zapret2 restart
 
 isWorkZapret=0
 
@@ -795,7 +800,7 @@ curl -f -o /dev/null -k --connect-to ::google.com -L -H "Host: mirror.gcr.io" --
 
 # Проверяем код выхода
 if [ $? -eq 0 ]; then
-	printf "\033[32;1mzapret well work...\033[0m\n"
+	printf "\033[32;1mzapret2 well work...\033[0m\n"
 	#cronTask="0 4 * * * service zapret restart"
 	#str=$(grep -i "0 4 \* \* \* service zapret restart" /etc/crontabs/root)
 	#if [ -z "$str" ] 
@@ -812,8 +817,8 @@ if [ $? -eq 0 ]; then
 	fi
 	isWorkZapret=1
 else
-	manage_package "zapret" "disable" "stop"
-	printf "\033[32;1mzapret not work...\033[0m\n"
+	manage_package "zapret2" "disable" "stop"
+	printf "\033[32;1mzapret2 not work...\033[0m\n"
 	isWorkZapret=0
 	str=$(grep -i "0 4 \* \* \* service youtubeUnblock restart" /etc/crontabs/root)
 	if [ ! -z "$str" ]
@@ -1189,82 +1194,83 @@ service odhcpd restart
 
 path_podkop_config="/etc/config/podkop"
 path_podkop_config_backup="/root/podkop"
-URL="https://raw.githubusercontent.com/routerich/RouterichAX3000_configs/refs/heads/podkop0711"
+URL="https://raw.githubusercontent.com/routerich/RouterichAX3000_configs/refs/heads/zapret2"
 
 messageComplete=""
 
 case $varByPass in
 1)
 	nameFileReplacePodkop="podkopNewNoYoutube"
-	printf  "\033[32;1mStop and disabled service 'ruantiblock' and 'youtubeUnblock'...\033[0m\n"
+	printf  "\033[32;1mStop and disabled service 'ruantiblock' and 'youtubeUnblock' and 'zapret'...\033[0m\n"
 	manage_package "ruantiblock" "disable" "stop"
 	manage_package "youtubeUnblock" "disable" "stop"
-	service zapret restart
+	manage_package "zapret" "disable" "stop"
+	service zapret2 restart
 	deleteByPassGeoBlockComssDNS
-	messageComplete="ByPass block for Method 1: AWG WARP + zapret + Opera Proxy...Configured completed..."
+	messageComplete="ByPass block for Method 1: AWG WARP + zapret2 + Opera Proxy...Configured completed..."
 	;;
 2)
 	nameFileReplacePodkop="podkopNew"
-	printf  "\033[32;1mStop and disabled service 'youtubeUnblock' and 'ruantiblock' and 'zapret'...\033[0m\n"
+	printf  "\033[32;1mStop and disabled service 'youtubeUnblock' and 'ruantiblock' and 'zapret' and 'zapret2'...\033[0m\n"
 	manage_package "youtubeUnblock" "disable" "stop"
 	manage_package "ruantiblock" "disable" "stop"
 	manage_package "zapret" "disable" "stop"
+	manage_package "zapret2" "disable" "stop"
 	deleteByPassGeoBlockComssDNS
 	messageComplete="ByPass block for Method 2: AWG WARP + Opera Proxy...Configured completed..."
 	;;
 3)
 	nameFileReplacePodkop="podkopNewSecond"
-	printf  "\033[32;1mStop and disabled service 'ruantiblock' and youtubeUnblock ...\033[0m\n"
+	printf  "\033[32;1mStop and disabled service 'ruantiblock' and 'youtubeUnblock' and 'zapret' ...\033[0m\n"
 	manage_package "ruantiblock" "disable" "stop"
 	manage_package "youtubeUnblock" "disable" "stop"
-	wget -O "/opt/zapret/init.d/openwrt/custom.d/50-discord-media" "$URL/config_files/50-discord-media"
-	chmod +x "/opt/zapret/init.d/openwrt/custom.d/50-discord-media"
-	service zapret restart
+	manage_package "zapret" "disable" "stop"
+	service zapret2 restart
 	deleteByPassGeoBlockComssDNS
-	messageComplete="ByPass block for Method 3: zapret + Opera Proxy...Configured completed..."
+	messageComplete="ByPass block for Method 3: zapret2 + Opera Proxy...Configured completed..."
 	;;
 4)
 	nameFileReplacePodkop="podkopNewSecondYoutube"
-	printf  "\033[32;1mStop and disabled service 'youtubeUnblock' and 'ruantiblock' and 'zapret'...\033[0m\n"
+	printf  "\033[32;1mStop and disabled service 'youtubeUnblock' and 'ruantiblock' and 'zapret' and 'zapret2'...\033[0m\n"
 	manage_package "youtubeUnblock" "disable" "stop"
 	manage_package "ruantiblock" "disable" "stop"
 	manage_package "zapret" "disable" "stop"
+	manage_package "zapret2" "disable" "stop"
 	deleteByPassGeoBlockComssDNS
 	messageComplete="ByPass block for Method 4: Only Opera Proxy...Configured completed..."
 	;;
 5)
 	nameFileReplacePodkop="podkopNewSecondYoutube"
-	printf  "\033[32;1mStop and disabled service 'ruantiblock' and 'podkop' and youtubeunblock...\033[0m\n"
+	printf  "\033[32;1mStop and disabled service 'ruantiblock' and 'podkop' and 'youtubeunblock' and 'zapret'...\033[0m\n"
 	manage_package "ruantiblock" "disable" "stop"
 	manage_package "podkop" "disable" "stop"
 	manage_package "youtubeunblock" "disable" "stop"
-	wget -O "/opt/zapret/ipset/zapret-hosts-user.txt" "$URL/config_files/zapret-hosts-user-second.txt"
-	wget -O "/opt/zapret/init.d/openwrt/custom.d/50-discord-media" "$URL/config_files/50-discord-media"
-	chmod +x "/opt/zapret/init.d/openwrt/custom.d/50-discord-media"
-	service zapret restart
+	manage_package "zapret" "disable" "stop"
+	wget -O "/opt/zapret2/ipset/zapret_hosts_user.txt" "$URL/config_files/zapret-hosts-user-second.txt"
+	service zapret2 restart
 	byPassGeoBlockComssDNS
-	printf "\033[32;1mByPass block for Method 5: zapret + ComssDNS for GeoBlock...Configured completed...\033[0m\n"
+	printf "\033[32;1mByPass block for Method 5: zapret2 + ComssDNS for GeoBlock...Configured completed...\033[0m\n"
 	exit 1
 	;;
 6)
 	nameFileReplacePodkop="podkopNewWARP"
-	printf  "\033[32;1mStop and disabled service 'youtubeUnblock' and 'ruantiblock' and 'zapret'...\033[0m\n"
+	printf  "\033[32;1mStop and disabled service 'youtubeUnblock' and 'ruantiblock' and 'zapret' and 'zapret2'...\033[0m\n"
 	manage_package "youtubeUnblock" "disable" "stop"
 	manage_package "ruantiblock" "disable" "stop"
 	manage_package "zapret" "disable" "stop"
+	manage_package "zapret2" "disable" "stop"
 	byPassGeoBlockComssDNS
 	messageComplete="ByPass block for Method 6: AWG WARP + ComssDNS for GeoBlock...Configured completed..."
 	;;
 7)
 	nameFileReplacePodkop="podkopNewWARPNoYoutube"
-	printf  "\033[32;1mStop and disabled service 'ruantiblock' and 'youtubeUnblock'...\033[0m\n"
+	printf  "\033[32;1mStop and disabled service 'ruantiblock' and 'youtubeUnblock' and 'zapret'...\033[0m\n"
 	manage_package "ruantiblock" "disable" "stop"
 	manage_package "youtubeUnblock" "disable" "stop"
-	wget -O "/opt/zapret/init.d/openwrt/custom.d/50-discord-media" "$URL/config_files/50-discord-media"
-	chmod +x "/opt/zapret/init.d/openwrt/custom.d/50-discord-media"
-	service zapret restart
+	manage_package "zapret" "disable" "stop"
+	service zapret2 restart
 	byPassGeoBlockComssDNS
-	messageComplete="ByPass block for Method 7: AWG WARP + zapret + ComssDNS for GeoBlock...Configured completed..."
+	messageComplete="ByPass block for Method 7: AWG WARP + zapret2 + ComssDNS for GeoBlock...Configured completed..."
 	;;
 8)
 	printf "\033[32;1mTry custom settings router to bypass the locks... Recomendation buy 'VPS' and up 'vless'\033[0m\n"
@@ -1302,9 +1308,9 @@ else
 	if [ "$is_install_podkop" = "y" ] || [ "$is_install_podkop" = "Y" ]; then
 		DOWNLOAD_DIR="/tmp/podkop"
 		mkdir -p "$DOWNLOAD_DIR"
-		podkop_files="podkop-v0.7.14-r1-all.ipk
-			luci-app-podkop-v0.7.14-r1-all.ipk
-			luci-i18n-podkop-ru-0.7.14.ipk"
+		podkop_files="podkop-v0.7.16-r1-all.ipk
+			luci-app-podkop-v0.7.16-r1-all.ipk
+			luci-i18n-podkop-ru-0.7.16.ipk"
 		for file in $podkop_files
 		do
 			echo "Download $file..."

@@ -1,6 +1,6 @@
 #!/bin/sh
 
-URL="https://raw.githubusercontent.com/routerich/RouterichAX3000_configs/refs/heads/podkop0711"
+URL="https://raw.githubusercontent.com/routerich/RouterichAX3000_configs/refs/heads/zapret2"
 DIR="/etc/config"
 DIR_BACKUP="/root/backup"
 config_files="dhcp

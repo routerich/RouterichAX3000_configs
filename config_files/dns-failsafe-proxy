@@ -7,5 +7,5 @@ config dns-failsafe-proxy 'main'
 	option failback_ip '127.0.0.1'
 	option failback_port '5453'
 	option connect_timeout '150'
-	option session_timeout '2000'
+	option session_timeout '350'
 
