@@ -1282,7 +1282,7 @@ case $varByPass in
 esac
 
 PACKAGE="podkop"
-REQUIRED_VERSION="v0.7.14-r1"
+REQUIRED_VERSION="v0.7.17-r1"
 
 INSTALLED_VERSION=$(opkg list-installed | grep "^$PACKAGE" | cut -d ' ' -f 3)
 if [ -n "$INSTALLED_VERSION" ] && [ "$INSTALLED_VERSION" != "$REQUIRED_VERSION" ]; then
