@@ -406,7 +406,7 @@ checkAndAddDomainPermanentName()
   fi
 }
 
-byPassGeoBlockComssDNS()
+byPassGeoBlockXboxDNS()
 {
 	echo "Configure dhcp..."
 
@@ -478,7 +478,7 @@ byPassGeoBlockComssDNS()
 	service odhcpd restart
 }
 
-deleteByPassGeoBlockComssDNS()
+deleteByPassGeoBlockXboxDNS()
 {
 	uci del dhcp.cfg01411c.server
 	uci add_list dhcp.cfg01411c.server='127.0.0.1#5359'
@@ -1204,7 +1204,7 @@ case $varByPass in
 	manage_package "youtubeUnblock" "disable" "stop"
 	manage_package "zapret" "disable" "stop"
 	service zapret2 restart
-	deleteByPassGeoBlockComssDNS
+	deleteByPassGeoBlockXboxDNS
 	messageComplete="ByPass block for Method 1: AWG WARP + zapret2 + Opera Proxy...Configured completed..."
 	;;
 2)
@@ -1214,7 +1214,7 @@ case $varByPass in
 	manage_package "ruantiblock" "disable" "stop"
 	manage_package "zapret" "disable" "stop"
 	manage_package "zapret2" "disable" "stop"
-	deleteByPassGeoBlockComssDNS
+	deleteByPassGeoBlockXboxDNS
 	messageComplete="ByPass block for Method 2: AWG WARP + Opera Proxy...Configured completed..."
 	;;
 3)
@@ -1224,7 +1224,7 @@ case $varByPass in
 	manage_package "youtubeUnblock" "disable" "stop"
 	manage_package "zapret" "disable" "stop"
 	service zapret2 restart
-	deleteByPassGeoBlockComssDNS
+	deleteByPassGeoBlockXboxDNS
 	messageComplete="ByPass block for Method 3: zapret2 + Opera Proxy...Configured completed..."
 	;;
 4)
@@ -1234,7 +1234,7 @@ case $varByPass in
 	manage_package "ruantiblock" "disable" "stop"
 	manage_package "zapret" "disable" "stop"
 	manage_package "zapret2" "disable" "stop"
-	deleteByPassGeoBlockComssDNS
+	deleteByPassGeoBlockXboxDNS
 	messageComplete="ByPass block for Method 4: Only Opera Proxy...Configured completed..."
 	;;
 5)
@@ -1246,8 +1246,8 @@ case $varByPass in
 	manage_package "zapret" "disable" "stop"
 	wget -O "/opt/zapret2/ipset/zapret_hosts_user.txt" "$URL/config_files/zapret-hosts-user-second.txt"
 	service zapret2 restart
-	byPassGeoBlockComssDNS
-	printf "\033[32;1mByPass block for Method 5: zapret2 + ComssDNS for GeoBlock...Configured completed...\033[0m\n"
+	byPassGeoBlockXboxDNS
+	printf "\033[32;1mByPass block for Method 5: zapret2 + XboxDNS for GeoBlock...Configured completed...\033[0m\n"
 	exit 1
 	;;
 6)
@@ -1257,8 +1257,8 @@ case $varByPass in
 	manage_package "ruantiblock" "disable" "stop"
 	manage_package "zapret" "disable" "stop"
 	manage_package "zapret2" "disable" "stop"
-	byPassGeoBlockComssDNS
-	messageComplete="ByPass block for Method 6: AWG WARP + ComssDNS for GeoBlock...Configured completed..."
+	byPassGeoBlockXboxDNS
+	messageComplete="ByPass block for Method 6: AWG WARP + XboxDNS for GeoBlock...Configured completed..."
 	;;
 7)
 	nameFileReplacePodkop="podkopNewWARPNoYoutube"
@@ -1267,8 +1267,8 @@ case $varByPass in
 	manage_package "youtubeUnblock" "disable" "stop"
 	manage_package "zapret" "disable" "stop"
 	service zapret2 restart
-	byPassGeoBlockComssDNS
-	messageComplete="ByPass block for Method 7: AWG WARP + zapret2 + ComssDNS for GeoBlock...Configured completed..."
+	byPassGeoBlockXboxDNS
+	messageComplete="ByPass block for Method 7: AWG WARP + zapret2 + XboxDNS for GeoBlock...Configured completed..."
 	;;
 8)
 	printf "\033[32;1mTry custom settings router to bypass the locks... Recomendation buy 'VPS' and up 'vless'\033[0m\n"

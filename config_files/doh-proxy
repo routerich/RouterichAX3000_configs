@@ -34,8 +34,8 @@ config doh-proxy
 	option group 'nogroup'
 
 config doh-proxy
-	option resolver_url 'https://router.comss.one/dns-query'
-	option bootstrap_dns '195.133.25.16,212.109.195.93'
+	option resolver_url 'https://xbox-dns.ru/dns-query'
+	option bootstrap_dns '111.88.96.50,111.88.96.51'
 	option listen_addr '127.0.0.1'
 	option listen_port '5056'
 	option user 'nobody'
