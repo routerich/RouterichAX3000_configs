@@ -412,10 +412,8 @@ byPassGeoBlockComssDNS()
 
 	uci set dhcp.cfg01411c.strictorder='1'
 	uci set dhcp.cfg01411c.filter_aaaa='1'
-	uci add_list dhcp.cfg01411c.server='127.0.0.1#5053'
-	uci add_list dhcp.cfg01411c.server='127.0.0.1#5054'
-	uci add_list dhcp.cfg01411c.server='127.0.0.1#5055'
-	uci add_list dhcp.cfg01411c.server='127.0.0.1#5056'
+	uci del dhcp.cfg01411c.server
+	uci add_list dhcp.cfg01411c.server='127.0.0.1#5359'
 	uci add_list dhcp.cfg01411c.server='/*.chatgpt.com/127.0.0.1#5056'
 	uci add_list dhcp.cfg01411c.server='/*.oaistatic.com/127.0.0.1#5056'
 	uci add_list dhcp.cfg01411c.server='/*.oaiusercontent.com/127.0.0.1#5056'
@@ -468,13 +466,13 @@ byPassGeoBlockComssDNS()
 	uci add_list dhcp.cfg01411c.server='/*.brawlstarsgame.com/127.0.0.1#5056'
 	uci commit dhcp
 
-	echo "Add unblock ChatGPT..."
+	#echo "Add unblock ChatGPT..."
 
-	checkAndAddDomainPermanentName "chatgpt.com" "83.220.169.155"
-	checkAndAddDomainPermanentName "openai.com" "83.220.169.155"
-	checkAndAddDomainPermanentName "webrtc.chatgpt.com" "83.220.169.155"
-	checkAndAddDomainPermanentName "ios.chat.openai.com" "83.220.169.155"
-	checkAndAddDomainPermanentName "searchgpt.com" "83.220.169.155"
+	#checkAndAddDomainPermanentName "chatgpt.com" "83.220.169.155"
+	#checkAndAddDomainPermanentName "openai.com" "83.220.169.155"
+	#checkAndAddDomainPermanentName "webrtc.chatgpt.com" "83.220.169.155"
+	#checkAndAddDomainPermanentName "ios.chat.openai.com" "83.220.169.155"
+	#checkAndAddDomainPermanentName "searchgpt.com" "83.220.169.155"
 
 	service dnsmasq restart
 	service odhcpd restart
