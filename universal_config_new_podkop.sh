@@ -834,6 +834,10 @@ else
 	fi
 fi
 
+wget -O "/etc/init.d/opera-proxy" "$URL/config_files/opera-proxy"
+/etc/init.d/opera-proxy restart
+sleep 5
+
 isWorkOperaProxy=0
 printf "\033[32;1mCheck opera proxy...\033[0m\n"
 service sing-box restart
